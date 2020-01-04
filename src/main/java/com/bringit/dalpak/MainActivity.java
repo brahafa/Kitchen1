@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         nameTV = findViewById(R.id.nameTV);
         openFragment(new MainFragment());
     }
+    //ttt
 
     public void setName(){
         if(SharePref.getInstance(this).getData(Constants.NAME_PREF) != null){
