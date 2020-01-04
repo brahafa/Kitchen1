@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bringit.dalpak.R;
+import com.bringit.dalpak.models.OpenOrderModel;
 import com.bringit.dalpak.models.OrderModel;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public class DialogOpenOrder  extends Dialog implements View.OnClickListener {
 
     Dialog d;
     Context context;
-    OrderModel orderModel;
+    OpenOrderModel orderModel;
 
-    public DialogOpenOrder(@NonNull final Context context, OrderModel orderModel) {
+    public DialogOpenOrder(@NonNull final Context context, OpenOrderModel orderModel) {
         super(context);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.context = context;

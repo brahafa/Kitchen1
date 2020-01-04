@@ -49,7 +49,7 @@ public class Network {
         SIGN_UP, GET_LOGGED_MANAGER, lOAD_SAVED_USER_DETAILS,
         GET_ITEMS_IN_SELECTED_FOLEDER, SETINGS_LOGIN, LOG_IN_MANAGER, GET_ALL_ORDERS,
         GET_ITEMS_SHOTR_CUT_FOLEDER, ADD_TO_CART, GET_ITEMS_BY_TYPE, GET_ORDER_DETAILS_BY_ID,
-        GET_CART, CLEAR_CART, ORDER_CHANGE_POS
+        GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS
     }
 
     ;
@@ -167,6 +167,8 @@ public class Network {
             case ORDER_CHANGE_POS:
                 url += BUSINESS + "orderChangePos";
                 break;
+            case UPDATE_ORDER_STATUS:
+                url += BUSINESS + "updateOrderStatus";
 
 
         }

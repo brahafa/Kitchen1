@@ -117,15 +117,6 @@ public class Request {
         network.sendRequest(context,Network.RequestName.GET_ALL_ORDERS,Integer.toString(BusinessModel.getInstance().getBusiness_id()));
     }
 
-    /*
-
-    id: draggingOrder.order_id,
-	oldPosition: draggingOrder.order_position,
-	position: newPosition,
-	statusChanged: draggedFrom != draggedTo,
-	status: draggedTo
-     */
-
     public static void orderChangePos(Context context, String order_id,int oldPosition, int newPosition, boolean statusChanged, String draggedToStatus,  final RequestJsonCallBack listener  ){
         JSONObject jsonObject= new JSONObject();
         try {
@@ -151,6 +142,51 @@ public class Request {
         },context);
         network.sendPostRequest(context, jsonObject,Network.RequestName.ORDER_CHANGE_POS);
     }
+
+    public static void updateOrderStatus(Context context, String order_id, String status,  final RequestJsonCallBack listener  ){
+        JSONObject jsonObject= new JSONObject();
+        try {
+            jsonObject.put("order_id",order_id);
+            jsonObject.put("oStatus",status);
+            jsonObject.put("business_id",BusinessModel.getInstance().getBusiness_id());
+
+            Log.d("send data: ", jsonObject.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Network network = new Network(new Network.NetworkCallBack() {
+            @Override
+            public void onDataDone(JSONObject json) {
+                Log.d("UPDATE_ORDER_STATUS", jsonObject.toString());
+            }
+            @Override
+            public void onDataError(JSONObject json) {
+                openAlertMsg(context, json);
+            }
+        },context);
+        network.sendPostRequest(context, jsonObject,Network.RequestName.UPDATE_ORDER_STATUS);
+    }
+
+   public static void getOrderDetailsByID(Context context, String orderId,RequestJsonCallBack requestJsonCallBack){
+       Network network= new Network(new Network.NetworkCallBack() {
+           @Override
+           public void onDataDone(JSONObject json) {
+               Log.d("getOrderDetailsByID", json.toString());
+               requestJsonCallBack.onDataDone(json);
+//               try {
+//                  // requestItemsListCallBack.onDataDone(getListGlobalFromJsonArr(json.getJSONObject("Message")));
+//               } catch (JSONException e) {
+//                   e.printStackTrace();
+//               }
+           }
+           @Override
+           public void onDataError(JSONObject json) {
+
+           }
+       }, context);
+       network.sendRequest(context,Network.RequestName.GET_ORDER_DETAILS_BY_ID, orderId);
+   }
 
     public static void getItemsInSelectedFolder(Context context,String param , Network.RequestName getItemsInSelectedFoleder, final RequestJsonCallBack listener){
         Network network = new Network(new Network.NetworkCallBack() {
@@ -240,6 +276,7 @@ public class Request {
         }, context);
         network.sendRequest(context, Network.RequestName.GET_CART);
     }
+
     public static void clearCart (Context context, final RequestCallBack callBack){
         Network network = new Network(new Network.NetworkCallBack() {
             @Override

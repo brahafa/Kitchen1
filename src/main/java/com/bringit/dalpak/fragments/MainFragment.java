@@ -15,6 +15,8 @@ import com.bringit.dalpak.R;
 import com.bringit.dalpak.adapters.Listener;
 import com.bringit.dalpak.adapters.OrderRv;
 import com.bringit.dalpak.dialog.PasswordDialog;
+import com.bringit.dalpak.models.ItemModel;
+import com.bringit.dalpak.models.OpenOrderModel;
 import com.bringit.dalpak.models.OrderModel;
 import com.bringit.dalpak.utils.Request;
 import com.bringit.dalpak.utils.Utils;
@@ -59,7 +61,7 @@ public class MainFragment extends Fragment implements Listener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_main, container, false);
         gson = new Gson();
-        openPasswordDialog();
+      //  openPasswordDialog();
 
         rVPreparing = view.findViewById(R.id.rvPreparing);
         rVReceived = view.findViewById(R.id.rvReceived);
@@ -71,7 +73,7 @@ public class MainFragment extends Fragment implements Listener {
     }
 
 
-    private void openPasswordDialog() {
+    public void openPasswordDialog() {
         PasswordDialog passwordDialog = new PasswordDialog(getActivity());
         passwordDialog.setCancelable(false);
         passwordDialog.show();
@@ -83,18 +85,23 @@ public class MainFragment extends Fragment implements Listener {
                 Request.getAllOrders(getActivity(), new Request.RequestJsonCallBack() {
                     @Override
                     public void onDataDone(JSONObject jsonObject) {
-                        initRV(getOrdersList(jsonObject, "preparing"), rVPreparing);
-                        initRV(getOrdersList(jsonObject, "received"), rVReceived);
-                        initRV(getOrdersList(jsonObject, "cooking"), rVCooking);
-                        initRV(getOrdersList(jsonObject, "packing"), rVPacking);
-                        initRV(getOrdersList(jsonObject, "sent"), rVSent);
+                        initAllRV(jsonObject);
                     }
                 });
             }
         });
     }
 
+    public void initAllRV(JSONObject jsonObject) {
+        initRV(getOrdersList(jsonObject, "preparing"), rVPreparing);
+        initRV(getOrdersList(jsonObject, "received"), rVReceived);
+        initRV(getOrdersList(jsonObject, "cooking"), rVCooking);
+        initRV(getOrdersList(jsonObject, "packing"), rVPacking);
+        initRV(getOrdersList(jsonObject, "sent"), rVSent);
+    }
+
     private List<OrderModel> getOrdersList(JSONObject jsonObject, String orderStatus) {
+        Gson gson = new Gson();
         List<OrderModel> orderModels = new ArrayList<>();
         JSONArray jsonArray = null;
         try {
@@ -115,7 +122,17 @@ public class MainFragment extends Fragment implements Listener {
         OrderRv bottomListAdapter = new OrderRv(getActivity(), orderModels, this, new OrderRv.AdapterCallback() {
             @Override
             public void onItemChoose(OrderModel orderModel) {
-                ((MainActivity)getActivity()).openOrderDialog(orderModel);
+                Request.getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), new Request.RequestJsonCallBack() {
+                    @Override
+                    public void onDataDone(JSONObject jsonObject) {
+                        try {
+                            OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
+                            ((MainActivity)getActivity()).openOrderDialog(openOrderModel);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         });
         recyclerView.setAdapter(bottomListAdapter);

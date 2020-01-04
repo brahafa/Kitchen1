@@ -141,7 +141,7 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
     }
 
     void changeStatus(String order_id, int positionSource, int positionTarget, boolean b, String draggedToStr){
-        Request.orderChangePos(context, order_id,positionSource,positionTarget,b , draggedToStr, new Request.RequestJsonCallBack() {
+        Request.updateOrderStatus(context, order_id, draggedToStr, new Request.RequestJsonCallBack() {
             @Override
             public void onDataDone(JSONObject jsonObject) {
 

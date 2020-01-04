@@ -9,13 +9,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="104dp"
+        android:layout_height="80dp"
         android:background="@color/black_222e3b"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="133dp"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
+            android:id="@+id/backRL"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="40dp"
             android:layout_centerVertical="true"
@@ -39,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:text="Back"
                     android:textColor="@color/white"
-                    android:textSize="18dp" />
+                    android:textSize="15dp" />
             </LinearLayout>
         </RelativeLayout>
 
