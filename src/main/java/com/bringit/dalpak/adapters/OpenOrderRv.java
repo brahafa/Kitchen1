@@ -1,6 +1,7 @@
 package com.bringit.dalpak.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bringit.dalpak.R;
 import com.bringit.dalpak.models.ItemModel;
+import com.bringit.dalpak.utils.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,16 +26,16 @@ public class OpenOrderRv extends RecyclerView.Adapter<OpenOrderRv.OpenOrderHolde
     AdapterCallback adapterCallback;
 
     class OpenOrderHolder extends RecyclerView.ViewHolder {
-        TextView name, orderTime;
-        ImageView deliveryImage;
+        TextView name, amount;
+        ImageView itemImage;
         View view;
 
         OpenOrderHolder(View view) {
             super(view);
             this.view = view;
             name = view.findViewById(R.id.name);
-            orderTime = view.findViewById(R.id.order_time);
-            deliveryImage = view.findViewById(R.id.delivery_image);
+            amount = view.findViewById(R.id.order_time);
+            itemImage = view.findViewById(R.id.itemImage);
 
         }
 
@@ -47,13 +50,18 @@ public class OpenOrderRv extends RecyclerView.Adapter<OpenOrderRv.OpenOrderHolde
 
     @Override
     public OpenOrderRv.OpenOrderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_order_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.open_order_item, parent, false);
         return new OpenOrderRv.OpenOrderHolder(itemView);
     }
 
 
     @Override
     public void onBindViewHolder(final OpenOrderRv.OpenOrderHolder holder, final int position) {
+        holder.name.setText(itemList.get(position).getName());
+        Picasso.with(context).load(Constants.DRINKS_URL + itemList.get(position).getItem_picture()).into(holder.itemImage);
+
+        holder.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.text_color)));
+
 
 
     }

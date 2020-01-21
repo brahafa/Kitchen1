@@ -12,7 +12,7 @@ public class ItemModel {
     private String item_name;
     private boolean is_compensation;
     private String position;
-    private String type;
+    private String item_type;
     private boolean isShortcut;
     private int uniq_for_business_id;
     private int drink_id;
@@ -48,11 +48,12 @@ public class ItemModel {
         return father_id;
     }
     public List<ItemModel> getItem_filling() {
-        if(item_filling!=null)
-            for (int i=0; i<item_filling.size(); i++){
-                item_filling.get(i).setCart_id(getCart_id());
-                item_filling.get(i).setFiliingIndex(i);
-            }
+        if(item_filling==null) item_filling = new ArrayList<>();
+//        if(item_filling!=null)
+//            for (int i=0; i<item_filling.size(); i++){
+//                item_filling.get(i).setCart_id(getCart_id());
+//                item_filling.get(i).setFiliingIndex(i);
+//            }
         return item_filling;
     }
 
@@ -74,12 +75,12 @@ public class ItemModel {
 
         this.layers = layers;
     }
-    public String getType() {
-        return type;
+    public String get_ItemType() {
+        return item_type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setItem_type(String item_type) {
+        this.item_type = item_type;
     }
     public int getDeal_product(){
         return deal_product;
