@@ -1,10 +1,12 @@
 package com.bringit.dalpak;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         nameTV = findViewById(R.id.nameTV);
         backRL = findViewById(R.id.backRL);
-        fragment =new MainFragment();
+        fragment = new MainFragment();
         openFragment(fragment);
 
         backRL.setOnClickListener(new View.OnClickListener() {
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         openPasswordDialog();
     }
 
-    public void setName(){
-        if(SharePref.getInstance(this).getData(Constants.NAME_PREF) != null){
+    public void setName() {
+        if (SharePref.getInstance(this).getData(Constants.NAME_PREF) != null) {
             nameTV.setText(SharePref.getInstance(this).getData(Constants.NAME_PREF) + " שלום ");
         }
     }
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void openOrderDialog(OpenOrderModel orderModel){
+    public void openOrderDialog(OpenOrderModel orderModel) {
         DialogOpenOrder d = new DialogOpenOrder(this, orderModel);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(d.getWindow().getAttributes());

@@ -3,6 +3,7 @@ package com.bringit.dalpak.fragments;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,28 +69,8 @@ public class MainFragment extends Fragment implements Listener {
         rVCooking = view.findViewById(R.id.rvCooking);
         rVPacking = view.findViewById(R.id.rvPacking);
         rVSent = view.findViewById(R.id.rvSent);
-
+        initMainFragmentData(10000);
         return view;
-    }
-
-
-    public void openPasswordDialog() {
-        PasswordDialog passwordDialog = new PasswordDialog(getActivity());
-        passwordDialog.setCancelable(false);
-        passwordDialog.show();
-
-        passwordDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                ((MainActivity)getActivity()).setName();
-                Request.getAllOrders(getActivity(), new Request.RequestJsonCallBack() {
-                    @Override
-                    public void onDataDone(JSONObject jsonObject) {
-                        initAllRV(jsonObject);
-                    }
-                });
-            }
-        });
     }
 
     public void initAllRV(JSONObject jsonObject) {
@@ -98,6 +79,26 @@ public class MainFragment extends Fragment implements Listener {
         initRV(getOrdersList(jsonObject, "cooking"), rVCooking);
         initRV(getOrdersList(jsonObject, "packing"), rVPacking);
         initRV(getOrdersList(jsonObject, "sent"), rVSent);
+    }
+
+    private void initMainFragmentData(int time) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Request.getAllOrders(getContext(), new Request.RequestJsonCallBack() {
+                    @Override
+                    public void onDataDone(JSONObject jsonObject) {
+                        initAllRV(jsonObject);
+                        initMainFragmentData(10000);
+                    }
+                });
+            }
+        }, time);
+
+
+
+
     }
 
     private List<OrderModel> getOrdersList(JSONObject jsonObject, String orderStatus) {
