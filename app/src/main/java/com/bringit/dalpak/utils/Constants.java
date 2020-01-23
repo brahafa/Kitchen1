@@ -6,7 +6,7 @@ public class Constants {
     public static String USER_ALREADY_CONNECTED_PREF = "connected";
 
     //URLS
-    private static String IMAGES_BASE_URL = "https://api.bringit.co.il/public/images/";
+    public static String IMAGES_BASE_URL = "https://api.bringit.co.il/public/images/";
     public static String DRINKS_URL = IMAGES_BASE_URL + "drink/";
     public static String ADDITIONAL_URL = IMAGES_BASE_URL+"loka/additionalOffer/";
     public static String FOOD_URL = IMAGES_BASE_URL + "food/";

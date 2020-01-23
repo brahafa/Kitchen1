@@ -78,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/rv_main_background"
+            android:backgroundTint="@color/edit_text_background"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1">
@@ -93,6 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/rv_main_background"
+            android:backgroundTint="@color/edit_text_background"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1">
@@ -107,6 +109,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/rv_main_background"
+            android:backgroundTint="@color/edit_text_background"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1">
@@ -121,6 +124,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/rv_main_background"
+            android:backgroundTint="@color/edit_text_background"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1">
@@ -135,6 +139,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/rv_main_background"
+            android:backgroundTint="@color/edit_text_background"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1">

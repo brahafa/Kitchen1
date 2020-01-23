@@ -188,6 +188,22 @@ public class Request {
        network.sendRequest(context,Network.RequestName.GET_ORDER_DETAILS_BY_ID, orderId);
    }
 
+    public static void loadBusinessItems(Context context, String type,RequestJsonCallBack requestJsonCallBack){
+        Network network= new Network(new Network.NetworkCallBack() {
+            @Override
+            public void onDataDone(JSONObject json) {
+                Log.d("getOrderDetailsByID", json.toString());
+                requestJsonCallBack.onDataDone(json);
+
+            }
+            @Override
+            public void onDataError(JSONObject json) {
+
+            }
+        }, context);
+        network.sendRequest(context,Network.RequestName.LOAD_BUSINES_ITEMS, type);
+    }
+
     public static void getItemsInSelectedFolder(Context context,String param , Network.RequestName getItemsInSelectedFoleder, final RequestJsonCallBack listener){
         Network network = new Network(new Network.NetworkCallBack() {
             @Override

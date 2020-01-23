@@ -49,7 +49,7 @@ public class Network {
         SIGN_UP, GET_LOGGED_MANAGER, lOAD_SAVED_USER_DETAILS,
         GET_ITEMS_IN_SELECTED_FOLEDER, SETINGS_LOGIN, LOG_IN_MANAGER, GET_ALL_ORDERS,
         GET_ITEMS_SHOTR_CUT_FOLEDER, ADD_TO_CART, GET_ITEMS_BY_TYPE, GET_ORDER_DETAILS_BY_ID,
-        GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS
+        GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS, LOAD_BUSINES_ITEMS
     }
 
     ;
@@ -82,6 +82,9 @@ public class Network {
             case GET_ORDER_DETAILS_BY_ID:
 
                 url += BUSINESS + "getOrderDetailsByID&order_id=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
+                break;
+            case LOAD_BUSINES_ITEMS:
+                url += BUSINESS + "loadBusinessItems&type=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
                 break;
 
         }
