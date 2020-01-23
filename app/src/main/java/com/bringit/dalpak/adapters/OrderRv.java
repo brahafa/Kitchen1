@@ -30,13 +30,14 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
 
     class OrderHolder extends RecyclerView.ViewHolder {
         TextView name, orderTime;
-        ImageView deliveryImage;
+        ImageView deliveryImage, warningImg;
         View view;
 
         OrderHolder(View view) {
             super(view);
             this.view = view;
             name = view.findViewById(R.id.name);
+            warningImg = view.findViewById(R.id.warning_image);
             orderTime = view.findViewById(R.id.order_time);
             deliveryImage = view.findViewById(R.id.delivery_image);
 
@@ -73,6 +74,9 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
         }
 
         holder.orderTime.setText(Utils.getOrderTimerStr(orderList.get(position).getOrder_time()));
+        if(Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > 3){
+            holder.warningImg.setVisibility(View.VISIBLE);
+        }
         holder.view.setTag(position);
         //holder.view.setOnTouchListener(this);
         holder.view.setOnDragListener(new DragListener(listener));

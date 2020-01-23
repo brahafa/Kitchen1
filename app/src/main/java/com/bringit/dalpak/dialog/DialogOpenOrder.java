@@ -28,7 +28,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     Context context;
     OpenOrderModel orderModel;
     ;
-    TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV;
+    TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick;
     ImageView orderMethodIV;
     RecyclerView rvDrink, rvPizza, rvAdditional;
 
@@ -78,6 +78,8 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         orderTypeTV = findViewById(R.id.orderTypeTV);
         orderDetailsTV = findViewById(R.id.orderDetailsTV);
         orderMethodIV = findViewById(R.id.orderMethodIV);
+        shippingNumber = findViewById(R.id.shipping_number);
+        shippingTvClick = findViewById(R.id.shipping_tv_click);
         rvDrink = findViewById(R.id.rvDrink);
         rvAdditional = findViewById(R.id.rvAdditional);
         rvPizza = findViewById(R.id.rvPizza);
@@ -102,6 +104,15 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         } else if (orderModel.getIs_delivery().equals("1")) {
             orderTypeTV.setText("משלוח");
             orderMethodIV.setImageResource(R.mipmap.delivery);
+            shippingTvClick.setVisibility(View.VISIBLE);
+            shippingNumber.setVisibility(View.VISIBLE);
+            shippingTvClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
         } else {
             orderTypeTV.setText("לשבת");
             orderMethodIV.setImageResource(R.mipmap.dinner);

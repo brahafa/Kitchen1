@@ -7,11 +7,11 @@
     android:layout_centerHorizontal="true"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    android:background="@color/new_in_order"
+    android:background="@color/blue_4d83f4"
     android:visibility="gone">
 
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="198dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/topBar"
         android:layout_centerHorizontal="true"
@@ -34,7 +34,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/new_in_order" />
+            android:background="@color/blue_4d83f4" />
 
         <TextView
             android:id="@+id/sail_stock"
@@ -48,7 +48,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/new_in_order" />
+            android:background="@color/blue_4d83f4" />
 
         <TextView
             android:id="@+id/drink_stock"
@@ -62,7 +62,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/new_in_order" />
+            android:background="@color/blue_4d83f4" />
 
         <TextView
             android:id="@+id/spacial_stock"
@@ -76,7 +76,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/new_in_order" />
+            android:background="@color/blue_4d83f4" />
 
         <TextView
             android:id="@+id/additional_stock"
@@ -90,6 +90,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/new_in_order" />
+            android:background="@color/blue_4d83f4" />
     </LinearLayout>
 </LinearLayout>
