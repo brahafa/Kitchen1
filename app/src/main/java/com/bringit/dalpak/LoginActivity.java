@@ -32,6 +32,10 @@ public class LoginActivity extends AppCompatActivity {
         passwordDeleteIV = findViewById(R.id.clearPassword);
         goTV = findViewById(R.id.go);
 
+        if(SharePref.getInstance(this).getBooleanData(Constants.USER_ALREADY_CONNECTED_PREF)){
+            openMainActivity();
+            this.finish();
+        }
         initListener();
     }
 

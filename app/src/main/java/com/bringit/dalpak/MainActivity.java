@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         fragment = new MainFragment();
         stockModelList = new ArrayList<>();
         gson = new Gson();
-        openFragment(fragment);
+        openFragment(fragment, "Main");
     }
 
     private void initListeners() {
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putSerializable("valuesArray", (Serializable) stockModelList);
                     StockFragment stockFragment = new StockFragment();
                     stockFragment.setArguments(bundle);
-                    openFragment(stockFragment);
+                    openFragment(stockFragment, "stock");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -172,11 +172,11 @@ public class MainActivity extends AppCompatActivity {
         d.getWindow().setAttributes(lp);
     }
 
-    private void openFragment(Fragment fragmentToOpen) {
+    private void openFragment(Fragment fragmentToOpen, String tag) {
         menuStockLayout.setVisibility(View.GONE);
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.fragment_container, fragmentToOpen, "Main");
+        transaction.add(R.id.fragment_container, fragmentToOpen, tag);
         transaction.addToBackStack(null);
         transaction.commit();
     }
