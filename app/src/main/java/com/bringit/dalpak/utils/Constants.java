@@ -1,6 +1,7 @@
 package com.bringit.dalpak.utils;
 
 public class Constants {
+    public static String LOG_IN_JSON_PREF = "loginJson";
     public static String TOKEN_PREF = "token";
     public static String NAME_PREF = "name";
     public static String USER_ALREADY_CONNECTED_PREF = "connected";

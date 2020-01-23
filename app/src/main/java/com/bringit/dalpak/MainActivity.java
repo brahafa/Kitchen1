@@ -110,7 +110,14 @@ public class MainActivity extends AppCompatActivity {
         backRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openPasswordDialog();
+                Fragment f = getFragmentManager().findFragmentById(R.id.fragment_container);
+                if(f instanceof MainFragment) {
+                    openPasswordDialog();
+                }else {
+                    getFragmentManager().popBackStack();
+                }
+
+
             }
         });
     }

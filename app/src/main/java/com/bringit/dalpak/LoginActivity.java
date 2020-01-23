@@ -12,9 +12,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bringit.dalpak.models.BusinessModel;
 import com.bringit.dalpak.utils.Constants;
 import com.bringit.dalpak.utils.Request;
 import com.bringit.dalpak.utils.SharePref;
+import com.google.gson.JsonParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     ImageView userNameDeleteIV, passwordDeleteIV;
@@ -33,6 +38,13 @@ public class LoginActivity extends AppCompatActivity {
         goTV = findViewById(R.id.go);
 
         if(SharePref.getInstance(this).getBooleanData(Constants.USER_ALREADY_CONNECTED_PREF)){
+            try {
+                JSONObject jsonObject = new JSONObject(SharePref.getInstance(this).getData(Constants.LOG_IN_JSON_PREF));
+                BusinessModel.getInstance().initData(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             openMainActivity();
             this.finish();
         }

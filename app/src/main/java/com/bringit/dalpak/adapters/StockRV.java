@@ -62,7 +62,7 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
             holder.itemImage.setVisibility(View.VISIBLE);
 
         }
-        if (itemList.get(position).getIn_inventory()) {
+        if (itemList.get(position).isObject_status()) {
             holder.inStockTvClick.setText("במלאי");
             holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.green_00c37c)));
         } else {
