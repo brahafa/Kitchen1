@@ -29,8 +29,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
-            android:background="@drawable/number_key"
-            android:backgroundTint="@color/new_in_order"
+            android:background="@drawable/change_in_order"
             android:orientation="horizontal"
             android:tint="@color/white">
 
@@ -107,8 +106,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/rv_main_background"
-            android:backgroundTint="@color/gray_e6ebf4">
+            android:background="@drawable/rv_open_order"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvDrink"
@@ -123,8 +122,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/rv_main_background"
-            android:backgroundTint="@color/gray_e6ebf4">
+            android:background="@drawable/rv_open_order"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvAdditional"
@@ -139,8 +138,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="3"
-            android:background="@drawable/rv_main_background"
-            android:backgroundTint="@color/gray_e6ebf4">
+            android:background="@drawable/rv_open_order"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPizza"
@@ -200,8 +199,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/circle"
-            android:backgroundTint="@color/blue_2060e5"
+            android:background="@drawable/shipping_num_btn_back"
             android:scaleType="center"
             android:src="@mipmap/chat"
             android:tint="@color/white" />
@@ -220,7 +218,8 @@
             android:layout_weight="0.5"
             android:id="@+id/shipping_number"
             android:textColor="@color/text_color"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:layout_gravity="center_vertical"
             android:text=""
             android:gravity="center"
@@ -303,8 +302,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/circle"
-                    android:backgroundTint="@color/blue_2060e5"
+                    android:background="@drawable/shipping_num_btn_back"
                     android:scaleType="center"
                     android:src="@mipmap/delivery"
                     android:tint="@color/white" />
@@ -357,8 +355,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/circle"
-                    android:backgroundTint="@color/blue_2060e5"
+                    android:background="@drawable/shipping_num_btn_back"
                     android:scaleType="center"
                     android:src="@mipmap/user"
                     android:tint="@color/white" />
@@ -411,8 +408,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/circle"
-                    android:backgroundTint="@color/blue_2060e5"
+                    android:background="@drawable/shipping_num_btn_back"
                     android:scaleType="center"
                     android:src="@mipmap/receipt"
                     android:tint="@color/white" />
@@ -465,8 +461,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/circle"
-                    android:backgroundTint="@color/blue_2060e5"
+                    android:background="@drawable/shipping_num_btn_back"
                     android:scaleType="center"
                     android:src="@mipmap/calendar"
                     android:tint="@color/white" />
