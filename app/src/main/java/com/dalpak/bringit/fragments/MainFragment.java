@@ -18,9 +18,11 @@ import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.OrderModel;
 import com.dalpak.bringit.utils.Request;
 import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class MainFragment extends Fragment implements Listener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_main, container, false);
         gson = new Gson();
-      //  openPasswordDialog();
+        //  openPasswordDialog();
 
         rVPreparing = view.findViewById(R.id.rvPreparing);
         rVReceived = view.findViewById(R.id.rvReceived);
@@ -85,18 +87,11 @@ public class MainFragment extends Fragment implements Listener {
 
     private void initMainFragmentData(int time) {
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Request.getAllOrders(getActivity(), new Request.RequestJsonCallBack() {
-                    @Override
-                    public void onDataDone(JSONObject jsonObject) {
-                        initAllRV(jsonObject);
-                        initMainFragmentData(10000);
-                    }
-                });
-            }
-        }, time);
+        handler.postDelayed(() -> Request.getAllOrders(getActivity(),
+                jsonObject -> {
+                    initAllRV(jsonObject);
+                    initMainFragmentData(10000);
+                }), time);
 
     }
 
@@ -127,7 +122,7 @@ public class MainFragment extends Fragment implements Listener {
                     public void onDataDone(JSONObject jsonObject) {
                         try {
                             OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
-                            ((MainActivity)getActivity()).openOrderDialog(openOrderModel);
+                            ((MainActivity) getActivity()).openOrderDialog(openOrderModel);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

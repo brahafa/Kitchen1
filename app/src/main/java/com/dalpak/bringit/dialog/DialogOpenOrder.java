@@ -53,21 +53,22 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         List<ItemModel> additionals = new ArrayList<>();
         List<ItemModel> pizza = new ArrayList<>();
         for (int i = 0; i < orderModel.getOrder_items().size(); i++) {
-            if (orderModel.getOrder_items().get(i).get_ItemType().equals("Drink")) {
-                drinks.add(orderModel.getOrder_items().get(i));
-            } else if (orderModel.getOrder_items().get(i).get_ItemType().equals("AdditionalOffer")) {
-                additionals.add(orderModel.getOrder_items().get(i));
-            } else if (orderModel.getOrder_items().get(i).get_ItemType().equals("Food")) {
-                pizza.add(orderModel.getOrder_items().get(i));
-                for (int j = i; j < orderModel.getOrder_items().size(); j++) {
-                    if (orderModel.getOrder_items().get(j).getFather_id() != null && orderModel.getOrder_items().get(j).getFather_id().equals(orderModel.getOrder_items().get(i).getCart_id())) {
-                        pizza.get(pizza.size() - 1).getItem_filling().add(orderModel.getOrder_items().get(j));
+            switch (orderModel.getOrder_items().get(i).get_ItemType()) {
+                case "Drink":
+                    drinks.add(orderModel.getOrder_items().get(i));
+                    break;
+                case "AdditionalOffer":
+                    additionals.add(orderModel.getOrder_items().get(i));
+                    break;
+                case "Food":
+                    pizza.add(orderModel.getOrder_items().get(i));
+                    for (int j = i; j < orderModel.getOrder_items().size(); j++) {
+                        if (orderModel.getOrder_items().get(j).getFather_id() != null && orderModel.getOrder_items().get(j).getFather_id().equals(orderModel.getOrder_items().get(i).getCart_id())) {
+                            pizza.get(pizza.size() - 1).getItem_filling().add(orderModel.getOrder_items().get(j));
+                        }
                     }
-                }
+                    break;
             }
-//            else if(){
-//
-//            }
         }
 
         initRV(drinks, rvDrink);

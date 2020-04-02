@@ -8,7 +8,6 @@ android {
         targetSdkVersion 29
         versionCode 8
         versionName "1.8"
-        //push test
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     useLibrary 'org.apache.http.legacy'

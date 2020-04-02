@@ -81,26 +81,17 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
         //holder.view.setOnTouchListener(this);
         holder.view.setOnDragListener(new DragListener(listener));
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapterCallback.onItemChoose(orderList.get(position));
+        holder.view.setOnClickListener(v -> adapterCallback.onItemChoose(orderList.get(position)));
 
+        holder.view.setOnLongClickListener(v -> {
+            ClipData data = ClipData.newPlainText("", "");
+            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                v.startDragAndDrop(data, shadowBuilder, v, 0);
+            } else {
+                v.startDrag(data, shadowBuilder, v, 0);
             }
-        });
-
-        holder.view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    v.startDragAndDrop(data, shadowBuilder, v, 0);
-                } else {
-                    v.startDrag(data, shadowBuilder, v, 0);
-                }
-                return false;
-            }
+            return false;
         });
     }
 

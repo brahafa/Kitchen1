@@ -5,9 +5,12 @@ import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dalpak.bringit.R;
@@ -29,6 +32,7 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class OpenOrderHolder extends RecyclerView.ViewHolder {
         TextView name, amount;
         ImageView itemImage, tl, tr, bl, br;
+        RecyclerView rvFillings;
         View view;
 
         OpenOrderHolder(View view) {
@@ -37,6 +41,7 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             name = view.findViewById(R.id.name);
             amount = view.findViewById(R.id.order_time);
             itemImage = view.findViewById(R.id.itemImage);
+            rvFillings = view.findViewById(R.id.rv_fillings);
         }
     }
 
@@ -83,29 +88,38 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         OpenOrderHolder holder1;
-        OpenOrderHolderTopping  holder2;
-        if(holder.getItemViewType() == 0){
-            holder2 = (OpenOrderHolderTopping)holder;
+        OpenOrderHolderTopping holder2;
+        if (holder.getItemViewType() == 0) {
+            holder2 = (OpenOrderHolderTopping) holder;
             holder2.name.setText(itemList.get(position).getName());
-           // holder2.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.topping_background)));
+            // holder2.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.topping_background)));
             initToppingColor(itemList.get(position), holder2);
-        }else{
-            holder1 = (OpenOrderHolder)holder;
+        } else {
+            holder1 = (OpenOrderHolder) holder;
             holder1.name.setText(itemList.get(position).getName());
-            if (itemList.get(position).get_ItemType().equals("Drink")) {
-               // holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                Picasso.with(context).load(Constants.DRINKS_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
-            } else if (itemList.get(position).get_ItemType().equals("AdditionalOffer")) {
-             //   holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                Picasso.with(context).load(Constants.ADDITIONAL_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
-            }  else if (itemList.get(position).get_ItemType().equals("Food")) {
-              //  holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                Picasso.with(context).load(Constants.FOOD_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
+
+            if (itemList.get(position).getItem_filling() != null) {
+                holder1.rvFillings.setLayoutManager(new LinearLayoutManager(context));
+                FillingAdapter fillingAdapter =
+                        new FillingAdapter(context, itemList.get(position).getItem_filling());
+                holder1.rvFillings.setAdapter(fillingAdapter);
+            }
+
+            switch (itemList.get(position).get_ItemType()) {
+                case "Drink":
+                    // holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
+                    Picasso.with(context).load(Constants.DRINKS_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
+                    break;
+                case "AdditionalOffer":
+                    //   holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
+                    Picasso.with(context).load(Constants.ADDITIONAL_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
+                    break;
+                case "Food":
+                    //  holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
+                    Picasso.with(context).load(Constants.FOOD_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
+                    break;
             }
         }
-
-
-
 
 
     }
@@ -124,7 +138,7 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 holder.br.setImageResource(R.mipmap.squart_red3);
                 holder.bl.setImageResource(R.mipmap.squart4);
                 holder.tl.setImageResource(R.mipmap.squart1);
-            break;
+                break;
             case "leftHalfPizza":
                 holder.tl.setImageResource(R.mipmap.squart_red1);
                 holder.bl.setImageResource(R.mipmap.squart_red4);
