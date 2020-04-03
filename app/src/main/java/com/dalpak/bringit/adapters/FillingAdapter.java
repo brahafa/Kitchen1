@@ -4,17 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
-import com.dalpak.bringit.utils.Constants;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FillingAdapter extends RecyclerView.Adapter<FillingAdapter.ViewHolder> {

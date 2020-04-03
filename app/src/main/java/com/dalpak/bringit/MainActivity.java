@@ -1,7 +1,5 @@
 package com.dalpak.bringit;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -27,12 +25,15 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
-    TextView nameTV, stockTvClick, pizzaStock, sailStock, drinkStock, spacialStock, additionalStock;
+    TextView nameTV, stockTvClick, pizzaStock, sailStock, drinkStock, additionsStock, spacialStock, additionalStock;
     RelativeLayout backRL;
     LinearLayout menuStockLayout;
     private MainFragment fragment;
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private void initUI() {
         nameTV = findViewById(R.id.nameTV);
         sailStock = findViewById(R.id.sail_stock);
-        spacialStock = findViewById(R.id.spacial_stock);
+        additionsStock = findViewById(R.id.additions_stock);
+        spacialStock = findViewById(R.id.spacial_additions_stock);
         additionalStock = findViewById(R.id.additional_stock);
         drinkStock = findViewById(R.id.drink_stock);
         pizzaStock = findViewById(R.id.pizza_stock);
@@ -65,60 +67,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListeners() {
-        sailStock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openStockFragment("deal");
-            }
-        });
-        spacialStock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openStockFragment("topping");
-            }
-        });
-        additionalStock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openStockFragment("additionalOffer");
-            }
-        });
-        drinkStock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openStockFragment("drink");
-            }
-        });
-        pizzaStock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openStockFragment("food");
+        sailStock.setOnClickListener(v -> openStockFragment("deal"));
+        additionsStock.setOnClickListener(v -> openStockFragment("topping")); // fixme: change to open right fragment
+        spacialStock.setOnClickListener(v -> openStockFragment("topping"));
+        additionalStock.setOnClickListener(v -> openStockFragment("additionalOffer"));
+        drinkStock.setOnClickListener(v -> openStockFragment("drink"));
+        pizzaStock.setOnClickListener(v -> openStockFragment("food"));
+
+        stockTvClick.setOnClickListener(v -> {
+            if (menuStockLayout.getVisibility() == View.VISIBLE) {
+                menuStockLayout.setVisibility(View.GONE);
+            } else {
+                menuStockLayout.setVisibility(View.VISIBLE);
             }
         });
 
-        stockTvClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (menuStockLayout.getVisibility() == View.VISIBLE) {
-                    menuStockLayout.setVisibility(View.GONE);
-                } else {
-                    menuStockLayout.setVisibility(View.VISIBLE);
-                }
+        backRL.setOnClickListener(v -> {
+            Fragment f = getFragmentManager().findFragmentById(R.id.fragment_container);
+            if (f instanceof MainFragment) {
+                openPasswordDialog();
+            } else {
+                getFragmentManager().popBackStack();
             }
-        });
-
-        backRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment f = getFragmentManager().findFragmentById(R.id.fragment_container);
-                if(f instanceof MainFragment) {
-                    openPasswordDialog();
-                }else {
-                    getFragmentManager().popBackStack();
-                }
 
 
-            }
         });
     }
 
@@ -129,23 +101,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openStockFragment(String type) {
-        Request.loadBusinessItems(getApplication(), type, new Request.RequestJsonCallBack() {
-            @Override
-            public void onDataDone(JSONObject jsonObject) {
-                stockModelList.clear();
-                try {
-                    JSONArray jsonArray = jsonObject.getJSONArray("message");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        stockModelList.add(gson.fromJson(jsonArray.getString(i), StockModel.class));
-                    }
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("valuesArray", (Serializable) stockModelList);
-                    StockFragment stockFragment = new StockFragment();
-                    stockFragment.setArguments(bundle);
-                    openFragment(stockFragment, "stock");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        Request.loadBusinessItems(getApplication(), type, jsonObject -> {
+            stockModelList.clear();
+            try {
+                JSONArray jsonArray = jsonObject.getJSONArray("message");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    stockModelList.add(gson.fromJson(jsonArray.getString(i), StockModel.class));
                 }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("valuesArray", (Serializable) stockModelList);
+                StockFragment stockFragment = new StockFragment();
+                stockFragment.setArguments(bundle);
+                openFragment(stockFragment, "stock");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
     }

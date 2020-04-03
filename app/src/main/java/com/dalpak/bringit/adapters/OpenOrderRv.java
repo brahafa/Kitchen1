@@ -1,24 +1,22 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.utils.Constants;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 //public class OpenOrderRv  {
 //}
@@ -105,20 +103,25 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 holder1.rvFillings.setAdapter(fillingAdapter);
             }
 
+            String imageUrl = "";
             switch (itemList.get(position).get_ItemType()) {
                 case "Drink":
-                    // holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                    Picasso.with(context).load(Constants.DRINKS_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
+                    imageUrl = Constants.DRINKS_URL + itemList.get(position).getItem_picture();
                     break;
                 case "AdditionalOffer":
                     //   holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                    Picasso.with(context).load(Constants.ADDITIONAL_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
+                    imageUrl = Constants.ADDITIONAL_URL + itemList.get(position).getItem_picture();
                     break;
                 case "Food":
                     //  holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                    Picasso.with(context).load(Constants.FOOD_URL + itemList.get(position).getItem_picture()).into(holder1.itemImage);
+                    imageUrl = Constants.FOOD_URL + itemList.get(position).getItem_picture();
                     break;
             }
+            Glide.with(context)
+                    .load(imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(holder1.itemImage);
         }
 
 

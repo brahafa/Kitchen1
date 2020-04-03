@@ -65,11 +65,11 @@
             android:background="@color/blue_4d83f4" />
 
         <TextView
-            android:id="@+id/spacial_stock"
+            android:id="@+id/additions_stock"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="תוספות מיוחדות"
+            android:text="תוספות"
             android:textColor="@color/text_color"
             android:textSize="15dp" />
 
@@ -77,6 +77,20 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/blue_4d83f4" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/spacial_additions_stock"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:text="תוספות מיוחדות"
+            android:textColor="@color/text_color"
+            android:textSize="15dp" />
+
+        <View
+            android:background="@color/blue_4d83f4"
+            android:layout_height="2dp"
+            android:layout_width="match_parent" />
 
         <TextView
             android:id="@+id/additional_stock"

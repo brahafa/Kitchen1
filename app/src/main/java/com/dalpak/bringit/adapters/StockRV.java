@@ -1,29 +1,29 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.dialog.DialogWarningRemoveStock;
 import com.dalpak.bringit.models.StockModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
@@ -55,9 +55,9 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
     @Override
     public StockRV.StockRVHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == 0){
+        if (viewType == 0) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_deal_item, parent, false);
-        }else{
+        } else {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_item, parent, false);
         }
         return new StockRV.StockRVHolder(itemView);
@@ -72,16 +72,20 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
             holder.itemImage.setVisibility(View.GONE);
         } else {
             String url = Constants.IMAGES_BASE_URL + itemList.get(position).getObject_type() + "/" + itemList.get(position).getPicture();
-            Picasso.with(context).load(url).into(holder.itemImage);
+            Glide.with(context)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(holder.itemImage);
             holder.itemImage.setVisibility(View.VISIBLE);
 
         }
         if (itemList.get(position).isObject_status()) {
             holder.inStockTvClick.setText("במלאי");
-          //  holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.green_00c37c)));
+            //  holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.green_00c37c)));
         } else {
             holder.inStockTvClick.setText("לא במלאי");
-           // holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.red_ff7171)));
+            // holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.red_ff7171)));
         }
         holder.inStockTvClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,9 +95,9 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
                     public void onDataDone(JSONObject jsonObject) {
                         itemList.get(position).setObject_status(!itemList.get(position).isObject_status());
                         try {
-                            if(jsonObject.has("dealsDisabled") && jsonObject.getBoolean("dealsDisabled")){
-                                    FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
-                                    DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
+                            if (jsonObject.has("dealsDisabled") && jsonObject.getBoolean("dealsDisabled")) {
+                                FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+                                DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
                                 alertDialog.show(fm, "fragment_edit_name");
 
                             }
