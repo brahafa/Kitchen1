@@ -1,6 +1,7 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.dalpak.bringit.utils.Constants;
 
 import java.util.List;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,11 +33,13 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView name, amount;
         ImageView itemImage, tl, tr, bl, br;
         RecyclerView rvFillings;
-        View view;
+        TextView tvCancel;
+        CardView parent;
 
         OpenOrderHolder(View view) {
             super(view);
-            this.view = view;
+            tvCancel = view.findViewById(R.id.tv_cancel);
+            parent = view.findViewById(R.id.parent);
             name = view.findViewById(R.id.name);
             amount = view.findViewById(R.id.order_time);
             itemImage = view.findViewById(R.id.itemImage);
@@ -46,11 +50,12 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class OpenOrderHolderTopping extends RecyclerView.ViewHolder {
         TextView name, amount;
         ImageView itemImage, tl, tr, bl, br;
-        View view;
+        CardView parent;
 
         OpenOrderHolderTopping(View view) {
             super(view);
-            this.view = view;
+
+            parent = view.findViewById(R.id.parent);
             name = view.findViewById(R.id.name);
             amount = view.findViewById(R.id.order_time);
             itemImage = view.findViewById(R.id.itemImage);
@@ -85,36 +90,55 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        ItemModel item = itemList.get(position);
+
         OpenOrderHolder holder1;
         OpenOrderHolderTopping holder2;
+
         if (holder.getItemViewType() == 0) {
             holder2 = (OpenOrderHolderTopping) holder;
-            holder2.name.setText(itemList.get(position).getName());
-            // holder2.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.topping_background)));
-            initToppingColor(itemList.get(position), holder2);
+            holder2.name.setText(item.getName());
+
+            if (item.getChange_type() != null &&
+                    item.getChange_type().equals("NEW")) {
+                holder2.parent.setCardBackgroundColor(Color.parseColor("#50d7b6"));
+                holder2.name.setTextColor(Color.WHITE);
+            }
+            initToppingColor(item, holder2);
         } else {
             holder1 = (OpenOrderHolder) holder;
-            holder1.name.setText(itemList.get(position).getName());
 
-            if (itemList.get(position).getItem_filling() != null) {
+            if (item.getChange_type() != null)
+                switch (item.getChange_type()) {
+                    case "DELETED":
+                        holder1.tvCancel.setVisibility(View.VISIBLE);
+                        break;
+                    case "NEW":
+                        holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+                        holder1.name.setTextColor(Color.WHITE);
+                        break;
+                }
+
+            holder1.name.setText(item.getName());
+
+            if (item.getItem_filling() != null) {
                 holder1.rvFillings.setLayoutManager(new LinearLayoutManager(context));
                 FillingAdapter fillingAdapter =
-                        new FillingAdapter(context, itemList.get(position).getItem_filling());
+                        new FillingAdapter(context, item.getItem_filling(),
+                                item.getChange_type() != null && item.getChange_type().equals("NEW"));
                 holder1.rvFillings.setAdapter(fillingAdapter);
             }
 
             String imageUrl = "";
-            switch (itemList.get(position).get_ItemType()) {
+            switch (item.get_ItemType()) {
                 case "Drink":
-                    imageUrl = Constants.DRINKS_URL + itemList.get(position).getItem_picture();
+                    imageUrl = Constants.DRINKS_URL + item.getItem_picture();
                     break;
                 case "AdditionalOffer":
-                    //   holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                    imageUrl = Constants.ADDITIONAL_URL + itemList.get(position).getItem_picture();
+                    imageUrl = Constants.ADDITIONAL_URL + item.getItem_picture();
                     break;
                 case "Food":
-                    //  holder1.view.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.white)));
-                    imageUrl = Constants.FOOD_URL + itemList.get(position).getItem_picture();
+                    imageUrl = Constants.FOOD_URL + item.getItem_picture();
                     break;
             }
             Glide.with(context)
@@ -184,6 +208,7 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface AdapterCallback {
         void onItemChoose(ItemModel itemModel);
+
     }
 
     @Override

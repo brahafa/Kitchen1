@@ -3,16 +3,11 @@ package com.dalpak.bringit.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.MediaPlayer;
+import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OpenOrderPizzaRv;
@@ -27,12 +22,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
     Dialog d;
     Context context;
     OpenOrderModel orderModel;
-    ;
+    View viewOrderChanged;
+    CardView cvComment;
     TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick;
     ImageView orderMethodIV;
     RecyclerView rvDrink, rvPizza, rvAdditional;
@@ -78,6 +80,9 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
     private void initData() {
         (findViewById(R.id.close)).setOnClickListener(this);
+        viewOrderChanged = findViewById(R.id.ll_change_in_order);
+        cvComment = findViewById(R.id.cv_comment);
+
         orderDateTV = findViewById(R.id.orderDateTV);
         orderNameTV = findViewById(R.id.orderName);
         orderNumTV = findViewById(R.id.orderNum);
@@ -93,6 +98,10 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         orderDateTV.setText(orderModel.getOrder_time());
         orderNumTV.setText(orderModel.getOrder_id());
         orderNameTV.setText(orderModel.getF_name() + " " + orderModel.getL_name());
+
+        viewOrderChanged.setVisibility(checkIfEdited() ? View.VISIBLE : View.GONE);
+        cvComment.setCardBackgroundColor(Color.parseColor(checkIfEdited() ? "#12c395" : "#6f7888"));
+
         initOrderMethod();
         if (orderModel.getOrder_notes() == null || orderModel.getOrder_notes().equals("")) {
             orderDetailsTV.setText("אין הערות להזמנה");
@@ -194,5 +203,12 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
                 break;
 
         }
+    }
+
+    private boolean checkIfEdited() {
+        for (ItemModel model : orderModel.getOrder_items()) {
+            if (model.getChange_type() != null) return true;
+        }
+        return false;
     }
 }

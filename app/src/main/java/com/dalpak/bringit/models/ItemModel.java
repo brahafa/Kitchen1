@@ -35,20 +35,23 @@ public class ItemModel {
     private int business_id;
     private int filiingIndex;
     private String default_price;
-    private  List<ItemModel>  filling;
-    private  List<ItemModel>  item_filling;
-    private  List<Layers> layers;
+    private List<ItemModel> filling;
+    private List<ItemModel> item_filling;
+    private List<Layers> layers;
     private boolean selected;
+    private String change_type;
 
 
     public String getToppingLocation() {
         return toppingLocation;
     }
+
     public String getFather_id() {
         return father_id;
     }
+
     public List<ItemModel> getItem_filling() {
-        if(item_filling==null) item_filling = new ArrayList<>();
+        if (item_filling == null) item_filling = new ArrayList<>();
 //        if(item_filling!=null)
 //            for (int i=0; i<item_filling.size(); i++){
 //                item_filling.get(i).setCart_id(getCart_id());
@@ -58,10 +61,11 @@ public class ItemModel {
     }
 
     public List<Layers> getLayers() {
-        if(this.layers==null)
-            this.layers=new ArrayList<>();
+        if (this.layers == null)
+            this.layers = new ArrayList<>();
         return layers;
     }
+
     public String getColor() {
         return color;
     }
@@ -69,12 +73,14 @@ public class ItemModel {
     public void setColor(String color) {
         this.color = color;
     }
+
     public void setLayers(List<Layers> layers) {
-        if(this.layers==null)
-            this.layers=new ArrayList<>();
+        if (this.layers == null)
+            this.layers = new ArrayList<>();
 
         this.layers = layers;
     }
+
     public String get_ItemType() {
         return item_type;
     }
@@ -82,19 +88,23 @@ public class ItemModel {
     public void setItem_type(String item_type) {
         this.item_type = item_type;
     }
-    public int getDeal_product(){
+
+    public int getDeal_product() {
         return deal_product;
     }
 
     public void setFiliingIndex(int filiingIndex) {
         this.filiingIndex = filiingIndex;
     }
+
     public void setCart_id(String cart_id) {
         this.cart_id = cart_id;
     }
+
     public String getCart_id() {
         return cart_id;
     }
+
     public List<ItemModel> getFiling() {
         return filling;
     }
@@ -318,4 +328,13 @@ public class ItemModel {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    public String getChange_type() {
+        return change_type;
+    }
+
+    public void setChange_type(String change_type) {
+        this.change_type = change_type;
+    }
+
 }

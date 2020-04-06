@@ -1,17 +1,20 @@
 package com.dalpak.bringit.adapters;
+
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
 
 import java.util.List;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.OpenOrderPizzaRvHolder> {
 
@@ -21,11 +24,14 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
 
     class OpenOrderPizzaRvHolder extends RecyclerView.ViewHolder {
         TextView name;
-        View view;
+        TextView tvCancel;
         RecyclerView toppingsRv;
+        CardView parent;
+
         OpenOrderPizzaRvHolder(View view) {
             super(view);
-            this.view = view;
+            tvCancel = view.findViewById(R.id.tv_cancel);
+            parent = view.findViewById(R.id.parent);
             name = view.findViewById(R.id.name);
             toppingsRv = view.findViewById(R.id.rvTopping);
         }
@@ -50,11 +56,22 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
     @Override
     public void onBindViewHolder(final OpenOrderPizzaRv.OpenOrderPizzaRvHolder holder, final int position) {
         holder.name.setText(itemList.get(position).getName());
-        initRV(itemList.get(position).getItem_filling(),holder.toppingsRv);
+
+        if (itemList.get(position).getChange_type() != null)
+            switch (itemList.get(position).getChange_type()) {
+                case "DELETED":
+                    holder.tvCancel.setVisibility(View.VISIBLE);
+                    break;
+                case "NEW":
+                    holder.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+                    holder.name.setTextColor(Color.WHITE);
+                    break;
+            }
+        initRV(itemList.get(position).getItem_filling(), holder.toppingsRv);
     }
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
-        OpenOrderRv openOrderRv = new OpenOrderRv(context, orderModels,new OpenOrderRv.AdapterCallback() {
+        OpenOrderRv openOrderRv = new OpenOrderRv(context, orderModels, new OpenOrderRv.AdapterCallback() {
             @Override
             public void onItemChoose(ItemModel itemModel) {
 

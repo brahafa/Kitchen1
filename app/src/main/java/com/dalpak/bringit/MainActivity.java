@@ -33,7 +33,7 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    TextView nameTV, stockTvClick, pizzaStock, sailStock, drinkStock, additionsStock, spacialStock, additionalStock;
+    TextView nameTV, stockTvClick, pizzaStock, sailStock, drinkStock, extraStock, spacialStock, additionalStock;
     RelativeLayout backRL;
     LinearLayout menuStockLayout;
     private MainFragment fragment;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private void initUI() {
         nameTV = findViewById(R.id.nameTV);
         sailStock = findViewById(R.id.sail_stock);
-        additionsStock = findViewById(R.id.additions_stock);
+        extraStock = findViewById(R.id.extra_stock);
         spacialStock = findViewById(R.id.spacial_additions_stock);
         additionalStock = findViewById(R.id.additional_stock);
         drinkStock = findViewById(R.id.drink_stock);
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initListeners() {
         sailStock.setOnClickListener(v -> openStockFragment("deal"));
-        additionsStock.setOnClickListener(v -> openStockFragment("topping")); // fixme: change to open right fragment
-        spacialStock.setOnClickListener(v -> openStockFragment("topping"));
+        extraStock.setOnClickListener(v -> openStockFragment("topping"));
+        spacialStock.setOnClickListener(v -> openStockFragment("special"));
         additionalStock.setOnClickListener(v -> openStockFragment("additionalOffer"));
         drinkStock.setOnClickListener(v -> openStockFragment("drink"));
         pizzaStock.setOnClickListener(v -> openStockFragment("food"));

@@ -2,6 +2,7 @@ package com.dalpak.bringit.adapters;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.OrderModel;
@@ -21,12 +20,16 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
 
     private List<OrderModel> orderList;
     private Context context;
     private Listener listener;
     AdapterCallback adapterCallback;
+
+    private MediaPlayer mp;
 
     class OrderHolder extends RecyclerView.ViewHolder {
         TextView name, orderTime;
@@ -49,7 +52,10 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
         orderList = orderModels;
         this.context = context;
         this.listener = listener;
-        this.adapterCallback=adapterCallback;
+        this.adapterCallback = adapterCallback;
+        mp = MediaPlayer.create(context, R.raw.trike);
+
+        mp.setOnCompletionListener(MediaPlayer::release);
     }
 
 
@@ -74,7 +80,8 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
         }
 
         holder.orderTime.setText(Utils.getOrderTimerStr(orderList.get(position).getOrder_time()));
-        if(Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > 3){
+        if (Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > 3) {
+            playSound();
             holder.warningImg.setVisibility(View.VISIBLE);
         }
         holder.view.setTag(position);
@@ -127,7 +134,7 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
     }
 
     public interface AdapterCallback {
-         void onItemChoose(OrderModel orderModel);
+        void onItemChoose(OrderModel orderModel);
     }
 
 
@@ -135,7 +142,7 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
         return orderList;
     }
 
-    void changeStatus(String order_id, int positionSource, int positionTarget, boolean b, String draggedToStr){
+    void changeStatus(String order_id, int positionSource, int positionTarget, boolean b, String draggedToStr) {
         Request.updateOrderStatus(context, order_id, draggedToStr, new Request.RequestJsonCallBack() {
             @Override
             public void onDataDone(JSONObject jsonObject) {
@@ -146,6 +153,19 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
 
     void updateList(List<OrderModel> orderModels) {
         this.orderList = orderModels;
+    }
+
+    public void playSound() {
+        try {
+            if (mp.isPlaying()) {
+                mp.stop();
+                mp.release();
+                mp = MediaPlayer.create(context, R.raw.trike);
+            }
+            mp.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

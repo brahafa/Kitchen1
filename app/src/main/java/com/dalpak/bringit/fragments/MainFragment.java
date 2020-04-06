@@ -7,9 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.dalpak.bringit.MainActivity;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.Listener;
@@ -25,6 +22,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainFragment extends Fragment implements Listener {
 
@@ -145,6 +145,8 @@ public class MainFragment extends Fragment implements Listener {
         //   tvEmptyListBottom.setVisibility(visibility ? View.VISIBLE : View.GONE);
         // rvBottom.setVisibility(visibility ? View.GONE : View.VISIBLE);
     }
+
+
 
 
 }

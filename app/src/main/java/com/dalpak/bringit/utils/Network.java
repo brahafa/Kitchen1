@@ -86,7 +86,7 @@ public class Network {
                 url += BUSINESS + "loadBusinessItems&type=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case GET_ORDER_CODE:
-                url += BUSINESS + "getOrderCode"+ "&order_id=" +param1;
+                url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
 
         }
         sendRequestObject(requestName, url, context, listener);
@@ -140,6 +140,8 @@ public class Network {
                 Map<String, String> params = new HashMap<String, String>();
                 if (SharePref.getInstance(context).getData(Constants.TOKEN_PREF) != null) {
                     params.put("PHPSESSID", SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
+                    Log.d(TAG, "token is: " + SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
+
                     MyApp.get().addSessionCookie(params);
                 }
                 return params;
@@ -251,7 +253,7 @@ public class Network {
                 if (networkResponse.statusCode == HttpStatus.SC_FORBIDDEN) {
                     // HTTP Status Code: 403 Unauthorized
                     listener.onDataDone(jsonError);
-                   Log.e("network error!!!", jsonError.toString());
+                    Log.e("network error!!!", jsonError.toString());
                 }
 
             } catch (JSONException e) {

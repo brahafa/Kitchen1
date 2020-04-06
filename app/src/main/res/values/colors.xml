@@ -11,18 +11,20 @@
     <color name="gray_e6ebf4">#e6ebf4</color>
     <color name="gray_fcfdff">#fcfdff</color>
     <color name="white">#ffffff</color>
+    <color name="white_blur">#C0FFFFFF</color>
     <color name="blue_press_2251f3">#2251f3</color>
     <color name="blue_2060e5">#2060e5</color>
     <color name="blue_4d83f4">#4d83f4</color>
     <color name="colorPrimary">#008577</color>
     <color name="green_00c37c">#00c37c</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="error">#F44C08</color>
+    <color name="error">#815745</color>
     <color name="red_ff7171">#ff7171</color>
     <color name="new_in_order">#A1FF8583</color>
     <color name="orange">#fF8583</color>
     <color name="topping_color">#FDA65D</color>
     <color name="topping_background">#ffce9f</color>
+    <color name="green_new_item">#12c395</color>
 
 
 </resources>

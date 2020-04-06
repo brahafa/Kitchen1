@@ -35,8 +35,8 @@ public class Utils {
         long tms = getOrderTimerLong(orderTime);
         if (tms <= 1) {
             return "דקה";
-//        } else if (tms > 59) {
-//            return "שעה";
+        } else if (tms > 59) {
+            return "שעה";
         }
         return tms + " דק' ";
     }

@@ -65,7 +65,7 @@
             android:background="@color/blue_4d83f4" />
 
         <TextView
-            android:id="@+id/additions_stock"
+            android:id="@+id/extra_stock"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"

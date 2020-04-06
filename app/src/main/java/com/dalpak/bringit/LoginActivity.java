@@ -1,8 +1,5 @@
 package com.dalpak.bringit;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,6 +12,9 @@ import android.widget.TextView;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
 import com.dalpak.bringit.utils.SharePref;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class LoginActivity extends AppCompatActivity {
     ImageView userNameDeleteIV, passwordDeleteIV;
@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
          */
         initListener();
+        goTV.performClick(); // todo: remove before release
     }
 
     private void initListener() {
