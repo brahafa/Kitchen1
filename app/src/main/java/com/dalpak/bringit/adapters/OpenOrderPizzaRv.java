@@ -59,7 +59,7 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
 
         if (itemList.get(position).getChange_type() != null)
             switch (itemList.get(position).getChange_type()) {
-                case "DELETED":
+                case "DELETE":
                     holder.tvCancel.setVisibility(View.VISIBLE);
                     break;
                 case "NEW":

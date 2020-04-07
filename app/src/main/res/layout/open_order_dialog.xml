@@ -153,7 +153,6 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:background="@color/white"
         android:elevation="0dp"
         android:id="@+id/cv_comment"
         android:layout_height="wrap_content"
@@ -166,7 +165,6 @@
         app:cardElevation="0dp">
 
         <LinearLayout
-            android:background="@drawable/rv_main_background"
             android:id="@+id/ll_comment"
             android:layout_height="50dp"
             android:layout_width="match_parent"
@@ -211,7 +209,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="36dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="14dp"
                 android:layout_width="36dp"
                 android:scaleType="center"
                 android:src="@mipmap/chat"
@@ -220,7 +218,6 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:background="@color/white"
         android:elevation="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"

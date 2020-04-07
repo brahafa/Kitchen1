@@ -51,10 +51,12 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView name, amount;
         ImageView itemImage, tl, tr, bl, br;
         CardView parent;
+        TextView tvCancel;
 
         OpenOrderHolderTopping(View view) {
             super(view);
 
+            tvCancel = view.findViewById(R.id.tv_cancel);
             parent = view.findViewById(R.id.parent);
             name = view.findViewById(R.id.name);
             amount = view.findViewById(R.id.order_time);
@@ -99,18 +101,24 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder2 = (OpenOrderHolderTopping) holder;
             holder2.name.setText(item.getName());
 
-            if (item.getChange_type() != null &&
-                    item.getChange_type().equals("NEW")) {
-                holder2.parent.setCardBackgroundColor(Color.parseColor("#50d7b6"));
-                holder2.name.setTextColor(Color.WHITE);
-            }
             initToppingColor(item, holder2);
+
+            if (item.getChange_type() != null)
+                switch (item.getChange_type()) {
+                    case "DELETE":
+                        holder2.tvCancel.setVisibility(View.VISIBLE);
+                        break;
+                    case "NEW":
+                        holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+                        holder2.name.setTextColor(Color.WHITE);
+                        break;
+                }
         } else {
             holder1 = (OpenOrderHolder) holder;
 
             if (item.getChange_type() != null)
                 switch (item.getChange_type()) {
-                    case "DELETED":
+                    case "DELETE":
                         holder1.tvCancel.setVisibility(View.VISIBLE);
                         break;
                     case "NEW":
