@@ -3,4 +3,28 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="sections">
+        <item>Sent</item>
+        <item>Packing</item>
+        <item>Cooking</item>
+        <item>Preparing</item>
+        <item>Received</item>
+    </string-array>
+
+    <string-array name="sections_iw">
+        <item>בדרך</item>
+        <item>באריזה</item>
+        <item>בתנור</item>
+        <item>בהכנה</item>
+        <item>בהמתנה</item>
+    </string-array>
+
+    <string-array name="statuses">
+        <item>sent</item>
+        <item>packing</item>
+        <item>cooking</item>
+        <item>preparing</item>
+        <item>received</item>
+    </string-array>
 </resources>

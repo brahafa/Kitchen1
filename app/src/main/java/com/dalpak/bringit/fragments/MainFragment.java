@@ -1,20 +1,25 @@
 package com.dalpak.bringit.fragments;
 
 import android.app.Fragment;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.dalpak.bringit.MainActivity;
 import com.dalpak.bringit.R;
-import com.dalpak.bringit.adapters.Listener;
 import com.dalpak.bringit.adapters.OrderRv;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.OrderModel;
 import com.dalpak.bringit.utils.Request;
 import com.google.gson.Gson;
+import com.woxthebox.draglistview.BoardView;
+import com.woxthebox.draglistview.ColumnProperties;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,62 +28,74 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class MainFragment extends Fragment implements Listener {
+public class MainFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private BoardView mBoardView;
+    private int mColumns;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private View view;
-    RecyclerView rVPreparing, rVReceived, rVCooking, rVPacking, rVSent;
-    private OrderRv mAdapter;
     private Gson gson;
-
-    public MainFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_main, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
         gson = new Gson();
         //  openPasswordDialog();
 
-        rVPreparing = view.findViewById(R.id.rvPreparing);
-        rVReceived = view.findViewById(R.id.rvReceived);
-        rVCooking = view.findViewById(R.id.rvCooking);
-        rVPacking = view.findViewById(R.id.rvPacking);
-        rVSent = view.findViewById(R.id.rvSent);
-        initMainFragmentData(10000);
+        String[] statuses = getResources().getStringArray(R.array.statuses);
+
+        mBoardView = view.findViewById(R.id.board_view);
+        mBoardView.setSnapToColumnsWhenScrolling(true);
+        mBoardView.setSnapToColumnWhenDragging(true);
+        mBoardView.setSnapDragItemToTouch(true);
+        mBoardView.setSnapToColumnInLandscape(false);
+        mBoardView.setColumnSnapPosition(BoardView.ColumnSnapPosition.CENTER);
+        mBoardView.setBoardListener(new BoardView.BoardListenerAdapter() {
+
+            @Override
+            public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
+                if (fromColumn != toColumn) {
+                    changeStatus(mBoardView.getAdapter(toColumn).getUniqueItemId(toRow), statuses[toColumn]);
+                }
+            }
+        });
+
+        initMainFragmentData(10 * 1000);
         return view;
     }
 
-    public void initAllRV(JSONObject jsonObject) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initAllRV();
+    }
+
+    public void initAllRV() {
+        initRV(new ArrayList<>());
+        initRV(new ArrayList<>());
+        initRV(new ArrayList<>());
+        initRV(new ArrayList<>());
+        initRV(new ArrayList<>());
+    }
+
+    public void updateAllRV(JSONObject jsonObject) {
+
         try {
             if (jsonObject.has("status") && jsonObject.getBoolean("status")) {
-                initRV(getOrdersList(jsonObject, "preparing"), rVPreparing);
-                initRV(getOrdersList(jsonObject, "received"), rVReceived);
-                initRV(getOrdersList(jsonObject, "cooking"), rVCooking);
-                initRV(getOrdersList(jsonObject, "packing"), rVPacking);
-                initRV(getOrdersList(jsonObject, "sent"), rVSent);
+                mBoardView.clearBoard();
+                mColumns = 0;
+                initRV(getOrdersList(jsonObject, "sent"));
+                initRV(getOrdersList(jsonObject, "packing"));
+                initRV(getOrdersList(jsonObject, "cooking"));
+                initRV(getOrdersList(jsonObject, "preparing"));
+                initRV(getOrdersList(jsonObject, "received"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -89,10 +106,9 @@ public class MainFragment extends Fragment implements Listener {
         final Handler handler = new Handler();
         handler.postDelayed(() -> Request.getAllOrders(getActivity(),
                 jsonObject -> {
-                    initAllRV(jsonObject);
-                    initMainFragmentData(10000);
+                    updateAllRV(jsonObject);
+                    initMainFragmentData(10 * 1000);
                 }), time);
-
     }
 
     private List<OrderModel> getOrdersList(JSONObject jsonObject, String orderStatus) {
@@ -111,43 +127,54 @@ public class MainFragment extends Fragment implements Listener {
         return orderModels;
     }
 
-    private void initRV(final List<OrderModel> orderModels, RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(
-                getActivity(), LinearLayoutManager.VERTICAL, false));
-        OrderRv bottomListAdapter = new OrderRv(getActivity(), orderModels, this, new OrderRv.AdapterCallback() {
-            @Override
-            public void onItemChoose(OrderModel orderModel) {
-                Request.getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), new Request.RequestJsonCallBack() {
-                    @Override
-                    public void onDataDone(JSONObject jsonObject) {
-                        try {
-                            OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
-                            ((MainActivity) getActivity()).openOrderDialog(openOrderModel);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
+    private void changeStatus(long order_id, String draggedToStr) {
+        Request.updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> {
         });
-        recyclerView.setAdapter(bottomListAdapter);
-        recyclerView.setOnDragListener(bottomListAdapter.getDragInstance());
     }
 
-    @Override
-    public void setEmptyListTop(boolean visibility) {
-        // tvEmptyListTop.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        //  rvTop.setVisibility(visibility ? View.GONE : View.VISIBLE);
+    private void initRV(final List<OrderModel> orderModels) {
+
+        OrderRv bottomListAdapter = new OrderRv(getActivity(), orderModels,
+                orderModel -> Request.getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), jsonObject -> {
+                    try {
+                        OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
+                        ((MainActivity) getActivity()).openOrderDialog(openOrderModel);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }));
+
+        final View header = View.inflate(getActivity(), R.layout.column_header, null);
+
+        String[] sections = getResources().getStringArray(R.array.sections);
+
+        ((TextView) header.findViewById(R.id.tv_column_title)).setText(sections[mColumns]);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        ColumnProperties columnProperties = ColumnProperties.Builder.newBuilder(bottomListAdapter)
+                .setLayoutManager(layoutManager)
+                .setHasFixedItemSize(true)
+                .setColumnBackgroundColor(Color.TRANSPARENT)
+                .setItemsSectionBackgroundColor(Color.TRANSPARENT)
+                .setHeader(header)
+                .build();
+
+        int columnWidth = countColumnWidth();
+
+        mBoardView.setColumnWidth(columnWidth);
+        mBoardView.setColumnSpacing(10);
+        mBoardView.setBoardEdge(10);
+        mBoardView.addColumn(columnProperties);
+        mColumns++;
     }
 
-    @Override
-    public void setEmptyListBottom(boolean visibility) {
-        //   tvEmptyListBottom.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        // rvBottom.setVisibility(visibility ? View.GONE : View.VISIBLE);
+    private int countColumnWidth() {
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        return (width - 60) / 5;
     }
-
-
-
 
 }
 

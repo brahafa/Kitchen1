@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 Request.getAllOrders(getApplication(), new Request.RequestJsonCallBack() {
                     @Override
                     public void onDataDone(JSONObject jsonObject) {
-                        fragment.initAllRV(jsonObject);
+                        fragment.updateAllRV(jsonObject);
                     }
                 });
             }

@@ -1,10 +1,7 @@
 package com.dalpak.bringit.adapters;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,32 +10,26 @@ import android.widget.TextView;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.OrderModel;
-import com.dalpak.bringit.utils.Request;
 import com.dalpak.bringit.utils.Utils;
-
-import org.json.JSONObject;
+import com.woxthebox.draglistview.DragItemAdapter;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
+public class OrderRv extends DragItemAdapter<OrderModel, OrderRv.OrderHolder> {
 
     private List<OrderModel> orderList;
     private Context context;
-    private Listener listener;
-    AdapterCallback adapterCallback;
+    private AdapterCallback adapterCallback;
 
     private MediaPlayer mp;
 
-    class OrderHolder extends RecyclerView.ViewHolder {
+    class OrderHolder extends DragItemAdapter.ViewHolder {
         TextView name, orderTime;
         ImageView deliveryImage, warningImg;
-        View view;
 
         OrderHolder(View view) {
-            super(view);
-            this.view = view;
+            super(view, R.id.parent, true);
+
             name = view.findViewById(R.id.name);
             warningImg = view.findViewById(R.id.warning_image);
             orderTime = view.findViewById(R.id.order_time);
@@ -48,13 +39,14 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
 
     }
 
-    public OrderRv(Context context, List<OrderModel> orderModels, Listener listener, AdapterCallback adapterCallback) {
+    public OrderRv(Context context, List<OrderModel> orderModels, AdapterCallback adapterCallback) {
         orderList = orderModels;
         this.context = context;
-        this.listener = listener;
         this.adapterCallback = adapterCallback;
-        mp = MediaPlayer.create(context, R.raw.trike);
 
+        setItemList(orderModels);
+
+        mp = MediaPlayer.create(context, R.raw.trike);
         mp.setOnCompletionListener(MediaPlayer::release);
     }
 
@@ -68,6 +60,7 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
 
     @Override
     public void onBindViewHolder(final OrderRv.OrderHolder holder, final int position) {
+        super.onBindViewHolder(holder, position);
 
         if (orderList.get(position).getIs_delivery().equals("1")) {
             holder.name.setText(orderList.get(position).getStreet() + " " + orderList.get(position).getHouse_num() + ", " + orderList.get(position).getCity_name());
@@ -84,22 +77,14 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
             playSound();
             holder.warningImg.setVisibility(View.VISIBLE);
         }
-        holder.view.setTag(position);
-        //holder.view.setOnTouchListener(this);
-        holder.view.setOnDragListener(new DragListener(listener));
 
-        holder.view.setOnClickListener(v -> adapterCallback.onItemChoose(orderList.get(position)));
+        holder.itemView.setOnClickListener(v -> adapterCallback.onItemChoose(orderList.get(position)));
 
-        holder.view.setOnLongClickListener(v -> {
-            ClipData data = ClipData.newPlainText("", "");
-            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                v.startDragAndDrop(data, shadowBuilder, v, 0);
-            } else {
-                v.startDrag(data, shadowBuilder, v, 0);
-            }
-            return false;
-        });
+    }
+
+    @Override
+    public long getUniqueItemId(int position) {
+        return Long.parseLong(orderList.get(position).getOrder_id());
     }
 
     @Override
@@ -107,62 +92,18 @@ public class OrderRv extends RecyclerView.Adapter<OrderRv.OrderHolder> {
         return orderList.size();
     }
 
-//    @Override
-//    public boolean onTouch(View v, MotionEvent event) {
-//        float x, y;
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_MOVE:
-//                ClipData data = ClipData.newPlainText("", "");
-//                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                    v.startDragAndDrop(data, shadowBuilder, v, 0);
-//                } else {
-//                    v.startDrag(data, shadowBuilder, v, 0);
-//                }
-//                return true;
-//        }
-//        return true;
-//    }
-
-    public DragListener getDragInstance() {
-        if (listener != null) {
-            return new DragListener(listener);
-        } else {
-            Log.e("ListAdapter", "Listener wasn't initialized!");
-            return null;
-        }
-    }
-
     public interface AdapterCallback {
         void onItemChoose(OrderModel orderModel);
     }
 
-
-    List<OrderModel> getList() {
-        return orderList;
-    }
-
-    void changeStatus(String order_id, int positionSource, int positionTarget, boolean b, String draggedToStr) {
-        Request.updateOrderStatus(context, order_id, draggedToStr, new Request.RequestJsonCallBack() {
-            @Override
-            public void onDataDone(JSONObject jsonObject) {
-
-            }
-        });
-    }
-
-    void updateList(List<OrderModel> orderModels) {
-        this.orderList = orderModels;
-    }
-
-    public void playSound() {
+    private void playSound() {
         try {
             if (mp.isPlaying()) {
                 mp.stop();
                 mp.release();
                 mp = MediaPlayer.create(context, R.raw.trike);
             }
-            mp.start();
+//            mp.start();  //todo enable when work on alerts
         } catch (Exception e) {
             e.printStackTrace();
         }

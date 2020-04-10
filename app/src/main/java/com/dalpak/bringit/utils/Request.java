@@ -157,7 +157,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject1, Network.RequestName.UPDATE_ITEM_PRICE);
     }
 
-    public static void updateOrderStatus(Context context, String order_id, String status, final RequestJsonCallBack listener) {
+    public static void updateOrderStatus(Context context, long order_id, String status, final RequestJsonCallBack listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("order_id", order_id);
