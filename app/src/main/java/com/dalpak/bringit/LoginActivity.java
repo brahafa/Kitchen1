@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Request.logIn(getApplicationContext(), passwordET.getText().toString(), usernameET.getText().toString(), new Request.RequestCallBackSuccess() {
+                Request.getInstance().logIn(getApplicationContext(), passwordET.getText().toString(), usernameET.getText().toString(), new Request.RequestCallBackSuccess() {
                     @Override
                     public void onDataDone(boolean isDataSuccess) {
                         if (isDataSuccess) {

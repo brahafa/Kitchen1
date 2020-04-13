@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,11 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class MainActivity extends AppCompatActivity {
     TextView nameTV, stockTvClick, pizzaStock, sailStock, drinkStock, extraStock, spacialStock, additionalStock;
     RelativeLayout backRL;
-    LinearLayout menuStockLayout;
+    CardView menuStockLayout;
     private MainFragment fragment;
     List<StockModel> stockModelList;
     private Gson gson;
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openStockFragment(String type) {
-        Request.loadBusinessItems(getApplication(), type, jsonObject -> {
+        Request.getInstance().loadBusinessItems(getApplication(), type, jsonObject -> {
             stockModelList.clear();
             try {
                 JSONArray jsonArray = jsonObject.getJSONArray("message");
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 setName();
-                Request.getAllOrders(getApplication(), new Request.RequestJsonCallBack() {
+                Request.getInstance().getAllOrders(getApplication(), new Request.RequestJsonCallBack() {
                     @Override
                     public void onDataDone(JSONObject jsonObject) {
                         fragment.updateAllRV(jsonObject);

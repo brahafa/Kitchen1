@@ -90,7 +90,7 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
         holder.inStockTvClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Request.updateItemPrice(context, itemList.get(position), new Request.RequestJsonCallBack() {
+                Request.getInstance().updateItemPrice(context, itemList.get(position), new Request.RequestJsonCallBack() {
                     @Override
                     public void onDataDone(JSONObject jsonObject) {
                         itemList.get(position).setObject_status(!itemList.get(position).isObject_status());

@@ -62,7 +62,12 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
                 if (fromColumn != toColumn) {
-                    changeStatus(mBoardView.getAdapter(toColumn).getUniqueItemId(toRow), statuses[toColumn]);
+                    changeStatus(
+                            mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
+                            5 - fromColumn,
+                            5 - toColumn,
+                            true,
+                            statuses[toColumn]);
                 }
             }
         });
@@ -104,7 +109,7 @@ public class MainFragment extends Fragment {
 
     private void initMainFragmentData(int time) {
         final Handler handler = new Handler();
-        handler.postDelayed(() -> Request.getAllOrders(getActivity(),
+        handler.postDelayed(() -> Request.getInstance().getAllOrders(getActivity(),
                 jsonObject -> {
                     updateAllRV(jsonObject);
                     initMainFragmentData(10 * 1000);
@@ -127,15 +132,16 @@ public class MainFragment extends Fragment {
         return orderModels;
     }
 
-    private void changeStatus(long order_id, String draggedToStr) {
-        Request.updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> {
+    private void changeStatus(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedToStr) {
+//        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> { // fixme: working request
+        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedToStr, jsonObject -> {
         });
     }
 
     private void initRV(final List<OrderModel> orderModels) {
 
         OrderRv bottomListAdapter = new OrderRv(getActivity(), orderModels,
-                orderModel -> Request.getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), jsonObject -> {
+                orderModel -> Request.getInstance().getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), jsonObject -> {
                     try {
                         OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
                         ((MainActivity) getActivity()).openOrderDialog(openOrderModel);

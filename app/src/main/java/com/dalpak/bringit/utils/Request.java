@@ -18,8 +18,16 @@ import java.util.List;
 
 public class Request {
 
+    private static Request sRequest;
 
-    public static void logIn(final Context context, String password, String email, final RequestCallBackSuccess listener) {
+    public static Request getInstance() {
+        if (sRequest == null) {
+            sRequest = new Request();
+        }
+        return sRequest;
+    }
+
+    public void logIn(final Context context, String password, String email, final RequestCallBackSuccess listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("password", password);
@@ -61,7 +69,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.LOG_IN_MANAGER);
     }
 
-    public static void settingsLogin(final Context context, String password, final RequestCallBackSuccess listener) {
+    public void settingsLogin(final Context context, String password, final RequestCallBackSuccess listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("password", password);
@@ -98,7 +106,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.SETINGS_LOGIN);
     }
 
-    public static void getAllOrders(final Context context, final RequestJsonCallBack listener) {
+    public void getAllOrders(final Context context, final RequestJsonCallBack listener) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -122,7 +130,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_ALL_ORDERS, Integer.toString(BusinessModel.getInstance().getBusiness_id()));
     }
 
-    public static void updateItemPrice(Context context, StockModel stockModel, final RequestJsonCallBack listener) {
+    public void updateItemPrice(Context context, StockModel stockModel, final RequestJsonCallBack listener) {
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject1 = new JSONObject();
@@ -157,7 +165,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject1, Network.RequestName.UPDATE_ITEM_PRICE);
     }
 
-    public static void updateOrderStatus(Context context, long order_id, String status, final RequestJsonCallBack listener) {
+    public void updateOrderStatus(Context context, long order_id, String status, final RequestJsonCallBack listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("order_id", order_id);
@@ -183,7 +191,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.UPDATE_ORDER_STATUS);
     }
 
-    public static void getOrderDetailsByID(Context context, String orderId, RequestJsonCallBack requestJsonCallBack) {
+    public void getOrderDetailsByID(Context context, String orderId, RequestJsonCallBack requestJsonCallBack) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -204,7 +212,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_ORDER_DETAILS_BY_ID, orderId);
     }
 
-    public static void loadBusinessItems(Context context, String type, RequestJsonCallBack requestJsonCallBack) {
+    public void loadBusinessItems(Context context, String type, RequestJsonCallBack requestJsonCallBack) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -221,7 +229,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.LOAD_BUSINES_ITEMS, type);
     }
 
-    public static void getOrderCode(Context context, String orderId, RequestJsonCallBack requestJsonCallBack) {
+    public void getOrderCode(Context context, String orderId, RequestJsonCallBack requestJsonCallBack) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -242,7 +250,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_ORDER_CODE, orderId);
     }
 
-    public static void orderChangePos(Context context, String order_id, int oldPosition, int newPosition, boolean statusChanged, String draggedToStatus, final RequestJsonCallBack listener) {
+    public void orderChangePos(Context context, long order_id, int oldPosition, int newPosition, boolean statusChanged, String draggedToStatus, final RequestJsonCallBack listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", order_id);
@@ -269,7 +277,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.ORDER_CHANGE_POS);
     }
 
-    public static void getItemsInSelectedFolder(Context context, String param, Network.RequestName getItemsInSelectedFoleder, final RequestJsonCallBack listener) {
+    public void getItemsInSelectedFolder(Context context, String param, Network.RequestName getItemsInSelectedFoleder, final RequestJsonCallBack listener) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -285,7 +293,7 @@ public class Request {
         network.sendRequest(context, getItemsInSelectedFoleder, param);
     }
 
-    public static void getItemsByType(Context context, String type) {
+    public void getItemsByType(Context context, String type) {
         final Gson gson = new Gson();
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
@@ -312,7 +320,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_ITEMS_BY_TYPE, type);
     }
 
-    public static void addToCart(final Context context, ItemModel itemModel, final RequestItemsListCallBack listener) {
+    public void addToCart(final Context context, ItemModel itemModel, final RequestItemsListCallBack listener) {
         JSONObject params = new JSONObject();
         try {
             params.put("business_id", 1);
@@ -342,7 +350,7 @@ public class Request {
         network.sendPostRequest(context, params, Network.RequestName.ADD_TO_CART);
     }
 
-    private static void getCart(Context context, final RequestItemsListCallBack listener) {
+    private void getCart(Context context, final RequestItemsListCallBack listener) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -361,7 +369,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_CART);
     }
 
-    public static void clearCart(Context context, final RequestCallBack callBack) {
+    public void clearCart(Context context, final RequestCallBack callBack) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -376,7 +384,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.CLEAR_CART);
     }
 
-    public static List<ItemModel> getListGlobalFromJsonArr(JSONObject object) {
+    public List<ItemModel> getListGlobalFromJsonArr(JSONObject object) {
         List<ItemModel> globalObjList = new ArrayList<>();
         Gson gson = new Gson();
         try {
@@ -396,7 +404,7 @@ public class Request {
         return globalObjList;
     }
 
-    private static void openAlertMsg(Context context, JSONObject json) {
+    private void openAlertMsg(Context context, JSONObject json) {
         try {
             Utils.openAlertDialog(context, json.getString("message"), "");
             Log.d("response failed: ", json.toString());

@@ -114,17 +114,17 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
         if (orderModel.getIs_delivery().equals("0")) {
             orderTypeTV.setText("איסוף עצמי");
-            orderMethodIV.setImageResource(R.mipmap.takeaway);
+            orderMethodIV.setImageResource(R.drawable.ic_takeaway);
 
         } else if (orderModel.getIs_delivery().equals("1")) {
             orderTypeTV.setText("משלוח");
-            orderMethodIV.setImageResource(R.mipmap.delivery);
+            orderMethodIV.setImageResource(R.drawable.ic_delivery);
             shippingTvClick.setVisibility(View.VISIBLE);
             shippingNumber.setVisibility(View.VISIBLE);
             shippingTvClick.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Request.getOrderCode(context, orderModel.getOrder_id(), new Request.RequestJsonCallBack() {
+                    Request.getInstance().getOrderCode(context, orderModel.getOrder_id(), new Request.RequestJsonCallBack() {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void onDataDone(JSONObject jsonObject) {
@@ -142,7 +142,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
         } else {
             orderTypeTV.setText("לשבת");
-            orderMethodIV.setImageResource(R.mipmap.dinner);
+            orderMethodIV.setImageResource(R.drawable.ic_dinner);
         }
 
     }

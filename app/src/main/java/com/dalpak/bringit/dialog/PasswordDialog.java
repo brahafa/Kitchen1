@@ -3,11 +3,13 @@ package com.dalpak.bringit.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.utils.NumberKeyboardView;
 import com.dalpak.bringit.utils.Request;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 
 public class PasswordDialog extends Dialog {
@@ -39,7 +41,7 @@ public class PasswordDialog extends Dialog {
                     passwordIndex++;
                     passwordTVs[passwordIndex].setText(keyTxt);
                     if (passwordIndex == 3) {
-                        Request.settingsLogin(context, getThePassword(), new Request.RequestCallBackSuccess() {
+                        Request.getInstance().settingsLogin(context, getThePassword(), new Request.RequestCallBackSuccess() {
                             @Override
                             public void onDataDone(boolean isDataSuccess) {
                                 if (isDataSuccess) {

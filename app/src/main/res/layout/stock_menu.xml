@@ -1,109 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menu_stock"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/topBar"
-    android:layout_centerHorizontal="true"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:animateLayoutChanges="true"
-    android:orientation="vertical"
     android:background="@color/blue_4d83f4"
-    android:visibility="gone">
+    android:id="@+id/menu_stock"
+    android:layout_centerHorizontal="true"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="60dp"
+    android:layout_width="200dp"
+    android:visibility="gone"
+    app:cardCornerRadius="10dp"
+    tools:visibility="visible">
 
     <LinearLayout
-        android:layout_width="198dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/topBar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
         android:animateLayoutChanges="true"
-        android:background="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="vertical">
 
         <TextView
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_pizza"
+            android:gravity="center|right"
             android:id="@+id/pizza_stock"
-            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:text="פיצות"
             android:textColor="@color/text_color"
-            android:textSize="15dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/blue_4d83f4" />
-
-        <TextView
-            android:id="@+id/sail_stock"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="מבצעים"
-            android:textColor="@color/text_color"
-            android:textSize="15dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/blue_4d83f4" />
-
-        <TextView
-            android:id="@+id/drink_stock"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="שתייה"
-            android:textColor="@color/text_color"
-            android:textSize="15dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/blue_4d83f4" />
-
-        <TextView
-            android:id="@+id/extra_stock"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="תוספות"
-            android:textColor="@color/text_color"
-            android:textSize="15dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/blue_4d83f4" />
-
-        <TextView
-            android:gravity="center"
-            android:id="@+id/spacial_additions_stock"
-            android:layout_height="40dp"
-            android:layout_width="match_parent"
-            android:text="תוספות מיוחדות"
-            android:textColor="@color/text_color"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <View
             android:background="@color/blue_4d83f4"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_width="match_parent" />
 
         <TextView
-            android:id="@+id/additional_stock"
-            android:layout_width="match_parent"
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_drink"
+            android:gravity="center|right"
+            android:id="@+id/sail_stock"
             android:layout_height="40dp"
-            android:gravity="center"
-            android:text="מוצרים נוספים"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="מבצעים"
             android:textColor="@color/text_color"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <View
+            android:background="@color/blue_4d83f4"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent" />
+
+
+        <TextView
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_addings"
+            android:gravity="center|right"
+            android:id="@+id/drink_stock"
+            android:layout_height="40dp"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/blue_4d83f4" />
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="שתייה"
+            android:textColor="@color/text_color"
+            android:textSize="15sp" />
+
+        <View
+            android:background="@color/blue_4d83f4"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_special"
+            android:gravity="center|right"
+            android:id="@+id/extra_stock"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="תוספות"
+            android:textColor="@color/text_color"
+            android:textSize="15sp" />
+
+        <View
+            android:background="@color/blue_4d83f4"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_food"
+            android:gravity="center|right"
+            android:id="@+id/spacial_additions_stock"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="תוספות מיוחדות"
+            android:textColor="@color/text_color"
+            android:textSize="15sp" />
+
+        <View
+            android:background="@color/blue_4d83f4"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_sale"
+            android:gravity="center|right"
+            android:id="@+id/additional_stock"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="מוצרים נוספים"
+            android:textColor="@color/text_color"
+            android:textSize="15sp" />
+
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

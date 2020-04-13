@@ -325,7 +325,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_width="36dp"
                         android:scaleType="center"
-                        android:src="@mipmap/delivery"
+                        android:src="@drawable/ic_delivery"
                         android:tint="@color/white" />
                 </LinearLayout>
 

@@ -63,13 +63,17 @@ public class OrderRv extends DragItemAdapter<OrderModel, OrderRv.OrderHolder> {
         super.onBindViewHolder(holder, position);
 
         if (orderList.get(position).getIs_delivery().equals("1")) {
-            holder.name.setText(orderList.get(position).getStreet() + " " + orderList.get(position).getHouse_num() + ", " + orderList.get(position).getCity_name());
-            holder.deliveryImage.setImageResource(R.mipmap.delivery);
+            holder.name.setText(
+                    String.format("%s %s, %s",
+                            orderList.get(position).getStreet(),
+                            orderList.get(position).getHouse_num(),
+                            orderList.get(position).getCity_name()));
+            holder.deliveryImage.setImageResource(R.drawable.ic_delivery);
         } else if (orderList.get(position).getIs_delivery().equals("0")) {
             holder.name.setText(orderList.get(position).getName());
-            holder.deliveryImage.setImageResource(R.mipmap.takeaway);
+            holder.deliveryImage.setImageResource(R.drawable.ic_takeaway);
         } else {
-            holder.deliveryImage.setImageResource(R.mipmap.dinner);
+            holder.deliveryImage.setImageResource(R.drawable.ic_dinner);
         }
 
         holder.orderTime.setText(Utils.getOrderTimerStr(orderList.get(position).getOrder_time()));

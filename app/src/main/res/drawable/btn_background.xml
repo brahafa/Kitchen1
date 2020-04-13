@@ -1,15 +1,8 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:top="1dp"
-        android:right="1dp"
-        android:bottom="1dp"
-        android:left="1dp">
-        <shape >
-            <gradient
-                android:startColor="@color/blue_2060e5"
-                android:endColor="@color/blue_4d83f4"
-                android:angle="90"/>
-            <corners android:radius="3dp"/>
-        </shape>
-    </item>
-</layer-list>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="90"
+        android:endColor="@color/blue_4d83f4"
+        android:startColor="@color/blue_2060e5" />
+    <corners android:radius="6dp" />
+</shape>

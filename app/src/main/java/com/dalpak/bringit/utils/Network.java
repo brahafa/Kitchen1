@@ -263,7 +263,7 @@ public class Network {
     }
 
 
-    public static interface NetworkCallBack {
+    public interface NetworkCallBack {
         void onDataDone(JSONObject json);
 
         void onDataError(JSONObject json);
