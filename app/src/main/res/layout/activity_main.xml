@@ -79,7 +79,7 @@
             android:layout_marginLeft="17dp"
             android:layout_marginRight="15dp"
             android:layout_width="20dp"
-            android:src="@mipmap/user" />
+            android:src="@drawable/ic_user" />
 
 
     </RelativeLayout>

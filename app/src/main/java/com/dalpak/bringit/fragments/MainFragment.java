@@ -1,6 +1,5 @@
 package com.dalpak.bringit.fragments;
 
-import android.app.Fragment;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -29,14 +28,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class MainFragment extends Fragment {
+
+    private final int REQUEST_REPEAT_INTERVAL = 10 * 1000;
 
     private BoardView mBoardView;
     private int mColumns;
 
     private Gson gson;
+    private final Handler mHandler = new Handler();
+
+    private String lastResponse = "";
+
+    private Runnable mRunnable = () -> Request.getInstance().getAllOrders(getActivity(),
+            jsonObject -> {
+                if (!jsonObject.toString().equals(lastResponse)) {
+                    lastResponse = jsonObject.toString();
+                    updateAllRV(jsonObject);
+                }
+                setupBoardUpdates();
+            });
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +60,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
         gson = new Gson();
-        //  openPasswordDialog();
 
         String[] statuses = getResources().getStringArray(R.array.statuses);
 
@@ -61,6 +75,7 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
+                setupBoardUpdates();
                 if (fromColumn != toColumn) {
                     changeStatus(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
@@ -70,9 +85,16 @@ public class MainFragment extends Fragment {
                             statuses[toColumn]);
                 }
             }
+
+            @Override
+            public void onItemDragStarted(int column, int row) {
+                removeBoardUpdates();
+            }
+
         });
 
-        initMainFragmentData(10 * 1000);
+//        setupBoardUpdates();
+//        mRunnable.run();
         return view;
     }
 
@@ -90,7 +112,7 @@ public class MainFragment extends Fragment {
         initRV(new ArrayList<>());
     }
 
-    public void updateAllRV(JSONObject jsonObject) {
+    private void updateAllRV(JSONObject jsonObject) {
 
         try {
             if (jsonObject.has("status") && jsonObject.getBoolean("status")) {
@@ -107,13 +129,16 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void initMainFragmentData(int time) {
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> Request.getInstance().getAllOrders(getActivity(),
-                jsonObject -> {
-                    updateAllRV(jsonObject);
-                    initMainFragmentData(10 * 1000);
-                }), time);
+    public void startBoardUpdates() {
+        mRunnable.run();
+    }
+
+    private void setupBoardUpdates() {
+        mHandler.postDelayed(mRunnable, REQUEST_REPEAT_INTERVAL);
+    }
+
+    private void removeBoardUpdates() {
+        mHandler.removeCallbacks(mRunnable);
     }
 
     private List<OrderModel> getOrdersList(JSONObject jsonObject, String orderStatus) {
@@ -133,8 +158,8 @@ public class MainFragment extends Fragment {
     }
 
     private void changeStatus(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedToStr) {
-//        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> { // fixme: working request
-        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedToStr, jsonObject -> {
+        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> { // fixme: working request
+//        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedToStr, jsonObject -> {
         });
     }
 
@@ -172,6 +197,12 @@ public class MainFragment extends Fragment {
         mBoardView.setBoardEdge(10);
         mBoardView.addColumn(columnProperties);
         mColumns++;
+    }
+
+    @Override
+    public void onDestroyView() {
+        removeBoardUpdates();
+        super.onDestroyView();
     }
 
     private int countColumnWidth() {

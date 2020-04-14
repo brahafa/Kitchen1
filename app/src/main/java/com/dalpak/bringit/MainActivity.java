@@ -1,8 +1,5 @@
 package com.dalpak.bringit;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +20,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +27,8 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
     TextView nameTV, stockTvClick, pizzaStock, sailStock, drinkStock, extraStock, spacialStock, additionalStock;
@@ -83,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         backRL.setOnClickListener(v -> {
-            Fragment f = getFragmentManager().findFragmentById(R.id.fragment_container);
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (f instanceof MainFragment) {
                 openPasswordDialog();
             } else {
-                getFragmentManager().popBackStack();
+                getSupportFragmentManager().popBackStack();
             }
 
 
@@ -128,12 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 setName();
-                Request.getInstance().getAllOrders(getApplication(), new Request.RequestJsonCallBack() {
-                    @Override
-                    public void onDataDone(JSONObject jsonObject) {
-                        fragment.updateAllRV(jsonObject);
-                    }
-                });
+                fragment.startBoardUpdates();
             }
         });
     }
@@ -150,8 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openFragment(Fragment fragmentToOpen, String tag) {
         menuStockLayout.setVisibility(View.GONE);
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_container, fragmentToOpen, tag);
         transaction.addToBackStack(null);
         transaction.commit();

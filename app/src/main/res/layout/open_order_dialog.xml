@@ -27,34 +27,35 @@
 
         <LinearLayout
             android:background="@drawable/change_in_order"
+            android:gravity="center_vertical"
             android:id="@+id/ll_change_in_order"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:layout_width="210dp"
+            android:layout_width="wrap_content"
             android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
             android:tint="@color/white"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TextView
                 android:gravity="right"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_marginRight="12dp"
+                android:layout_width="wrap_content"
                 android:text="שים לב, יש שינויים בהזמנה"
                 android:textColor="@color/error"
                 android:textSize="13sp" />
 
             <ImageView
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
                 android:layout_height="30dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="5dp"
                 android:layout_width="30dp"
-                android:scaleType="fitCenter"
                 android:src="@drawable/exclamation" />
         </LinearLayout>
 
@@ -68,7 +69,8 @@
         <TextView
             android:gravity="center"
             android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:text="שתייה"
@@ -78,7 +80,8 @@
         <TextView
             android:gravity="center"
             android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:text="מצרים נוספים"
@@ -88,7 +91,8 @@
         <TextView
             android:gravity="center"
             android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="3"
             android:layout_width="0dp"
             android:text="פיצה"
@@ -107,7 +111,7 @@
         <LinearLayout
             android:background="@drawable/rv_open_order"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:layout_width="0dp">
@@ -116,7 +120,7 @@
                 android:id="@+id/rvDrink"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:padding="5dp" />
+                android:padding="8dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -131,14 +135,14 @@
                 android:id="@+id/rvAdditional"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:padding="5dp" />
+                android:padding="8dp" />
         </LinearLayout>
 
         <LinearLayout
             android:background="@drawable/rv_open_order"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="3"
             android:layout_width="0dp">
 
@@ -146,7 +150,7 @@
                 android:id="@+id/rvPizza"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:padding="5dp" />
+                android:padding="8dp" />
         </LinearLayout>
 
 
@@ -156,15 +160,16 @@
         android:elevation="0dp"
         android:id="@+id/cv_comment"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         app:cardBackgroundColor="@color/black_6f7888"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
 
         <LinearLayout
+            android:gravity="center_vertical"
             android:id="@+id/ll_comment"
             android:layout_height="50dp"
             android:layout_width="match_parent"
@@ -209,23 +214,22 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="36dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="14dp"
+                android:layout_marginRight="8dp"
                 android:layout_width="36dp"
-                android:scaleType="center"
-                android:src="@mipmap/chat"
-                android:tint="@color/white" />
+                android:padding="10dp"
+                android:src="@drawable/ic_chat" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:elevation="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         app:cardBackgroundColor="@color/black_6f7888"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -262,10 +266,7 @@
                 android:visibility="gone" />
 
             <LinearLayout
-                android:background="@drawable/rv_main_background"
                 android:layout_height="50dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginTop="3dp"
                 android:layout_weight="5"
                 android:layout_width="0dp"
                 android:orientation="horizontal">
@@ -286,7 +287,8 @@
                     <LinearLayout
                         android:gravity="center"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="9dp"
+                        android:layout_margin="4dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:orientation="vertical">
@@ -294,7 +296,6 @@
                         <TextView
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:text="סוג משלוח"
@@ -307,7 +308,6 @@
                             android:id="@+id/orderTypeTV"
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
@@ -324,9 +324,8 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_width="36dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_delivery"
-                        android:tint="@color/white" />
+                        android:padding="10dp"
+                        android:src="@drawable/ic_delivery" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -340,7 +339,8 @@
                     <LinearLayout
                         android:gravity="center"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="9dp"
+                        android:layout_margin="4dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:orientation="vertical">
@@ -348,7 +348,6 @@
                         <TextView
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:text="שם לקוח"
@@ -361,7 +360,6 @@
                             android:id="@+id/orderName"
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
@@ -377,9 +375,8 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_width="36dp"
-                        android:scaleType="center"
-                        android:src="@mipmap/user"
-                        android:tint="@color/white" />
+                        android:padding="10dp"
+                        android:src="@drawable/ic_user" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -393,7 +390,8 @@
                     <LinearLayout
                         android:gravity="center"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="9dp"
+                        android:layout_margin="4dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:orientation="vertical">
@@ -401,7 +399,6 @@
                         <TextView
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:text="מספר הזמנה"
@@ -414,7 +411,6 @@
                             android:id="@+id/orderNum"
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
@@ -430,15 +426,13 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_width="36dp"
-                        android:scaleType="center"
-                        android:src="@mipmap/receipt"
-                        android:tint="@color/white" />
+                        android:padding="10dp"
+                        android:src="@drawable/ic_receipt" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:gravity="center"
                     android:layout_height="50dp"
-                    android:layout_marginRight="3dp"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:orientation="horizontal">
@@ -446,7 +440,8 @@
                     <LinearLayout
                         android:gravity="center"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="9dp"
+                        android:layout_margin="4dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:orientation="vertical">
@@ -454,7 +449,6 @@
                         <TextView
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:text="תאריך הזמנה"
@@ -467,7 +461,6 @@
                             android:id="@+id/orderDateTV"
                             android:layout_gravity="right"
                             android:layout_height="0dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
@@ -481,11 +474,10 @@
                         android:layout_gravity="center"
                         android:layout_height="36dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="8dp"
                         android:layout_width="36dp"
-                        android:scaleType="center"
-                        android:src="@mipmap/calendar"
-                        android:tint="@color/white" />
+                        android:padding="10dp"
+                        android:src="@drawable/ic_calendar" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -1,13 +1,9 @@
 package com.dalpak.bringit.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.StockRV;
@@ -16,9 +12,10 @@ import com.dalpak.bringit.models.StockModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 public class StockFragment extends Fragment {
 
     RecyclerView stockRv;
