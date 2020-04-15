@@ -1,12 +1,12 @@
 package com.dalpak.bringit.dialog;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dalpak.bringit.R;
@@ -17,7 +17,6 @@ import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.utils.Request;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +29,15 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
-    Dialog d;
-    Context context;
-    OpenOrderModel orderModel;
-    View viewOrderChanged;
-    CardView cvComment;
-    TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick;
-    ImageView orderMethodIV;
-    RecyclerView rvDrink, rvPizza, rvAdditional;
+    private Dialog d;
+    private Context context;
+    private OpenOrderModel orderModel;
+    private View viewOrderChanged;
+    private CardView cvComment;
+    private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick;
+    private ImageView orderMethodIV;
+    private RecyclerView rvDrink, rvPizza, rvAdditional;
+    private LinearLayout shippingHolder;
 
     public DialogOpenOrder(@NonNull final Context context, OpenOrderModel orderModel) {
         super(context);
@@ -83,12 +83,13 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         viewOrderChanged = findViewById(R.id.ll_change_in_order);
         cvComment = findViewById(R.id.cv_comment);
 
-        orderDateTV = findViewById(R.id.orderDateTV);
-        orderNameTV = findViewById(R.id.orderName);
-        orderNumTV = findViewById(R.id.orderNum);
-        orderTypeTV = findViewById(R.id.orderTypeTV);
-        orderDetailsTV = findViewById(R.id.orderDetailsTV);
-        orderMethodIV = findViewById(R.id.orderMethodIV);
+        orderDateTV = findViewById(R.id.tv_order_date);
+        orderNameTV = findViewById(R.id.tv_order_name);
+        orderNumTV = findViewById(R.id.tv_order_num);
+        orderTypeTV = findViewById(R.id.tv_order_type);
+        orderDetailsTV = findViewById(R.id.tv_order_details);
+        orderMethodIV = findViewById(R.id.iv_order_type);
+        shippingHolder = findViewById(R.id.ll_shipping);
         shippingNumber = findViewById(R.id.shipping_number);
         shippingTvClick = findViewById(R.id.shipping_tv_click);
         rvDrink = findViewById(R.id.rvDrink);
@@ -119,26 +120,16 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         } else if (orderModel.getIs_delivery().equals("1")) {
             orderTypeTV.setText("משלוח");
             orderMethodIV.setImageResource(R.drawable.ic_delivery);
-            shippingTvClick.setVisibility(View.VISIBLE);
-            shippingNumber.setVisibility(View.VISIBLE);
-            shippingTvClick.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Request.getInstance().getOrderCode(context, orderModel.getOrder_id(), new Request.RequestJsonCallBack() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void onDataDone(JSONObject jsonObject) {
-                            try {
-                                shippingNumber.setVisibility(View.VISIBLE);
-                                if (jsonObject.has("message"))
-                                    shippingNumber.setText("N " + jsonObject.getString("message"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+            shippingHolder.setVisibility(View.VISIBLE);
+            shippingTvClick.setOnClickListener(v ->
+                    Request.getInstance().getOrderCode(context, orderModel.getOrder_id(), jsonObject -> {
+                        try {
+                            if (jsonObject.has("message"))
+                                shippingNumber.setText("N " + jsonObject.getString("message"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
-                }
-            });
+                    }));
 
         } else {
             orderTypeTV.setText("לשבת");

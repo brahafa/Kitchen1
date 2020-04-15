@@ -3,59 +3,63 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:id="@+id/parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginTop="5dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
     android:layout_width="match_parent"
-    app:cardCornerRadius="6dp">
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:padding="4dp">
+        android:padding="8dp">
 
-        <LinearLayout
+
+        <TextView
+            android:gravity="right"
+            android:id="@+id/name"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="קולה"
+            android:textColor="@color/text_color"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/rvTopping"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:gravity="right"
-                android:id="@+id/name"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_width="match_parent"
-                android:text="קולה"
-                android:textColor="@color/text_color"
-                android:textSize="13sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvTopping"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:padding="5dp" />
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTopping"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/name"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            tools:itemCount="3"
+            tools:listitem="@layout/topping_item"
+            tools:visibility="visible" />
 
         <TextView
             android:background="@color/white_blur"
             android:gravity="center"
+            android:id="@+id/tv_cancel"
             android:layout_height="0dp"
             android:layout_width="0dp"
             android:text="CANCEL"
-            android:id="@+id/tv_cancel"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="30sp"
-            android:visibility="gone"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

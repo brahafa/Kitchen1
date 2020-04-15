@@ -18,7 +18,6 @@ public class MyApp extends Application {
     private static final String SESSION_COOKIE = "PHPSESSID";
 
     private static MyApp _instance;
-    private RequestQueue _requestQueue;
     private SharedPreferences _preferences;
 
     public static MyApp get() {
@@ -33,11 +32,6 @@ public class MyApp extends Application {
         }
         _instance = this;
         _preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        _requestQueue = Volley.newRequestQueue(this);
-    }
-
-    public RequestQueue getRequestQueue() {
-        return _requestQueue;
     }
 
 

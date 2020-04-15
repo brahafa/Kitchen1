@@ -55,10 +55,12 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
 
     @Override
     public void onBindViewHolder(final OpenOrderPizzaRv.OpenOrderPizzaRvHolder holder, final int position) {
-        holder.name.setText(itemList.get(position).getName());
+        ItemModel item = itemList.get(position);
 
-        if (itemList.get(position).getChange_type() != null)
-            switch (itemList.get(position).getChange_type()) {
+        holder.name.setText(item.getName());
+
+        if (item.getChange_type() != null)
+            switch (item.getChange_type()) {
                 case "DELETE":
                     holder.tvCancel.setVisibility(View.VISIBLE);
                     break;
@@ -67,21 +69,17 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
                     holder.name.setTextColor(Color.WHITE);
                     break;
             }
-        initRV(itemList.get(position).getItem_filling(), holder.toppingsRv);
+        if (item.getItem_filling().size() != 0) initRV(item.getItem_filling(), holder.toppingsRv);
     }
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
-        OpenOrderRv openOrderRv = new OpenOrderRv(context, orderModels, new OpenOrderRv.AdapterCallback() {
-            @Override
-            public void onItemChoose(ItemModel itemModel) {
-
-            }
+        recyclerView.setVisibility(View.VISIBLE);
+        OpenOrderRv openOrderRv = new OpenOrderRv(context, orderModels, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
 
         recyclerView.setAdapter(openOrderRv);
-        //  recyclerView.setOnDragListener(Adapter.getDragInstance());
     }
 
     @Override

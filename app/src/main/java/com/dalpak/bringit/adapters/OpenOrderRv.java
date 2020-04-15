@@ -129,7 +129,8 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             holder1.name.setText(item.getName());
 
-            if (item.getItem_filling() != null) {
+            if (item.getItem_filling() != null && item.getItem_filling().size() != 0) {
+                holder1.rvFillings.setVisibility(View.VISIBLE);
                 holder1.rvFillings.setLayoutManager(new LinearLayoutManager(context));
                 FillingAdapter fillingAdapter =
                         new FillingAdapter(context, item.getItem_filling(),

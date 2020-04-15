@@ -22,19 +22,19 @@ public  class SharePref {
     public void saveData(String key, String value) {
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
         prefsEditor.putString(key, value);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     public void saveData(String key, long value) {
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
         prefsEditor.putLong(key, value);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     public void saveData(String key, boolean value) {
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
         prefsEditor.putBoolean(key, value);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     public boolean getBooleanData(String key) {
