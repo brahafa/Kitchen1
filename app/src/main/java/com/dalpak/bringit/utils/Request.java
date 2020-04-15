@@ -65,7 +65,7 @@ public class Request {
             public void onDataError(JSONObject json) {
                 openAlertMsg(context, json);
             }
-        }, context);
+        });
         network.sendPostRequest(context, jsonObject, Network.RequestName.LOG_IN_MANAGER);
     }
 
@@ -102,7 +102,7 @@ public class Request {
             public void onDataError(JSONObject json) {
                 openAlertMsg(context, json);
             }
-        }, context);
+        });
         network.sendPostRequest(context, jsonObject, Network.RequestName.SETINGS_LOGIN);
     }
 
@@ -126,7 +126,7 @@ public class Request {
                 }
                 // openAlertMsg(context, json);
             }
-        }, context);
+        });
         network.sendRequest(context, Network.RequestName.GET_ALL_ORDERS, Integer.toString(BusinessModel.getInstance().getBusiness_id()));
     }
 
@@ -161,7 +161,7 @@ public class Request {
             public void onDataError(JSONObject json) {
                 openAlertMsg(context, json);
             }
-        }, context);
+        });
         network.sendPostRequest(context, jsonObject1, Network.RequestName.UPDATE_ITEM_PRICE);
     }
 
@@ -187,7 +187,7 @@ public class Request {
             public void onDataError(JSONObject json) {
                 openAlertMsg(context, json);
             }
-        }, context);
+        });
         network.sendPostRequest(context, jsonObject, Network.RequestName.UPDATE_ORDER_STATUS);
     }
 
@@ -208,7 +208,7 @@ public class Request {
             public void onDataError(JSONObject json) {
 
             }
-        }, context);
+        });
         network.sendRequest(context, Network.RequestName.GET_ORDER_DETAILS_BY_ID, orderId);
     }
 
@@ -225,7 +225,7 @@ public class Request {
             public void onDataError(JSONObject json) {
 
             }
-        }, context);
+        });
         network.sendRequest(context, Network.RequestName.LOAD_BUSINES_ITEMS, type);
     }
 
@@ -246,7 +246,7 @@ public class Request {
             public void onDataError(JSONObject json) {
 
             }
-        }, context);
+        });
         network.sendRequest(context, Network.RequestName.GET_ORDER_CODE, orderId);
     }
 
@@ -273,7 +273,7 @@ public class Request {
             public void onDataError(JSONObject json) {
                 openAlertMsg(context, json);
             }
-        }, context);
+        });
         network.sendPostRequest(context, jsonObject, Network.RequestName.ORDER_CHANGE_POS);
     }
 
@@ -289,7 +289,7 @@ public class Request {
             public void onDataError(JSONObject json) {
                 Log.d("getSelectedFolder", json.toString());
             }
-        }, context);
+        });
         network.sendRequest(context, getItemsInSelectedFoleder, param);
     }
 
@@ -316,7 +316,7 @@ public class Request {
             public void onDataError(JSONObject json) {
 
             }
-        }, context);
+        });
         network.sendRequest(context, Network.RequestName.GET_ITEMS_BY_TYPE, type);
     }
 
@@ -346,7 +346,7 @@ public class Request {
             public void onDataError(JSONObject json) {
                 Log.d("ADD_TO_CART_ERR", json.toString());
             }
-        }, context);
+        });
         network.sendPostRequest(context, params, Network.RequestName.ADD_TO_CART);
     }
 
@@ -365,7 +365,7 @@ public class Request {
             public void onDataError(JSONObject json) {
 
             }
-        }, context);
+        });
         network.sendRequest(context, Network.RequestName.GET_CART);
     }
 
@@ -380,7 +380,7 @@ public class Request {
             public void onDataError(JSONObject json) {
 
             }
-        }, context);
+        });
         network.sendRequest(context, Network.RequestName.CLEAR_CART);
     }
 
@@ -398,7 +398,7 @@ public class Request {
                 globalObjList.add(gson.fromJson(String.valueOf(object.get(key)), ItemModel.class));
             }
         } catch (JSONException e) {
-            Log.d("GET CART ERROR", e.toString());
+            Log.e("GET CART ERROR", e.toString());
             e.printStackTrace();
         }
         return globalObjList;

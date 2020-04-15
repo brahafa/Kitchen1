@@ -1,7 +1,6 @@
 package com.dalpak.bringit.utils;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,15 +10,12 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.dalpak.bringit.models.BusinessModel;
-
 
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
@@ -34,14 +30,12 @@ import java.util.Map;
 import static com.android.volley.VolleyLog.TAG;
 
 public class Network {
-    ProgressDialog pDialog;
 
-    private RequestQueue queue;
     private NetworkCallBack listener;
-    public static String BASE_URL = "https://api.bringit.co.il/?apiCtrl=";
-    public static String BUSINESS = "business&do=";
-    public static String DALPAK = "dalpak&do=";
-    public static String PIZZIRIA = "pizziria&do=";
+    private static String BASE_URL = "https://api.bringit.co.il/?apiCtrl=";
+    private static String BUSINESS = "business&do=";
+    private static String DALPAK = "dalpak&do=";
+    private static String PIZZIRIA = "pizziria&do=";
 
 
     public enum RequestName {
@@ -53,10 +47,8 @@ public class Network {
 
     ;
 
-    Network(NetworkCallBack listener, Context context) {
+    Network(NetworkCallBack listener) {
         this.listener = listener;
-        queue = Volley.newRequestQueue(context);
-        pDialog = new ProgressDialog(context);
     }
 
 
@@ -110,11 +102,11 @@ public class Network {
     }
 
     private void sendRequestObject(final RequestName requestName, final String url, final Context context, final NetworkCallBack listener) {
-        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Request url  11  ", url);
-                Log.e(TAG, "onResponse  :   " + response.toString());
+                Log.d(TAG, "onResponse  :   " + response.toString());
                 listener.onDataDone(response);
             }
         }, new Response.ErrorListener() {
@@ -126,7 +118,7 @@ public class Network {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d(TAG, "Connection Error 22" + error.toString());
+                Log.e(TAG, "Connection Error 22" + error.toString());
             }
         }) {
             @Override
@@ -147,7 +139,7 @@ public class Network {
                 return params;
             }
         };
-        queue.add(jsonArrayRequest);
+        RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
     }
 
     public void sendPostRequest(final Context context, final JSONObject params, final RequestName requestName) {
@@ -183,34 +175,25 @@ public class Network {
         }
         Log.d("POST url  ", url);
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, params,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-
-                            listener.onDataDone(response);
-
-                            VolleyLog.v("Response:%n %s", response.toString(4));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("ERROR ROST REQUEST", e.toString());
-                        }
+                response -> {
+                    try {
+                        listener.onDataDone(response);
+                        VolleyLog.v("Response:%n %s", response.toString(4));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("ERROR POST REQUEST", e.toString());
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error  11: ", error.getMessage());
-                manageErrors(error, context);
-//                try {
-//
-//                   listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                }, error -> {
+                    VolleyLog.e("Error  11: ", error.getMessage());
+                    manageErrors(error, context);
+    //                try {
+    //
+    //                   listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
+    //                } catch (JSONException e) {
+    //                    e.printStackTrace();
+    //                }
 
-            }
-        }) {
+                }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 // since we don't know which of the two underlying network vehicles
@@ -229,8 +212,7 @@ public class Network {
                 return params;
             }
         };
-        queue.add(req);
-        //   queue.start();
+        RequestQueueSingleton.getInstance(context).addToRequestQueue(req);
     }
 
     private void manageErrors(VolleyError error, Context context) {
