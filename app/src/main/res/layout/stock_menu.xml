@@ -43,7 +43,7 @@
 
         <TextView
             android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_drink"
+            android:drawableRight="@drawable/ic_sale"
             android:gravity="center|right"
             android:id="@+id/sail_stock"
             android:layout_height="40dp"
@@ -64,7 +64,7 @@
 
         <TextView
             android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_addings"
+            android:drawableRight="@drawable/ic_drink"
             android:gravity="center|right"
             android:id="@+id/drink_stock"
             android:layout_height="40dp"
@@ -84,7 +84,7 @@
 
         <TextView
             android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_special"
+            android:drawableRight="@drawable/ic_addings"
             android:gravity="center|right"
             android:id="@+id/extra_stock"
             android:layout_height="40dp"
@@ -104,7 +104,7 @@
 
         <TextView
             android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_food"
+            android:drawableRight="@drawable/ic_special"
             android:gravity="center|right"
             android:id="@+id/spacial_additions_stock"
             android:layout_height="40dp"
@@ -124,7 +124,7 @@
 
         <TextView
             android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_sale"
+            android:drawableRight="@drawable/ic_food"
             android:gravity="center|right"
             android:id="@+id/additional_stock"
             android:layout_height="40dp"

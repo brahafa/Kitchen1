@@ -33,12 +33,10 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
     class StockRVHolder extends RecyclerView.ViewHolder {
         TextView name, pickupPrice, shippingPrice, inStockTvClick;
-        View view;
         ImageView itemImage;
 
         StockRVHolder(View view) {
             super(view);
-            this.view = view;
             name = view.findViewById(R.id.name);
             itemImage = view.findViewById(R.id.stock_image);
             pickupPrice = view.findViewById(R.id.pickup_price);
@@ -65,51 +63,46 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
     @Override
     public void onBindViewHolder(final StockRV.StockRVHolder holder, final int position) {
-        holder.name.setText(itemList.get(position).getName());
-        holder.shippingPrice.setText(itemList.get(position).getDelivery_price() == null ? itemList.get(position).getDefault_price() + " שקל " : itemList.get(position).getDelivery_price() + " שקל");
-        holder.pickupPrice.setText(itemList.get(position).getPickup_price() + " שקל");
-        if (itemList.get(position).getObject_type().equals("food") || itemList.get(position).getObject_type().equals("deal")) {
+        StockModel item = itemList.get(position);
+
+        holder.name.setText(item.getName());
+        holder.shippingPrice.setText(item.getDelivery_price() == null ? item.getDefault_price() + " שקל " : item.getDelivery_price() + " שקל");
+        holder.pickupPrice.setText(item.getPickup_price() + " שקל");
+        if (item.getObject_type().equals("food") || item.getObject_type().equals("deal")) {
             holder.itemImage.setVisibility(View.GONE);
         } else {
-            String url = Constants.IMAGES_BASE_URL + itemList.get(position).getObject_type() + "/" + itemList.get(position).getPicture();
+            String url = Constants.IMAGES_BASE_URL + item.getObject_type() + "/" + item.getPicture();
             Glide.with(context)
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.ic_placeholder)
+                    .centerInside()
                     .into(holder.itemImage);
             holder.itemImage.setVisibility(View.VISIBLE);
 
         }
-        if (itemList.get(position).isObject_status()) {
+        if (item.isObject_status()) {
             holder.inStockTvClick.setText("במלאי");
             //  holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.green_00c37c)));
         } else {
             holder.inStockTvClick.setText("לא במלאי");
             // holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.red_ff7171)));
         }
-        holder.inStockTvClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Request.getInstance().updateItemPrice(context, itemList.get(position), new Request.RequestJsonCallBack() {
-                    @Override
-                    public void onDataDone(JSONObject jsonObject) {
-                        itemList.get(position).setObject_status(!itemList.get(position).isObject_status());
-                        try {
-                            if (jsonObject.has("dealsDisabled") && jsonObject.getBoolean("dealsDisabled")) {
-                                FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
-                                DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
-                                alertDialog.show(fm, "fragment_edit_name");
+        holder.inStockTvClick.setOnClickListener(v ->
+                Request.getInstance().updateItemPrice(context, item, jsonObject -> {
+                    item.setObject_status(!item.isObject_status());
+                    try {
+                        if (jsonObject.has("dealsDisabled") && jsonObject.getBoolean("dealsDisabled")) {
+                            FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+                            DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
+                            alertDialog.show(fm, "fragment_edit_name");
 
-                            }
-                            notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                        notifyItemChanged(position);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
-
-            }
-        });
+                }));
     }
 
     private String getRemoveItems(JSONObject jsonObject) {
