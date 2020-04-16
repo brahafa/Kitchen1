@@ -36,6 +36,7 @@ public class OrderModel {
     private String order_cooking_time;
     private String name;
     private String order_has_changes;
+    private String startTimeStr;
 
     public String getOrder_id() {
         return order_id;
@@ -307,5 +308,13 @@ public class OrderModel {
 
     public void setOrder_has_changes(String order_has_changes) {
         this.order_has_changes = order_has_changes;
+    }
+
+    public String getStartTimeStr() {
+        return startTimeStr;
+    }
+
+    public void setStartTimeStr(String startTimeStr) {
+        this.startTimeStr = startTimeStr;
     }
 }
