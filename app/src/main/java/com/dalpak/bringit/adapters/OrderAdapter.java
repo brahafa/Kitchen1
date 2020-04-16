@@ -69,7 +69,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
             holder.deliveryImage.setImageResource(R.drawable.ic_dinner);
         }
 
-        holder.orderTime.setText(Utils.getOrderTimerStr(orderList.get(position).getOrder_time()));
+        holder.orderTime.setText(orderList.get(position).getStartTimeStr());
         if (Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > 3) {
             adapterCallback.onOrderDelay();
             holder.warningImg.setVisibility(View.VISIBLE);
