@@ -7,9 +7,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.webkit.CookieSyncManager;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
 import java.util.Map;
 
 public class MyApp extends Application {
@@ -41,7 +38,8 @@ public class MyApp extends Application {
      *
      * @param headers Response Headers.
      */
-    public final void checkSessionCookie(Map<String, String> headers) {
+    public final void
+    checkSessionCookie(Map<String, String> headers) {
         if (headers.containsKey(SET_COOKIE_KEY)
                 && headers.get(SET_COOKIE_KEY).startsWith(SESSION_COOKIE)) {
             String cookie = headers.get(SET_COOKIE_KEY);
@@ -51,7 +49,7 @@ public class MyApp extends Application {
                 cookie = splitSessionId[1];
                 SharedPreferences.Editor prefEditor = _preferences.edit();
                 prefEditor.putString(SESSION_COOKIE, cookie);
-                prefEditor.commit();
+                prefEditor.apply();
             }
         }
     }

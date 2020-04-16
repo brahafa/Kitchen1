@@ -41,10 +41,10 @@ public  class SharePref {
         return sharedPreferences.getBoolean(key, false);
     }
 
-
     public long getLongData(String key) {
-        return sharedPreferences.getLong(key, (long) -1);
+        return sharedPreferences.getLong(key, -1);
     }
+
     public String getData(String key) {
         if (sharedPreferences != null) {
             return sharedPreferences.getString(key, "");

@@ -86,9 +86,21 @@ public class MainFragment extends Fragment {
                 if (fromColumn != toColumn) {
                     changeStatus(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
-                            5 - fromColumn,
-                            5 - toColumn,
+                            statuses[toColumn]);
+                    changePosition(
+                            mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
+                            fromRow + 1,
+                            toRow + 1,
                             true,
+                            statuses[fromColumn],
+                            statuses[toColumn]);
+                } else if (fromRow != toRow) {
+                    changePosition(
+                            mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
+                            fromRow + 1,
+                            toRow + 1,
+                            true,
+                            statuses[fromColumn],
                             statuses[toColumn]);
                 }
             }
@@ -164,9 +176,13 @@ public class MainFragment extends Fragment {
         return orderModels;
     }
 
-    private void changeStatus(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedToStr) {
-        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> { // fixme: working request
-//        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedToStr, jsonObject -> {
+    private void changeStatus(long order_id, String draggedToStr) {
+        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> {
+        });
+    }
+
+    private void changePosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {
+        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr, jsonObject -> {
         });
     }
 

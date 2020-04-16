@@ -135,12 +135,12 @@ public class Request {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject1 = new JSONObject();
         try {
-           // jsonObject.put("object_status", !stockModel.isObject_status());
+            // jsonObject.put("object_status", !stockModel.isObject_status());
             jsonObject.put("object_status", !stockModel.isObject_status());
             jsonObject.put("id", stockModel.getId());
             jsonObject.put("object_id", stockModel.getObject_id());
-            jsonObject.put("object_type",stockModel.getObject_type());
-            jsonObject.put(stockModel.getObject_type() +"_id", stockModel.getObject_id());
+            jsonObject.put("object_type", stockModel.getObject_type());
+            jsonObject.put(stockModel.getObject_type() + "_id", stockModel.getObject_id());
 
             // jsonObject.put("object_type",stockModel.getObject_type());
             jsonArray.put((jsonObject));
@@ -157,6 +157,7 @@ public class Request {
                 Log.d("UPDATE_ITEM_PRICE", json.toString());
                 listener.onDataDone(json);
             }
+
             @Override
             public void onDataError(JSONObject json) {
                 openAlertMsg(context, json);
@@ -250,13 +251,14 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_ORDER_CODE, orderId);
     }
 
-    public void orderChangePos(Context context, long order_id, int oldPosition, int newPosition, boolean statusChanged, String draggedToStatus, final RequestJsonCallBack listener) {
+    public void orderChangePos(Context context, long order_id, int oldPosition, int newPosition, boolean statusChanged, String draggedFromStatus, String draggedToStatus, final RequestJsonCallBack listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", order_id);
             jsonObject.put("oldPosition", oldPosition);
             jsonObject.put("position", newPosition);
             jsonObject.put("statusChanged", statusChanged);
+            jsonObject.put("prevStatus", draggedFromStatus);
             jsonObject.put("status", draggedToStatus);
             Log.d("send data: ", jsonObject.toString());
 
