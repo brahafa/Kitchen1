@@ -45,8 +45,6 @@ public class Network {
         GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS, LOAD_BUSINES_ITEMS, UPDATE_ITEM_PRICE, GET_ORDER_CODE
     }
 
-    ;
-
     Network(NetworkCallBack listener) {
         this.listener = listener;
     }
@@ -102,43 +100,40 @@ public class Network {
     }
 
     private void sendRequestObject(final RequestName requestName, final String url, final Context context, final NetworkCallBack listener) {
-        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Request url  11  ", url);
-                Log.d(TAG, "onResponse  :   " + response.toString());
-                listener.onDataDone(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                try {
-                    if (error.networkResponse != null)
-                        listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.e(TAG, "Connection Error 22" + error.toString());
-            }
-        }) {
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                MyApp.get().checkSessionCookie(response.headers);
-                return super.parseNetworkResponse(response);
-            }
+        JsonObjectRequest jsonArrayRequest =
+                new JsonObjectRequest(Request.Method.GET, url, null,
+                        response -> {
+                            Log.d("Request url  11  ", url);
+                            Log.d(TAG, "onResponse  :   " + response.toString());
+                            listener.onDataDone(response);
+                        }, error -> {
+                    try {
+                        if (error.networkResponse != null)
+                            listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e(TAG, "Connection Error 22" + error.toString());
+                }) {
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                if (SharePref.getInstance(context).getData(Constants.TOKEN_PREF) != null) {
-                    params.put("PHPSESSID", SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
-                    Log.d(TAG, "token is: " + SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                        MyApp.get().checkSessionCookie(response.headers);
+                        return super.parseNetworkResponse(response);
+                    }
 
-                    MyApp.get().addSessionCookie(params);
-                }
-                return params;
-            }
-        };
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        if (SharePref.getInstance(context).getData(Constants.TOKEN_PREF) != null) {
+                            params.put("PHPSESSID", SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
+                            Log.d(TAG, "token is: " + SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
+
+                            MyApp.get().addSessionCookie(params);
+                        }
+                        return params;
+                    }
+                };
         RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
     }
 
@@ -184,16 +179,16 @@ public class Network {
                         Log.e("ERROR POST REQUEST", e.toString());
                     }
                 }, error -> {
-                    VolleyLog.e("Error  11: ", error.getMessage());
-                    manageErrors(error, context);
-    //                try {
-    //
-    //                   listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
-    //                } catch (JSONException e) {
-    //                    e.printStackTrace();
-    //                }
+            VolleyLog.e("Error  11: ", error.getMessage());
+            manageErrors(error, context);
+            //                try {
+            //
+            //                   listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
+            //                } catch (JSONException e) {
+            //                    e.printStackTrace();
+            //                }
 
-                }) {
+        }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 // since we don't know which of the two underlying network vehicles
