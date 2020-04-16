@@ -16,7 +16,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.OpenOrderPizzaRvHolder> {
+public class OpenOrderPizzaAdapter extends RecyclerView.Adapter<OpenOrderPizzaAdapter.OpenOrderPizzaRvHolder> {
 
     private List<ItemModel> itemList;
     private Context context;
@@ -39,7 +39,7 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
     }
 
 
-    public OpenOrderPizzaRv(Context context, List<ItemModel> itemList, AdapterCallback adapterCallback) {
+    public OpenOrderPizzaAdapter(Context context, List<ItemModel> itemList, AdapterCallback adapterCallback) {
         this.itemList = itemList;
         this.context = context;
         this.adapterCallback = adapterCallback;
@@ -47,14 +47,14 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
 
 
     @Override
-    public OpenOrderPizzaRv.OpenOrderPizzaRvHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OpenOrderPizzaAdapter.OpenOrderPizzaRvHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.open_order_pizza_item, parent, false);
-        return new OpenOrderPizzaRv.OpenOrderPizzaRvHolder(itemView);
+        return new OpenOrderPizzaAdapter.OpenOrderPizzaRvHolder(itemView);
     }
 
 
     @Override
-    public void onBindViewHolder(final OpenOrderPizzaRv.OpenOrderPizzaRvHolder holder, final int position) {
+    public void onBindViewHolder(final OpenOrderPizzaAdapter.OpenOrderPizzaRvHolder holder, final int position) {
         ItemModel item = itemList.get(position);
 
         holder.name.setText(item.getName());
@@ -74,12 +74,12 @@ public class OpenOrderPizzaRv extends RecyclerView.Adapter<OpenOrderPizzaRv.Open
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OpenOrderRv openOrderRv = new OpenOrderRv(context, orderModels, itemModel -> {
+        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
 
-        recyclerView.setAdapter(openOrderRv);
+        recyclerView.setAdapter(openOrderAdapter);
     }
 
     @Override

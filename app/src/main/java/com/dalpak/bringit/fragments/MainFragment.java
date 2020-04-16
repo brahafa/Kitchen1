@@ -2,6 +2,7 @@ package com.dalpak.bringit.fragments;
 
 import android.graphics.Color;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
@@ -12,9 +13,10 @@ import android.widget.TextView;
 
 import com.dalpak.bringit.MainActivity;
 import com.dalpak.bringit.R;
-import com.dalpak.bringit.adapters.OrderRv;
+import com.dalpak.bringit.adapters.OrderAdapter;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.OrderModel;
+import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
 import com.google.gson.Gson;
 import com.woxthebox.draglistview.BoardView;
@@ -41,6 +43,8 @@ public class MainFragment extends Fragment {
     private Gson gson;
     private final Handler mHandler = new Handler();
 
+    private MediaPlayer mp;
+
     private String lastResponse = "";
 
     private Runnable mRunnable = () -> Request.getInstance().getAllOrders(getActivity(),
@@ -62,6 +66,9 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         gson = new Gson();
+
+        mp = MediaPlayer.create(getActivity(), R.raw.trike);
+        mp.setOnCompletionListener(MediaPlayer::release);
 
         String[] statuses = getResources().getStringArray(R.array.statuses);
 
@@ -165,15 +172,26 @@ public class MainFragment extends Fragment {
 
     private void initRV(final List<OrderModel> orderModels) {
 
-        OrderRv bottomListAdapter = new OrderRv(getActivity(), orderModels,
-                orderModel -> Request.getInstance().getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), jsonObject -> {
+        OrderAdapter bottomListAdapter = new OrderAdapter(orderModels, new OrderAdapter.AdapterCallback() {
+            @Override
+            public void onItemChoose(OrderModel orderModel) {
+                Request.getInstance().getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), jsonObject -> {
                     try {
                         OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
                         ((MainActivity) getActivity()).openOrderDialog(openOrderModel);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }));
+                });
+            }
+
+            @Override
+            public void onOrderDelay() {
+                playSound(Constants.ALERT_ORDER_OVERTIME);
+            }
+        });
+
+        if (checkIfEdited(orderModels)) playSound(Constants.ALERT_EDIT_ORDER);
 
         final View header = View.inflate(getActivity(), R.layout.column_header, null);
 
@@ -202,6 +220,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroyView() {
         removeBoardUpdates();
+        mp.release();
         super.onDestroyView();
     }
 
@@ -211,6 +230,42 @@ public class MainFragment extends Fragment {
         display.getSize(size);
         int width = size.x;
         return (width - 60) / 5;
+    }
+
+
+    private void playSound(int alertType) {
+        int resId = -1;
+        switch (alertType) {
+            case Constants.ALERT_NEW_ORDER:
+                resId = R.raw.trike; // todo change to right sound
+                break;
+            case Constants.ALERT_ORDER_OVERTIME:
+                resId = R.raw.trike; // todo change to right sound
+                break;
+            case Constants.ALERT_EDIT_ORDER:
+                resId = R.raw.trike; // todo change to right sound
+                break;
+            case Constants.ALERT_FINISH_COOKING:
+                resId = R.raw.trike; // todo change to right sound
+                break;
+        }
+        try {
+            if (mp.isPlaying()) {
+                mp.stop();
+                mp.release();
+                mp = MediaPlayer.create(getActivity(), resId);
+            }
+//            mp.start();  //todo enable when work on alerts
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean checkIfEdited(List<OrderModel> orderModels) {
+        for (OrderModel model : orderModels) {
+            if (model.getOrder_has_changes().equals("1")) return true;
+        }
+        return false;
     }
 
 }

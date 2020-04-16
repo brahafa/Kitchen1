@@ -1,7 +1,5 @@
 package com.dalpak.bringit.adapters;
 
-import android.content.Context;
-import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +13,11 @@ import com.woxthebox.draglistview.DragItemAdapter;
 
 import java.util.List;
 
-public class OrderRv extends DragItemAdapter<OrderModel, OrderRv.OrderHolder> {
+public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.OrderHolder> {
 
     private List<OrderModel> orderList;
-    private Context context;
     private AdapterCallback adapterCallback;
 
-    private MediaPlayer mp;
 
     class OrderHolder extends DragItemAdapter.ViewHolder {
         TextView name, orderTime;
@@ -39,27 +35,24 @@ public class OrderRv extends DragItemAdapter<OrderModel, OrderRv.OrderHolder> {
 
     }
 
-    public OrderRv(Context context, List<OrderModel> orderModels, AdapterCallback adapterCallback) {
+    public OrderAdapter(List<OrderModel> orderModels, AdapterCallback adapterCallback) {
         orderList = orderModels;
-        this.context = context;
         this.adapterCallback = adapterCallback;
 
         setItemList(orderModels);
 
-        mp = MediaPlayer.create(context, R.raw.trike);
-        mp.setOnCompletionListener(MediaPlayer::release);
     }
 
 
     @Override
-    public OrderRv.OrderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OrderAdapter.OrderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_order_item, parent, false);
-        return new OrderRv.OrderHolder(itemView);
+        return new OrderAdapter.OrderHolder(itemView);
     }
 
 
     @Override
-    public void onBindViewHolder(final OrderRv.OrderHolder holder, final int position) {
+    public void onBindViewHolder(final OrderAdapter.OrderHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
 
         if (orderList.get(position).getIs_delivery().equals("1")) {
@@ -78,7 +71,7 @@ public class OrderRv extends DragItemAdapter<OrderModel, OrderRv.OrderHolder> {
 
         holder.orderTime.setText(Utils.getOrderTimerStr(orderList.get(position).getOrder_time()));
         if (Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > 3) {
-            playSound();
+            adapterCallback.onOrderDelay();
             holder.warningImg.setVisibility(View.VISIBLE);
         }
 
@@ -98,20 +91,10 @@ public class OrderRv extends DragItemAdapter<OrderModel, OrderRv.OrderHolder> {
 
     public interface AdapterCallback {
         void onItemChoose(OrderModel orderModel);
+
+        void onOrderDelay();
     }
 
-    private void playSound() {
-        try {
-            if (mp.isPlaying()) {
-                mp.stop();
-                mp.release();
-                mp = MediaPlayer.create(context, R.raw.trike);
-            }
-//            mp.start();  //todo enable when work on alerts
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
 
 

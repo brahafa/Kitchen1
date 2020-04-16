@@ -9,9 +9,14 @@ public class Constants {
     //URLS
     public static String IMAGES_BASE_URL = "https://api.bringit.co.il/public/images/";
     public static String DRINKS_URL = IMAGES_BASE_URL + "drink/";
-    public static String ADDITIONAL_URL = IMAGES_BASE_URL+"loka/additionalOffer/";
+    public static String ADDITIONAL_URL = IMAGES_BASE_URL + "loka/additionalOffer/";
     public static String FOOD_URL = IMAGES_BASE_URL + "food/";
 
+    //    alerts
+    public static final int ALERT_NEW_ORDER = 0;
+    public static final int ALERT_ORDER_OVERTIME = 1;
+    public static final int ALERT_EDIT_ORDER = 2;
+    public static final int ALERT_FINISH_COOKING = 3;
 
     public static int maximumWaitTimePreparing = 10;
     public static int maximumWaitTimeReceived = 10;

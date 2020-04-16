@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 //public class OpenOrderRv  {
 //}
-public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ItemModel> itemList;
     private Context context;
@@ -69,7 +69,7 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public OpenOrderRv(Context context, List<ItemModel> itemList, AdapterCallback adapterCallback) {
+    public OpenOrderAdapter(Context context, List<ItemModel> itemList, AdapterCallback adapterCallback) {
         this.itemList = itemList;
         this.context = context;
         this.adapterCallback = adapterCallback;
@@ -81,10 +81,10 @@ public class OpenOrderRv extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (viewType == 0) {// topping type
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.topping_item, parent, false);
-            return new OpenOrderRv.OpenOrderHolderTopping(itemView);
+            return new OpenOrderAdapter.OpenOrderHolderTopping(itemView);
         } else {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.open_order_item, parent, false);
-            return new OpenOrderRv.OpenOrderHolder(itemView);
+            return new OpenOrderAdapter.OpenOrderHolder(itemView);
         }
 
     }

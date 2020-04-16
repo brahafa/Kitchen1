@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dalpak.bringit.R;
-import com.dalpak.bringit.adapters.OpenOrderPizzaRv;
-import com.dalpak.bringit.adapters.OpenOrderRv;
+import com.dalpak.bringit.adapters.OpenOrderPizzaAdapter;
+import com.dalpak.bringit.adapters.OpenOrderAdapter;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.utils.Request;
@@ -153,7 +153,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         //  recyclerView.setOnDragListener(Adapter.getDragInstance());
          */
 
-        OpenOrderPizzaRv mAdapter = new OpenOrderPizzaRv(context, orderModels, new OpenOrderPizzaRv.AdapterCallback() {
+        OpenOrderPizzaAdapter mAdapter = new OpenOrderPizzaAdapter(context, orderModels, new OpenOrderPizzaAdapter.AdapterCallback() {
             @Override
             public void onItemChoose(ItemModel itemModel) {
 
@@ -173,7 +173,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     }
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
-        OpenOrderRv openOrderRv = new OpenOrderRv(context, orderModels, new OpenOrderRv.AdapterCallback() {
+        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, new OpenOrderAdapter.AdapterCallback() {
             @Override
             public void onItemChoose(ItemModel itemModel) {
 
@@ -182,7 +182,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
 
-        recyclerView.setAdapter(openOrderRv);
+        recyclerView.setAdapter(openOrderAdapter);
         //  recyclerView.setOnDragListener(Adapter.getDragInstance());
     }
 
