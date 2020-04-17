@@ -28,14 +28,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
+import static com.dalpak.bringit.utils.SharedPrefs.getData;
 
 public class Network {
 
+    private final String SET_COOKIE_KEY = "Set-Cookie";
+    private final String COOKIE_KEY = "Cookie";
+    private final String SESSION_COOKIE = "PHPSESSID";
+
     private NetworkCallBack listener;
-    private static String BASE_URL = "https://api.bringit.co.il/?apiCtrl=";
-    private static String BUSINESS = "business&do=";
-    private static String DALPAK = "dalpak&do=";
-    private static String PIZZIRIA = "pizziria&do=";
+    private final String BASE_URL = "https://api.bringit.co.il/?apiCtrl=";
+    private final String BUSINESS = "business&do=";
+    private final String DALPAK = "dalpak&do=";
+    private final String PIZZIRIA = "pizziria&do=";
 
 
     public enum RequestName {
@@ -118,18 +123,18 @@ public class Network {
 
                     @Override
                     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                        MyApp.get().checkSessionCookie(response.headers);
+                        checkSessionCookie(response.headers);
                         return super.parseNetworkResponse(response);
                     }
 
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
-                        if (SharePref.getInstance(context).getData(Constants.TOKEN_PREF) != null) {
-                            params.put("PHPSESSID", SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
-                            Log.d(TAG, "token is: " + SharePref.getInstance(context).getData(Constants.TOKEN_PREF));
+                        if (!getData(Constants.TOKEN_PREF).equals("")) {
+                            params.put(SESSION_COOKIE, getData(Constants.TOKEN_PREF));
+                            Log.d(TAG, "token is: " + getData(Constants.TOKEN_PREF));
 
-                            MyApp.get().addSessionCookie(params);
+                            addSessionCookie(params);
                         }
                         return params;
                     }
@@ -193,16 +198,16 @@ public class Network {
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 // since we don't know which of the two underlying network vehicles
                 // will Volley use, we have to handle and store session cookies manually
-                MyApp.get().checkSessionCookie(response.headers);
+                checkSessionCookie(response.headers);
                 return super.parseNetworkResponse(response);
             }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                if (SharePref.getInstance(context).getData(Constants.TOKEN_PREF) != null) {
-                    params.put("PHPSESSID", SharePref.getInstance(context).getData(Constants.TOKEN_PREF));// BusinessModel.getInstance().getUtoken());
-                    MyApp.get().addSessionCookie(params);
+                if (!getData(Constants.TOKEN_PREF).equals("")) {
+                    params.put(SESSION_COOKIE, getData(Constants.TOKEN_PREF));// BusinessModel.getInstance().getUtoken());
+                    addSessionCookie(params);
                 }
                 return params;
             }
@@ -236,6 +241,34 @@ public class Network {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void checkSessionCookie(Map<String, String> headers) {
+        if (headers.containsKey(SET_COOKIE_KEY)
+                && headers.get(SET_COOKIE_KEY).startsWith(SESSION_COOKIE)) {
+            String cookie = headers.get(SET_COOKIE_KEY);
+            if (cookie.length() > 0) {
+                String[] splitCookie = cookie.split(";");
+                String[] splitSessionId = splitCookie[0].split("=");
+                cookie = splitSessionId[1];
+                SharedPrefs.saveData(SESSION_COOKIE, cookie);
+            }
+        }
+    }
+
+    private void addSessionCookie(Map<String, String> headers) {
+        String sessionId = getData(Constants.TOKEN_PREF);
+        if (sessionId.length() > 0) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(SESSION_COOKIE);
+            builder.append("=");
+            builder.append(sessionId);
+            if (headers.containsKey(COOKIE_KEY)) {
+                builder.append("; ");
+                builder.append(headers.get(COOKIE_KEY));
+            }
+            headers.put(COOKIE_KEY, builder.toString());
         }
     }
 

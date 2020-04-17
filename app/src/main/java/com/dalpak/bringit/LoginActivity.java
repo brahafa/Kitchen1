@@ -11,10 +11,11 @@ import android.widget.TextView;
 
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
-import com.dalpak.bringit.utils.SharePref;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import static com.dalpak.bringit.utils.SharedPrefs.saveData;
 
 public class LoginActivity extends AppCompatActivity {
     ImageView userNameDeleteIV, passwordDeleteIV;
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onDataDone(boolean isDataSuccess) {
                         if (isDataSuccess) {
-                            SharePref.getInstance(getApplicationContext()).saveData(Constants.USER_ALREADY_CONNECTED_PREF, true);
+                            saveData(Constants.USER_ALREADY_CONNECTED_PREF, true);
                             openMainActivity();
                         } else {
                             errorInPassword();

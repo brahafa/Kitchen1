@@ -15,7 +15,6 @@ import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.StockModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
-import com.dalpak.bringit.utils.SharePref;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -29,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import static com.dalpak.bringit.utils.SharedPrefs.getData;
 
 public class MainActivity extends AppCompatActivity {
     TextView nameTV, stockTvClick, pizzaStock, sailStock, drinkStock, extraStock, spacialStock, additionalStock;
@@ -93,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setName() {
-        if (SharePref.getInstance(this).getData(Constants.NAME_PREF) != null) {
-            nameTV.setText(SharePref.getInstance(this).getData(Constants.NAME_PREF) + " שלום ");
+        if (!getData(Constants.NAME_PREF).equals("")) {
+            nameTV.setText(getData(Constants.NAME_PREF) + " שלום ");
         }
     }
 

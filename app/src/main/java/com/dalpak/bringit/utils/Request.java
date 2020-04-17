@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.dalpak.bringit.utils.SharedPrefs.saveData;
+
 public class Request {
 
     private static Request sRequest;
@@ -44,8 +46,8 @@ public class Request {
                 Log.d("response: ", json.toString());
                 try {
                     BusinessModel.getInstance().initData(json);
-                    SharePref.getInstance(context).saveData(Constants.TOKEN_PREF, json.getString("utoken"));
-                    SharePref.getInstance(context).saveData(Constants.LOG_IN_JSON_PREF, json.toString());
+                    saveData(Constants.TOKEN_PREF, json.getString("utoken"));
+                    saveData(Constants.LOG_IN_JSON_PREF, json.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -85,7 +87,7 @@ public class Request {
                 try {
                     if (json.has("status") && json.getBoolean("status")) {
                         if (json.getJSONObject("user").has("name")) {
-                            SharePref.getInstance(context).saveData(Constants.NAME_PREF, (json.getJSONObject("user")).getString("name"));
+                            saveData(Constants.NAME_PREF, (json.getJSONObject("user")).getString("name"));
                         }
                         listener.onDataDone(true);
                     } else {
