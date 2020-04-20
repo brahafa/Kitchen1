@@ -91,5 +91,6 @@
         android:layout_width="match_parent" />
 
     <include
+        android:id="@+id/stock_menu"
         layout="@layout/stock_menu"/>
 </RelativeLayout>

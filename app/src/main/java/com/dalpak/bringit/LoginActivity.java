@@ -2,13 +2,10 @@ package com.dalpak.bringit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.dalpak.bringit.databinding.ActivityLoginBinding;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
 
@@ -18,20 +15,15 @@ import androidx.core.content.ContextCompat;
 import static com.dalpak.bringit.utils.SharedPrefs.saveData;
 
 public class LoginActivity extends AppCompatActivity {
-    ImageView userNameDeleteIV, passwordDeleteIV;
-    private EditText usernameET, passwordET;
-    TextView goTV;
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        usernameET = findViewById(R.id.username);
-        passwordET = findViewById(R.id.password);
-        userNameDeleteIV = findViewById(R.id.clearName);
-        passwordDeleteIV = findViewById(R.id.clearPassword);
-        goTV = findViewById(R.id.go);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
 
         /*
         if(SharePref.getInstance(this).getBooleanData(Constants.USER_ALREADY_CONNECTED_PREF)){
@@ -48,75 +40,61 @@ public class LoginActivity extends AppCompatActivity {
 
          */
         initListener();
-        goTV.performClick(); // todo: remove before release
+        binding.tvGo.performClick(); // todo: remove before release
     }
 
     private void initListener() {
-        userNameDeleteIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                usernameET.setText("");
-                correctUsername();
-            }
+        binding.ivClearName.setOnClickListener(v -> {
+            binding.edtUsername.setText("");
+            correctUsername();
         });
 
-        passwordDeleteIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passwordET.setText("");
-                correctPassword();
-            }
+        binding.ivClearPassword.setOnClickListener(v -> {
+            binding.edtPassword.setText("");
+            correctPassword();
         });
-        goTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.tvGo.setOnClickListener(v ->
+                Request.getInstance().logIn(this,
+                        binding.edtUsername.getText().toString(),
+                        binding.edtPassword.getText().toString(),
+                        isDataSuccess -> {
+                            if (isDataSuccess) {
+                                saveData(Constants.USER_ALREADY_CONNECTED_PREF, true);
+                                openMainActivity();
+                            } else {
+                                errorInPassword();
+                                errorInUsername();
+                            }
 
-                Request.getInstance().logIn(getApplicationContext(), passwordET.getText().toString(), usernameET.getText().toString(), new Request.RequestCallBackSuccess() {
-                    @Override
-                    public void onDataDone(boolean isDataSuccess) {
-                        if (isDataSuccess) {
-                            saveData(Constants.USER_ALREADY_CONNECTED_PREF, true);
-                            openMainActivity();
-                        } else {
-                            errorInPassword();
-                            errorInUsername();
-                        }
+                        }));
 
-                    }
-                });
+        binding.edtPassword.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.tvGo.performClick();
+                return true;
             }
-        });
-
-        passwordET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    goTV.performClick();
-                    return true;
-                }
-                return false;
-            }
+            return false;
         });
     }
 
     private void errorInPassword() {
-        passwordDeleteIV.setVisibility(View.VISIBLE);
-        passwordET.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext_error));
+        binding.ivClearPassword.setVisibility(View.VISIBLE);
+        binding.edtPassword.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext_error));
     }
 
     private void errorInUsername() {
-        userNameDeleteIV.setVisibility(View.VISIBLE);
-        usernameET.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext_error));
+        binding.ivClearName.setVisibility(View.VISIBLE);
+        binding.edtUsername.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext_error));
     }
 
     public void correctPassword() {
-        passwordDeleteIV.setVisibility(View.INVISIBLE);
-        passwordET.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext));
+        binding.ivClearPassword.setVisibility(View.INVISIBLE);
+        binding.edtPassword.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext));
     }
 
     public void correctUsername() {
-        userNameDeleteIV.setVisibility(View.INVISIBLE);
-        usernameET.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext));
+        binding.ivClearName.setVisibility(View.INVISIBLE);
+        binding.edtUsername.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_edittext));
     }
 
     private void openMainActivity() {

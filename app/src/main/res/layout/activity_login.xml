@@ -28,12 +28,12 @@
             android:layout_height="wrap_content"
             android:textColor="@color/edit_text_background"
             android:text="שם משתמש"
-            android:layout_alignRight="@+id/username"
+            android:layout_alignRight="@+id/edt_username"
             android:id="@+id/username_tv"
             />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/edt_username"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -50,11 +50,11 @@
         android:singleLine="true" />
 
         <ImageView
-            android:id="@+id/clearName"
+            android:id="@+id/iv_clearName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/username"
-            android:layout_alignRight="@+id/username"
+            android:layout_alignTop="@+id/edt_username"
+            android:layout_alignRight="@+id/edt_username"
             android:layout_marginTop="13dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_clear"
@@ -72,10 +72,10 @@
             android:textColor="@color/edit_text_background"
             android:text="סיסמה"
             android:id="@+id/password_tv"
-            android:layout_alignRight="@+id/password"
+            android:layout_alignRight="@+id/edt_password"
             />
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/edt_password"
             android:layout_width="300dp"
             android:layout_below="@id/password_tv"
             android:layout_height="50dp"
@@ -91,11 +91,11 @@
             android:paddingRight="15dp" />
 
         <ImageView
-            android:id="@+id/clearPassword"
+            android:id="@+id/iv_clearPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/password"
-            android:layout_alignRight="@+id/password"
+            android:layout_alignTop="@+id/edt_password"
+            android:layout_alignRight="@+id/edt_password"
             android:layout_marginTop="13dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_clear"
@@ -105,7 +105,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/go"
+        android:id="@+id/tv_go"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_gravity="right"

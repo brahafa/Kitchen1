@@ -221,6 +221,7 @@ public class Network {
 
         } else if (error instanceof ParseError) {
             Toast.makeText(context, ("ParseError"), Toast.LENGTH_SHORT).show();
+            error.printStackTrace();
         } else {
             manageMsg(error, context);
         }
