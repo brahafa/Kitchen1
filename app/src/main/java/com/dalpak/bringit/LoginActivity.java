@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
          */
         initListener();
-        binding.tvGo.performClick(); // todo: remove before release
     }
 
     private void initListener() {

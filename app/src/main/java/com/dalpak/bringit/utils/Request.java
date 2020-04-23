@@ -408,6 +408,21 @@ public class Request {
         return globalObjList;
     }
 
+    public void checkToken(Context context, final RequestCallBackSuccess listener) {
+        Network network = new Network(new Network.NetworkCallBack() {
+            @Override
+            public void onDataDone(JSONObject json) {
+                listener.onDataDone(true);
+            }
+
+            @Override
+            public void onDataError(JSONObject json) {
+                listener.onDataDone(false);
+            }
+        });
+        network.sendRequest(context, Network.RequestName.GET_LOGGED_MANAGER, "");
+    }
+
     private void openAlertMsg(Context context, JSONObject json) {
         try {
             Utils.openAlertDialog(context, json.getString("message"), "");

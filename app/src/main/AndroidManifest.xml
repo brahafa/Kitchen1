@@ -17,14 +17,16 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name="com.dalpak.bringit.MainActivity" />
-        <activity android:name="com.dalpak.bringit.LoginActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
+
     </application>
 
 </manifest>

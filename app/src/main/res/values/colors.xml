@@ -15,6 +15,7 @@
     <color name="blue_press_2251f3">#2251f3</color>
     <color name="blue_2060e5">#2060e5</color>
     <color name="blue_4d83f4">#4d83f4</color>
+    <color name="ripple_blue_4d83f4">#CC2D6FF8</color>
     <color name="colorPrimary">#008577</color>
     <color name="green_00c37c">#00c37c</color>
     <color name="colorAccent">#D81B60</color>

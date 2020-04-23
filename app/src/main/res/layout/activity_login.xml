@@ -1,120 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
+    android:background="@android:color/white"
     android:layout_gravity="center"
     android:layout_height="match_parent"
+    android:layout_width="wrap_content"
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
 
-
-
     <ImageView
+        android:id="@+id/logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="100dp"
+        android:layout_marginTop="80dp"
         android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:src="@mipmap/bringit" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/edit_text_background"
-            android:text="שם משתמש"
-            android:layout_alignRight="@+id/edt_username"
-            android:id="@+id/username_tv"
-            />
-
-    <EditText
-        android:id="@+id/edt_username"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@drawable/background_edittext"
-        android:drawablePadding="16dp"
-        android:ellipsize="end"
-        android:imeOptions="actionNext"
-        android:lines="1"
-        android:text="olga@ilcargo.com"
-        android:layout_below="@id/username_tv"
-        android:maxLines="1"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:singleLine="true" />
-
-        <ImageView
-            android:id="@+id/iv_clearName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/edt_username"
-            android:layout_alignRight="@+id/edt_username"
-            android:layout_marginTop="13dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_clear"
-            android:visibility="invisible" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/edit_text_background"
-            android:text="סיסמה"
-            android:id="@+id/password_tv"
-            android:layout_alignRight="@+id/edt_password"
-            />
-        <EditText
-            android:id="@+id/edt_password"
-            android:layout_width="300dp"
-            android:layout_below="@id/password_tv"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:background="@drawable/background_edittext"
-            android:drawablePadding="16dp"
-            android:ellipsize="end"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:text="ilan1029"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
-
-        <ImageView
-            android:id="@+id/iv_clearPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/edt_password"
-            android:layout_alignRight="@+id/edt_password"
-            android:layout_marginTop="13dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_clear"
-            android:visibility="invisible"
-
-            />
-    </RelativeLayout>
+        android:src="@drawable/bringit_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/tv_go"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_gravity="right"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/selector_btn"
-        android:gravity="center"
-        android:shadowColor="@color/shadow"
-        android:shadowDy="4"
-        android:text="GO"
-        android:textColor="@color/white" />
+        android:id="@+id/username_tv"
+        android:layout_alignRight="@+id/edt_username"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding"
+        android:layout_width="wrap_content"
+        android:text="שם משתמש"
+        android:textColor="@color/edit_text_background"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/edt_username"
+        app:layout_constraintEnd_toEndOf="@+id/edt_username" />
 
-</LinearLayout>
+    <EditText
+        android:background="@drawable/selector_background_error"
+        android:ellipsize="end"
+        android:id="@+id/edt_username"
+        android:imeOptions="actionNext"
+        android:layout_below="@id/username_tv"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_width="0dp"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="@dimen/padding_x2"
+        android:singleLine="true"
+        android:text="olga@ilcargo.com"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/logo"
+        app:layout_constraintStart_toStartOf="@+id/logo"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+    <ImageView
+        android:id="@+id/iv_clear_name"
+        android:layout_alignRight="@+id/edt_username"
+        android:layout_alignTop="@+id/edt_username"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/padding_x2"
+        android:src="@drawable/ic_clear"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_username"
+        app:layout_constraintEnd_toEndOf="@+id/edt_username"
+        app:layout_constraintTop_toTopOf="@+id/edt_username"
+        tools:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/password_tv"
+        android:layout_alignRight="@+id/edt_password"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding"
+        android:layout_width="wrap_content"
+        android:text="סיסמה"
+        android:textColor="@color/edit_text_background"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/edt_password"
+        app:layout_constraintEnd_toEndOf="@+id/edt_password" />
+
+    <EditText
+        android:background="@drawable/selector_background_error"
+        android:ellipsize="end"
+        android:id="@+id/edt_password"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:layout_below="@id/password_tv"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_width="0dp"
+        android:maxLines="1"
+        android:padding="@dimen/padding_x2"
+        android:text="ilan1029"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/logo"
+        app:layout_constraintStart_toStartOf="@+id/logo"
+        app:layout_constraintTop_toBottomOf="@+id/edt_username" />
+
+    <ImageView
+        android:id="@+id/iv_clear_password"
+        android:layout_alignRight="@+id/edt_password"
+        android:layout_alignTop="@+id/edt_password"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/padding_x2"
+        android:src="@drawable/ic_clear"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_password"
+        app:layout_constraintEnd_toEndOf="@+id/edt_password"
+        app:layout_constraintTop_toTopOf="@+id/edt_password"
+        tools:visibility="visible" />
+
+    <Button
+        android:background="@drawable/background_btn"
+        android:gravity="center"
+        android:id="@+id/tv_go"
+        android:layout_gravity="right"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_width="150dp"
+        android:padding="@dimen/padding_x2"
+        android:text="GO"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/logo"
+        app:layout_constraintTop_toBottomOf="@+id/edt_password" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
