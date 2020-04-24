@@ -33,9 +33,7 @@ public class BusinessModel {
         return instance;
     }
 
-    public void initData(JSONObject JSONbusinessModel) throws JSONException {
-
-        JSONObject jsonObjectMsg = JSONbusinessModel.getJSONObject("message");
+    public void initData(JSONObject jsonObjectMsg) throws JSONException {
 
         business_id = jsonObjectMsg.getInt("business_id");
         business_name_formal = jsonObjectMsg.getString("business_name_formal");
@@ -48,7 +46,6 @@ public class BusinessModel {
         business_delivery_time = jsonObjectMsg.getString("business_delivery_time");
         additional_delivery_time_in_minute = jsonObjectMsg.getString("additional_delivery_time_in_minute");
         logo_url = jsonObjectMsg.getString("logo_url");
-        utoken = JSONbusinessModel.getString("utoken");
 
 
     }
