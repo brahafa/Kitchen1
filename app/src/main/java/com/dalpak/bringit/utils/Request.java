@@ -107,7 +107,7 @@ public class Request {
                 openAlertMsg(context, json);
             }
         });
-        network.sendPostRequest(context, jsonObject, Network.RequestName.SETINGS_LOGIN);
+        network.sendPostRequest(context, jsonObject, Network.RequestName.WORKER_LOGIN);
     }
 
     public void getAllOrders(final Context context, final RequestJsonCallBack listener) {
