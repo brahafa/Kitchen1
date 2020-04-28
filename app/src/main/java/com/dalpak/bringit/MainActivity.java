@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding.stockTvClick.setOnClickListener(v -> {
             if (binding.stockMenu.getRoot().getVisibility() == View.VISIBLE) {
-                binding.stockMenu.getRoot().setVisibility(View.GONE);
+               closeStockMenu();
             } else {
-                binding.stockMenu.getRoot().setVisibility(View.VISIBLE);
+                openStockMenu();
             }
         });
 
@@ -78,10 +78,27 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 getSupportFragmentManager().popBackStack();
             }
-
-
+        });
+        binding.nameTV.setOnClickListener(v -> {
+            openPasswordDialog();
+        });
+        binding.coverView.setOnClickListener(v -> {
+            if (binding.stockMenu.getRoot().getVisibility() == View.VISIBLE) {
+                closeStockMenu();
+            }
         });
     }
+
+    private void closeStockMenu(){
+        binding.stockMenu.getRoot().setVisibility(View.GONE);
+        binding.coverView.setVisibility(View.GONE);
+    }
+
+    private void openStockMenu(){
+        binding.stockMenu.getRoot().setVisibility(View.VISIBLE);
+        binding.coverView.setVisibility(View.VISIBLE);
+    }
+
 
     public void setName() {
         if (!getData(Constants.NAME_PREF).equals("")) {
@@ -133,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openFragment(Fragment fragmentToOpen, String tag) {
-        binding.stockMenu.getRoot().setVisibility(View.GONE);
+        closeStockMenu();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_container, fragmentToOpen, tag);
         transaction.addToBackStack(null);

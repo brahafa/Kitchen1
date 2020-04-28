@@ -211,7 +211,7 @@ public class MainFragment extends Fragment {
 
         final View header = View.inflate(getActivity(), R.layout.column_header, null);
 
-        String[] sections = getResources().getStringArray(R.array.sections);
+        String[] sections = getResources().getStringArray(R.array.sections_iw);
 
         ((TextView) header.findViewById(R.id.tv_column_title)).setText(sections[mColumns]);
 

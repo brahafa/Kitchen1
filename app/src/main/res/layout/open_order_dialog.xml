@@ -275,6 +275,51 @@
 
                     <TextView
                         android:gravity="right"
+                        android:id="@+id/tv_title_order_src"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_width="0dp"
+                        android:text="מקור הזמנה"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_order_src"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_order_src"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:gravity="right"
+                        android:id="@+id/tv_order_src"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="0dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_title_order_src"
+                        app:layout_constraintStart_toStartOf="@+id/tv_title_order_src"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_title_order_src"
+                        tools:text="מקור הזמנה" />
+
+                    <ImageView
+                        android:background="@drawable/shipping_num_btn_back"
+                        android:id="@+id/iv_order_src"
+                        android:layout_height="36dp"
+                        android:layout_width="36dp"
+                        android:padding="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+
+                    <TextView
+                        android:gravity="right"
                         android:id="@+id/tv_title_order_type"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"

@@ -90,6 +90,12 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/cover_view"/>
+
     <include
         android:id="@+id/stock_menu"
         layout="@layout/stock_menu"/>

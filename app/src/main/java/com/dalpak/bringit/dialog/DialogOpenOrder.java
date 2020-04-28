@@ -34,7 +34,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     private OpenOrderModel orderModel;
     private View viewOrderChanged;
     private CardView cvComment;
-    private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick;
+    private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick, tvOrderSrc;
     private ImageView orderMethodIV;
     private RecyclerView rvDrink, rvPizza, rvAdditional;
     private LinearLayout shippingHolder;
@@ -95,10 +95,13 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         rvDrink = findViewById(R.id.rvDrink);
         rvAdditional = findViewById(R.id.rvAdditional);
         rvPizza = findViewById(R.id.rvPizza);
+        tvOrderSrc = findViewById(R.id.tv_order_src);
 
         orderDateTV.setText(orderModel.getOrder_time());
         orderNumTV.setText(orderModel.getOrder_id());
         orderNameTV.setText(orderModel.getF_name() + " " + orderModel.getL_name());
+
+        tvOrderSrc.setText(orderModel.getOrder_id());
 
         viewOrderChanged.setVisibility(checkIfEdited() ? View.VISIBLE : View.GONE);
         cvComment.setCardBackgroundColor(Color.parseColor(checkIfEdited() ? "#12c395" : "#6f7888"));

@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,10 +84,10 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
         }
         if (item.isObject_status()) {
             holder.inStockTvClick.setText("במלאי");
-            //  holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.green_00c37c)));
+              holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background));
         } else {
             holder.inStockTvClick.setText("לא במלאי");
-            // holder.inStockTvClick.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.red_ff7171)));
+            holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background_not_in_stock));
         }
         holder.inStockTvClick.setOnClickListener(v ->
                 Request.getInstance().updateItemPrice(context, item, jsonObject -> {
