@@ -1,6 +1,7 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,16 +73,27 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
         if (item.getObject_type().equals("food") || item.getObject_type().equals("deal")) {
             holder.itemImage.setVisibility(View.GONE);
         } else {
-            String url = Constants.IMAGES_BASE_URL + item.getObject_type() + "/" + item.getPicture();
-            Glide.with(context)
-                    .load(url)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .centerInside()
-                    .into(holder.itemImage);
-            holder.itemImage.setVisibility(View.VISIBLE);
+
+            if(item.getObject_type().equals("topping")){
+                int id = context.getResources().getIdentifier(item.getPicture().replace(".png", ""), "mipmap", context.getPackageName());
+                if(id > 0) {
+                    Drawable drawable = context.getResources().getDrawable(id);
+                    holder.itemImage.setImageDrawable(drawable);
+                }
+            }else{
+                String url = Constants.IMAGES_BASE_URL + item.getObject_type() + "/" + item.getPicture();
+                Glide.with(context)
+                        .load(url)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.ic_placeholder)
+                        .centerInside()
+                        .into(holder.itemImage);
+                holder.itemImage.setVisibility(View.VISIBLE);
+            }
+
 
         }
+
         if (item.isObject_status()) {
             holder.inStockTvClick.setText("במלאי");
               holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background));
