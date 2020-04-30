@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initUI();
         initListeners();
-        openPasswordDialog();
+        openPasswordDialog(false);
     }
 
     private void initUI() {
@@ -74,19 +74,29 @@ public class MainActivity extends AppCompatActivity {
         binding.backRL.setOnClickListener(v -> {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (f instanceof MainFragment) {
-                openPasswordDialog();
+                openPasswordDialog(true);
             } else {
                 getSupportFragmentManager().popBackStack();
             }
         });
         binding.nameTV.setOnClickListener(v -> {
-            openPasswordDialog();
+            openPasswordDialog(true);
         });
         binding.coverView.setOnClickListener(v -> {
             if (binding.stockMenu.getRoot().getVisibility() == View.VISIBLE) {
                 closeStockMenu();
             }
         });
+    }
+    @Override
+    public void onBackPressed()
+    {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (f instanceof MainFragment) {
+            openPasswordDialog(true);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void closeStockMenu(){
@@ -125,7 +135,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void openPasswordDialog() {
+    public void openPasswordDialog(boolean needLogout) {
+        if(needLogout){
+            Request.getInstance().workerLogout(this);
+        }
         PasswordDialog passwordDialog = new PasswordDialog(this);
         passwordDialog.setCancelable(false);
         passwordDialog.show();

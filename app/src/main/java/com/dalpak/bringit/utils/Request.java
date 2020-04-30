@@ -109,6 +109,22 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.WORKER_LOGIN);
     }
 
+
+    public void workerLogout(final Context context) {
+        Network network = new Network(new Network.NetworkCallBack() {
+            @Override
+            public void onDataDone(JSONObject json) {
+                Log.d("GET_ALL_ORDERS", json.toString());
+            }
+
+            @Override
+            public void onDataError(JSONObject json) {
+
+            }
+        });
+        network.sendPostRequest(context, null, Network.RequestName.WORKER_LOGOUT);
+    }
+
     public void getAllOrders(final Context context, final RequestJsonCallBack listener) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
