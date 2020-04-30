@@ -7,10 +7,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/bringit_logo"
         android:label="@string/app_name"
         android:name="com.dalpak.bringit.utils.MyApp"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/bringit_logo"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <uses-library

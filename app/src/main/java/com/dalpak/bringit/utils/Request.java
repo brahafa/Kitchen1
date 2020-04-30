@@ -77,7 +77,6 @@ public class Request {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("password", password);
-            jsonObject.put("phone", "0501112222");
             Log.d("send data: ", jsonObject.toString());
 
         } catch (JSONException e) {
