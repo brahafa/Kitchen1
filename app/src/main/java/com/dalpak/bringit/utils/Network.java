@@ -224,7 +224,7 @@ public class Network {
             Utils.openAlertDialog(context, "בדוק חיבור לאינטרנט", "");
 
         } else if (error instanceof ParseError) {
-            Toast.makeText(context, ("ParseError"), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context, ("ParseError"), Toast.LENGTH_SHORT).show();
             error.printStackTrace();
         } else {
             manageMsg(error, context);
