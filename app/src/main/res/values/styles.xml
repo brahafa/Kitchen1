@@ -13,4 +13,11 @@
         <item name="colorButtonNormal">@color/blue_2060e5</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="BrandedSwitch.control" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/green_00c37c</item>
+        <item name="colorSwitchThumbNormal">@color/gray_e6ebf4</item>
+    </style>
+
 </resources>

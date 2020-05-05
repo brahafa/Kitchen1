@@ -2,6 +2,7 @@ package com.dalpak.bringit;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
@@ -53,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
         stockModelList = new ArrayList<>();
         gson = new Gson();
         openFragment(fragment, "Main");
+        Request.getInstance().getLoggedManager(this, new Request.RequestJsonCallBack() {
+            @Override
+            public void onDataDone(JSONObject jsonObject) {
+                Log.d("sssss", jsonObject.toString());
+            }
+        });
     }
 
     private void initListeners() {
@@ -69,6 +78,30 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 openStockMenu();
             }
+        });
+
+        binding.swLayout.setOnClickListener(v -> {
+            String status;
+            if (binding.swWebsite.isChecked()) {
+                binding.titleSwitch.setText("אתר לא פעיל");
+                binding.swWebsite.setChecked(false);
+                status = "open";
+
+            } else {
+                binding.titleSwitch.setText("אתר פעיל");
+                binding.swWebsite.setChecked(true);
+                status = "close";
+            }
+            Request.getInstance().changeBusinessStatus(this, status, new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+        });
+
+        binding.backToMain.setOnClickListener(v -> {
+            popBackStackTillEntry(1);
         });
 
         binding.backRL.setOnClickListener(v -> {
@@ -168,6 +201,15 @@ public class MainActivity extends AppCompatActivity {
         transaction.add(R.id.fragment_container, fragmentToOpen, tag);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void popBackStackTillEntry(int entryIndex) {
+
+        if (getSupportFragmentManager().getBackStackEntryCount() <= entryIndex) {
+            return;
+        }
+        FragmentManager.BackStackEntry entry = getSupportFragmentManager().getBackStackEntryAt(entryIndex);
+        getSupportFragmentManager().popBackStackImmediate(entry.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
 }

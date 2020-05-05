@@ -298,6 +298,47 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.ORDER_CHANGE_POS);
     }
 
+    public void getLoggedManager (Context context , RequestJsonCallBack requestJsonCallBack){
+        Network network = new Network(new Network.NetworkCallBack() {
+            @Override
+            public void onDataDone(JSONObject json) {
+                Log.d("getLoggedManager ", json.toString());
+                requestJsonCallBack.onDataDone(json);
+            }
+
+            @Override
+            public void onDataError(JSONObject json) {
+                Log.d("getLoggedManager Err", json.toString());
+            }
+        });
+        network.sendRequest(context, Network.RequestName.GET_LOGGED_MANAGER, null);
+    }
+
+    public void changeBusinessStatus (Context context,String status, Runnable runnable){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("business_id",  BusinessModel.getInstance().getBusiness_id());
+            jsonObject.put("status", status);
+            Log.d("send data: ", jsonObject.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Network network = new Network(new Network.NetworkCallBack() {
+            @Override
+            public void onDataDone(JSONObject json) {
+                Log.d("changeBusinessStatus ", json.toString());
+                runnable.run();
+            }
+
+            @Override
+            public void onDataError(JSONObject json) {
+                Log.d("changeStatus Err", json.toString());
+            }
+        });
+        network.sendPostRequest(context, jsonObject, Network.RequestName.CHANGE_BUSINESS_STATUS);
+    }
+
     public void getItemsInSelectedFolder(Context context, String param, Network.RequestName getItemsInSelectedFoleder, final RequestJsonCallBack listener) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override

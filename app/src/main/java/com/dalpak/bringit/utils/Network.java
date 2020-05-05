@@ -48,7 +48,7 @@ public class Network {
         GET_ITEMS_IN_SELECTED_FOLEDER, WORKER_LOGIN, LOG_IN_MANAGER, GET_ALL_ORDERS,
         GET_ITEMS_SHOTR_CUT_FOLEDER, ADD_TO_CART, GET_ITEMS_BY_TYPE, GET_ORDER_DETAILS_BY_ID,
         GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS, LOAD_BUSINES_ITEMS, UPDATE_ITEM_PRICE, GET_ORDER_CODE,
-        WORKER_LOGOUT
+        WORKER_LOGOUT, CHANGE_BUSINESS_STATUS
     }
 
     Network(NetworkCallBack listener) {
@@ -60,7 +60,7 @@ public class Network {
         String url = BASE_URL;
         switch (requestName) {
             case GET_LOGGED_MANAGER:
-                url += BUSINESS + "getLoggedManager";
+                url += BUSINESS + "getLoggedManager"+ "&u=" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case GET_ALL_ORDERS:
                 url += BUSINESS + "getAllOrders&business_id=" + param1;
@@ -83,6 +83,8 @@ public class Network {
                 break;
             case GET_ORDER_CODE:
                 url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
+                break;
+
 
         }
         sendRequestObject(requestName, url, context, listener);
@@ -99,6 +101,8 @@ public class Network {
                 break;
             case CLEAR_CART:
                 url += PIZZIRIA + "clearCart";
+                break;
+
 
         }
         Log.d("Request url  ", url);
@@ -174,7 +178,9 @@ public class Network {
                 break;
             case WORKER_LOGOUT:
                 url += DALPAK + "workerLogout";
-
+                break;
+            case CHANGE_BUSINESS_STATUS:
+                url += BUSINESS + "changeBusinessStatus";
 
         }
         Log.d("POST url  ", url);
