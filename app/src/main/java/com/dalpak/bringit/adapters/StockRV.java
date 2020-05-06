@@ -74,18 +74,20 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
             holder.itemImage.setVisibility(View.GONE);
         } else {
 
-            if(item.getObject_type().equals("topping")){
+            if (item.getObject_type().equals("topping")) {
                 int id = context.getResources().getIdentifier(item.getPicture().replace(".png", ""), "mipmap", context.getPackageName());
-                if(id > 0) {
+                if (id > 0) {
                     Drawable drawable = context.getResources().getDrawable(id);
                     holder.itemImage.setImageDrawable(drawable);
                 }
-            }else{
+            } else {
                 String url = Constants.IMAGES_BASE_URL + item.getObject_type() + "/" + item.getPicture();
                 Glide.with(context)
                         .load(url)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .placeholder(R.drawable.ic_placeholder)
+                        .placeholder(item.getObject_type().equals("drink")
+                                ? R.drawable.ic_ph_drink
+                                : R.drawable.ic_ph_food)
                         .centerInside()
                         .into(holder.itemImage);
                 holder.itemImage.setVisibility(View.VISIBLE);
@@ -96,7 +98,7 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
         if (item.isObject_status()) {
             holder.inStockTvClick.setText("במלאי");
-              holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background));
+            holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background));
         } else {
             holder.inStockTvClick.setText("לא במלאי");
             holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background_not_in_stock));

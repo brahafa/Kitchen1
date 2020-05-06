@@ -139,21 +139,25 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             String imageUrl = "";
+            int placeholderRes = R.drawable.ic_placeholder;
             switch (item.get_ItemType()) {
                 case "Drink":
                     imageUrl = Constants.DRINKS_URL + item.getItem_picture();
+                    placeholderRes = R.drawable.ic_ph_drink;
                     break;
                 case "AdditionalOffer":
                     imageUrl = Constants.ADDITIONAL_URL + item.getItem_picture();
+                    placeholderRes = R.drawable.ic_ph_food;
                     break;
                 case "Food":
                     imageUrl = Constants.FOOD_URL + item.getItem_picture();
+                    placeholderRes = R.drawable.ic_ph_pizza;
                     break;
             }
             Glide.with(context)
                     .load(imageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.ic_placeholder)
+                    .placeholder(placeholderRes)
                     .into(holder1.itemImage);
         }
 
