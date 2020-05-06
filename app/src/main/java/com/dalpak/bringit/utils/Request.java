@@ -288,6 +288,7 @@ public class Request {
             @Override
             public void onDataDone(JSONObject json) {
                 Log.d("orderChangePos", jsonObject.toString());
+                listener.onDataDone(jsonObject);
             }
 
             @Override
@@ -298,7 +299,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.ORDER_CHANGE_POS);
     }
 
-    public void getLoggedManager (Context context , RequestJsonCallBack requestJsonCallBack){
+    public void getLoggedManager(Context context, RequestJsonCallBack requestJsonCallBack) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
@@ -314,10 +315,10 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_LOGGED_MANAGER, null);
     }
 
-    public void changeBusinessStatus (Context context,String status, Runnable runnable){
+    public void changeBusinessStatus(Context context, String status, Runnable runnable) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("business_id",  BusinessModel.getInstance().getBusiness_id());
+            jsonObject.put("business_id", BusinessModel.getInstance().getBusiness_id());
             jsonObject.put("status", status);
             Log.d("send data: ", jsonObject.toString());
 

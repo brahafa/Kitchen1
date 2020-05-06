@@ -18,6 +18,7 @@ import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.OrderModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.utils.Utils;
 import com.google.gson.Gson;
 import com.woxthebox.draglistview.BoardView;
 import com.woxthebox.draglistview.ColumnProperties;
@@ -36,6 +37,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 public class MainFragment extends Fragment {
 
     private final int REQUEST_REPEAT_INTERVAL = 10 * 1000;
+    private final long DELAY_TIME_IN_SECONDS = 20;
 
     private BoardView mBoardView;
     private int mColumns;
@@ -46,6 +48,8 @@ public class MainFragment extends Fragment {
     private MediaPlayer mp;
 
     private String lastResponse = "";
+    private int lastNewOrdersSize = 0;
+    private int lastCookingOrdersSize = 0;
 
     private Runnable mRunnable = () -> Request.getInstance().getAllOrders(getActivity(),
             jsonObject -> {
@@ -67,9 +71,6 @@ public class MainFragment extends Fragment {
 
         gson = new Gson();
 
-        mp = MediaPlayer.create(getActivity(), R.raw.trike);
-        mp.setOnCompletionListener(MediaPlayer::release);
-
         String[] statuses = getResources().getStringArray(R.array.statuses);
 
         mBoardView = view.findViewById(R.id.board_view);
@@ -82,7 +83,7 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
-                setupBoardUpdates();
+//                setupBoardUpdates();
                 if (fromColumn != toColumn) {
                     changeStatus(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
@@ -94,6 +95,7 @@ public class MainFragment extends Fragment {
                             true,
                             statuses[fromColumn],
                             statuses[toColumn]);
+                    if (fromColumn == 2 && toColumn == 1) lastCookingOrdersSize--;
                 } else if (fromRow != toRow) {
                     changePosition(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
@@ -142,6 +144,20 @@ public class MainFragment extends Fragment {
                 initRV(getOrdersList(jsonObject, "cooking"));
                 initRV(getOrdersList(jsonObject, "preparing"));
                 initRV(getOrdersList(jsonObject, "received"));
+
+                int newOrdersSize = getOrdersList(jsonObject, "received").size();
+                if (lastNewOrdersSize < newOrdersSize) playSound(Constants.ALERT_NEW_ORDER);
+
+                if (isEdited(jsonObject)) playSound(Constants.ALERT_EDIT_ORDER);
+
+                int cookingOrdersSize = getOrdersList(jsonObject, "cooking").size();
+                if (lastCookingOrdersSize > cookingOrdersSize) playSound(Constants.ALERT_FINISH_COOKING);
+
+                if (mp != null) mp.stop();
+                if (hasDelay(jsonObject)) mp = playSound(Constants.ALERT_ORDER_OVERTIME);
+
+                lastNewOrdersSize = newOrdersSize;
+                lastCookingOrdersSize = cookingOrdersSize;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -183,14 +199,13 @@ public class MainFragment extends Fragment {
 
     private void changePosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {
         Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr, jsonObject -> {
+            startBoardUpdates();
         });
     }
 
     private void initRV(final List<OrderModel> orderModels) {
 
-        OrderAdapter bottomListAdapter = new OrderAdapter(orderModels, new OrderAdapter.AdapterCallback() {
-            @Override
-            public void onItemChoose(OrderModel orderModel) {
+        OrderAdapter bottomListAdapter = new OrderAdapter(orderModels, orderModel ->
                 Request.getInstance().getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), jsonObject -> {
                     try {
                         OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
@@ -198,16 +213,8 @@ public class MainFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                });
-            }
+                }));
 
-            @Override
-            public void onOrderDelay() {
-                playSound(Constants.ALERT_ORDER_OVERTIME);
-            }
-        });
-
-        if (checkIfEdited(orderModels)) playSound(Constants.ALERT_EDIT_ORDER);
 
         final View header = View.inflate(getActivity(), R.layout.column_header, null);
 
@@ -249,37 +256,61 @@ public class MainFragment extends Fragment {
     }
 
 
-    private void playSound(int alertType) {
-        int resId = -1;
+    private MediaPlayer playSound(int alertType) {
         switch (alertType) {
+            default:
             case Constants.ALERT_NEW_ORDER:
-                resId = R.raw.trike; // todo change to right sound
+                MediaPlayer mp1 = MediaPlayer.create(getActivity(), R.raw.new_order);
+                mp1.setOnPreparedListener(MediaPlayer::start);
                 break;
             case Constants.ALERT_ORDER_OVERTIME:
-                resId = R.raw.trike; // todo change to right sound
-                break;
+                MediaPlayer mp2 = MediaPlayer.create(getActivity(), R.raw.ping);
+                mp2.setOnPreparedListener(MediaPlayer::start);
+                mp2.setOnCompletionListener(MediaPlayer::start);
+                return mp2;
             case Constants.ALERT_EDIT_ORDER:
-                resId = R.raw.trike; // todo change to right sound
+                MediaPlayer mp3 = MediaPlayer.create(getActivity(), R.raw.order_edit);
+                mp3.setOnPreparedListener(MediaPlayer::start);
                 break;
             case Constants.ALERT_FINISH_COOKING:
-                resId = R.raw.trike; // todo change to right sound
+                MediaPlayer mp4 = MediaPlayer.create(getActivity(), R.raw.exit_from_cooking);
+                mp4.setOnPreparedListener(MediaPlayer::start);
                 break;
         }
-        try {
-            if (mp.isPlaying()) {
-                mp.stop();
-                mp.release();
-                mp = MediaPlayer.create(getActivity(), resId);
-            }
-//            mp.start();  //todo enable when work on alerts
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return null;
+
     }
 
-    private boolean checkIfEdited(List<OrderModel> orderModels) {
-        for (OrderModel model : orderModels) {
-            if (model.getOrder_has_changes().equals("1")) return true;
+    private boolean isEdited(JSONObject jsonObject) {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(jsonObject.getJSONObject("ordersByStatus").getJSONArray("sent"));
+            jsonArray.put(jsonObject.getJSONObject("ordersByStatus").getJSONArray("packing"));
+            jsonArray.put(jsonObject.getJSONObject("ordersByStatus").getJSONArray("cooking"));
+            jsonArray.put(jsonObject.getJSONObject("ordersByStatus").getJSONArray("preparing"));
+            jsonArray.put(jsonObject.getJSONObject("ordersByStatus").getJSONArray("received"));
+            for (int i = 0; i < jsonArray.length(); i++) {
+                for (int j = 0; j < jsonArray.getJSONArray(i).length(); j++) {
+                    String orderTime = jsonArray.getJSONArray(i).getJSONObject(j).getString("order_has_changes");
+                    if (orderTime.equals("1")) return true;
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean hasDelay(JSONObject jsonObject) {
+        try {
+            JSONArray jsonArray = jsonObject.getJSONObject("ordersByStatus").getJSONArray("received");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String orderTime = jsonArray.getJSONObject(i).getString("order_time");
+                if (Utils.getOrderTimerLong(orderTime) > DELAY_TIME_IN_SECONDS) return true;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return false;
     }

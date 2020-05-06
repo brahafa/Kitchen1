@@ -17,6 +17,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
 
     private List<OrderModel> orderList;
     private AdapterCallback adapterCallback;
+    private final long DELAY_TIME_IN_SECONDS = 20;
 
 
     class OrderHolder extends DragItemAdapter.ViewHolder {
@@ -70,8 +71,8 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
         }
 
         holder.orderTime.setText(orderList.get(position).getStartTimeStr());
-        if (Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > 3) {
-            adapterCallback.onOrderDelay();
+        if (orderList.get(position).getStatus().equals("received") &&
+                Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > DELAY_TIME_IN_SECONDS) {
             holder.warningImg.setVisibility(View.VISIBLE);
         }
 
@@ -91,8 +92,6 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
 
     public interface AdapterCallback {
         void onItemChoose(OrderModel orderModel);
-
-        void onOrderDelay();
     }
 
 }

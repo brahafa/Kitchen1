@@ -51,7 +51,7 @@ public class Utils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return TimeUnit.MILLISECONDS.toMinutes(calendar.getTimeInMillis() - calendarForOrder.getTimeInMillis());
+        return TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis() - calendarForOrder.getTimeInMillis());
     }
 
 }
