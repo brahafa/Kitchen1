@@ -56,11 +56,8 @@ public class MainActivity extends AppCompatActivity {
         stockModelList = new ArrayList<>();
         gson = new Gson();
         openFragment(fragment, "Main");
-        Request.getInstance().getLoggedManager(this, new Request.RequestJsonCallBack() {
-            @Override
-            public void onDataDone(JSONObject jsonObject) {
-                Log.d("sssss", jsonObject.toString());
-            }
+        Request.getInstance().checkBusinessStatus(this, isBusinessOpen -> {
+            changeBusinessStatus(!isBusinessOpen);
         });
     }
 
@@ -74,29 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
         binding.stockTvClick.setOnClickListener(v -> {
             if (binding.stockMenu.getRoot().getVisibility() == View.VISIBLE) {
-               closeStockMenu();
+                closeStockMenu();
             } else {
                 openStockMenu();
             }
         });
 
         binding.swLayout.setOnClickListener(v -> {
-            String status;
-            if (binding.swWebsite.isChecked()) {
-                binding.titleSwitch.setText("אתר לא פעיל");
-                binding.swWebsite.setChecked(false);
-                status = "open";
-
-            } else {
-                binding.titleSwitch.setText("אתר פעיל");
-                binding.swWebsite.setChecked(true);
-                status = "close";
-            }
-            Request.getInstance().changeBusinessStatus(this, status, new Runnable() {
-                @Override
-                public void run() {
-
-                }
+            Request.getInstance().changeBusinessStatus(this, binding.swWebsite.isChecked() ? "close" : "open", () -> {
+                changeBusinessStatus(binding.swWebsite.isChecked());
             });
         });
 
@@ -121,9 +104,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void changeBusinessStatus(boolean status) {
+        if (status) {
+            binding.titleSwitch.setText("אתר לא פעיל");
+            binding.swWebsite.setChecked(false);
+
+        } else {
+            binding.titleSwitch.setText("אתר פעיל");
+            binding.swWebsite.setChecked(true);
+        }
+    }
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (f instanceof MainFragment) {
             openPasswordDialog(true);
@@ -132,12 +126,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void closeStockMenu(){
+    private void closeStockMenu() {
         binding.stockMenu.getRoot().setVisibility(View.GONE);
         binding.coverView.setVisibility(View.GONE);
     }
 
-    private void openStockMenu(){
+    private void openStockMenu() {
         binding.stockMenu.getRoot().setVisibility(View.VISIBLE);
         binding.coverView.setVisibility(View.VISIBLE);
     }
@@ -169,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openPasswordDialog(boolean needLogout) {
-        if(needLogout){
+        if (needLogout) {
             Request.getInstance().workerLogout(this);
         }
         PasswordDialog passwordDialog = new PasswordDialog(this);

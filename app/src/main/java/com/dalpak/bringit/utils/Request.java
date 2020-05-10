@@ -299,12 +299,16 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.ORDER_CHANGE_POS);
     }
 
-    public void getLoggedManager(Context context, RequestJsonCallBack requestJsonCallBack) {
+    public void checkBusinessStatus(Context context, RequestCallBackSuccess requestCallBackSuccess) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Log.d("getLoggedManager ", json.toString());
-                requestJsonCallBack.onDataDone(json);
+                Log.d("checkBusinessStatus ", json.toString());
+                try {
+                    requestCallBackSuccess.onDataDone(json.getBoolean("message"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -312,7 +316,7 @@ public class Request {
                 Log.d("getLoggedManager Err", json.toString());
             }
         });
-        network.sendRequest(context, Network.RequestName.GET_LOGGED_MANAGER, null);
+        network.sendRequest(context, Network.RequestName.CHECK_BUSINESS_STATUS, null);
     }
 
     public void changeBusinessStatus(Context context, String status, Runnable runnable) {

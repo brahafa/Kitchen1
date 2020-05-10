@@ -48,7 +48,7 @@ public class Network {
         GET_ITEMS_IN_SELECTED_FOLEDER, WORKER_LOGIN, LOG_IN_MANAGER, GET_ALL_ORDERS,
         GET_ITEMS_SHOTR_CUT_FOLEDER, ADD_TO_CART, GET_ITEMS_BY_TYPE, GET_ORDER_DETAILS_BY_ID,
         GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS, LOAD_BUSINES_ITEMS, UPDATE_ITEM_PRICE, GET_ORDER_CODE,
-        WORKER_LOGOUT, CHANGE_BUSINESS_STATUS
+        WORKER_LOGOUT, CHANGE_BUSINESS_STATUS, CHECK_BUSINESS_STATUS
     }
 
     Network(NetworkCallBack listener) {
@@ -60,7 +60,7 @@ public class Network {
         String url = BASE_URL;
         switch (requestName) {
             case GET_LOGGED_MANAGER:
-                url += BUSINESS + "getLoggedManager"+ "&u=" + BusinessModel.getInstance().getBusiness_id();
+                url += BUSINESS + "getLoggedManager" + "&u=" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case GET_ALL_ORDERS:
                 url += BUSINESS + "getAllOrders&business_id=" + param1;
@@ -84,6 +84,8 @@ public class Network {
             case GET_ORDER_CODE:
                 url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
                 break;
+            case CHECK_BUSINESS_STATUS:
+                url += BUSINESS + "checkBusinessStatus&business_id=" + BusinessModel.getInstance().getBusiness_id();
 
 
         }
@@ -230,7 +232,7 @@ public class Network {
             Utils.openAlertDialog(context, "בדוק חיבור לאינטרנט", "");
 
         } else if (error instanceof ParseError) {
-           // Toast.makeText(context, ("ParseError"), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, ("ParseError"), Toast.LENGTH_SHORT).show();
             error.printStackTrace();
         } else {
             manageMsg(error, context);
