@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     private View viewOrderChanged;
     private CardView cvComment;
     private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick, tvOrderSrc, tvPayment;
+    private TextView tvTotal, tvItemsDetails;
     private ImageView orderMethodIV;
     private RecyclerView rvDrink, rvPizza, rvAdditional;
     private LinearLayout shippingHolder;
@@ -97,12 +99,19 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         rvPizza = findViewById(R.id.rvPizza);
         tvOrderSrc = findViewById(R.id.tv_order_src);
         tvPayment = findViewById(R.id.tv_payment);
+        tvTotal = findViewById(R.id.tv_total);
+        tvItemsDetails = findViewById(R.id.tv_items_details);
+
+        tvItemsDetails.setOnClickListener(v -> {
+            openDetailsDialog(orderModel);
+        });
 
         orderDateTV.setText(orderModel.getOrder_time());
         orderNumTV.setText(orderModel.getOrder_id());
         orderNameTV.setText(orderModel.getF_name() + " " + orderModel.getL_name());
-        tvPayment.setText("שיטת תשלום: "+ orderModel.getPayment_display());
-        tvOrderSrc.setText("הזמנה דרך: "+ orderModel.getAdded_by_system());
+        tvPayment.setText("שיטת תשלום: " + orderModel.getPayment_display());
+        tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAdded_by_system());
+        tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getOrder_total(), context.getResources().getString(R.string.shekel)));
         viewOrderChanged.setVisibility(checkIfEdited() ? View.VISIBLE : View.GONE);
         cvComment.setCardBackgroundColor(Color.parseColor(checkIfEdited() ? "#12c395" : "#6f7888"));
 
@@ -142,32 +151,14 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     }
 
     private void initPizzaRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
-        /*
-            OpenOrderPizzaRv openOrderRv = new OpenOrderPizzaRv(context, orderModels, new OpenOrderPizzaRv.AdapterCallback() {
-            @Override
-            public void onItemChoose(ItemModel itemModel) {
-
-            }
-        });
-        recyclerView.setLayoutManager(new LinearLayoutManager(
-                context, LinearLayoutManager.VERTICAL, false));
-
-        recyclerView.setAdapter(openOrderRv);
-        //  recyclerView.setOnDragListener(Adapter.getDragInstance());
-         */
 
         OpenOrderPizzaAdapter mAdapter = new OpenOrderPizzaAdapter(context, orderModels, new OpenOrderPizzaAdapter.AdapterCallback() {
             @Override
             public void onItemChoose(ItemModel itemModel) {
-
             }
         });
-
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-
-        // Initialize a new instance of RecyclerView Adapter instance
-
 
         // Set the adapter for RecyclerView
         recyclerView.setAdapter(mAdapter);
@@ -197,6 +188,16 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
                 break;
 
         }
+    }
+
+    private void openDetailsDialog(OpenOrderModel orderModel) {
+        DialogOrderDetails d = new DialogOrderDetails(context, orderModel);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(d.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        d.show();
+        d.getWindow().setAttributes(lp);
     }
 
     private boolean checkIfEdited() {

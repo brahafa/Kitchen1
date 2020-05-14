@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         stockModelList = new ArrayList<>();
         gson = new Gson();
         openFragment(fragment, "Main");
+        checkBusinessStatus();
+    }
+
+    private void checkBusinessStatus(){
         Request.getInstance().checkBusinessStatus(this, isBusinessOpen -> {
             changeBusinessStatus(!isBusinessOpen);
         });
@@ -175,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDismiss(DialogInterface dialog) {
                 setName();
                 fragment.startBoardUpdates();
+                checkBusinessStatus();
             }
         });
     }
