@@ -105,7 +105,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             if (item.getChange_type() != null)
                 switch (item.getChange_type()) {
-                    case "DELETE":
+                    case "DELETED":
                         holder2.tvCancel.setVisibility(View.VISIBLE);
                         break;
                     case "NEW":
@@ -118,7 +118,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             if (item.getChange_type() != null)
                 switch (item.getChange_type()) {
-                    case "DELETE":
+                    case "DELETED":
                         holder1.tvCancel.setVisibility(View.VISIBLE);
                         break;
                     case "NEW":

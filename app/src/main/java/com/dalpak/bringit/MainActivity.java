@@ -1,8 +1,6 @@
 package com.dalpak.bringit;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -19,7 +17,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -174,13 +171,10 @@ public class MainActivity extends AppCompatActivity {
         passwordDialog.setCancelable(false);
         passwordDialog.show();
 
-        passwordDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                setName();
-                fragment.startBoardUpdates();
-                checkBusinessStatus();
-            }
+        passwordDialog.setOnDismissListener(dialog -> {
+            setName();
+            fragment.startBoardUpdates();
+            checkBusinessStatus();
         });
     }
 
