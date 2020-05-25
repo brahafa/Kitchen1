@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
 
     <RelativeLayout
-        android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
         android:background="@color/black_222e3b"
+        android:id="@+id/topBar"
+        android:layout_height="80dp"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/sw_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/sw_website"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:clickable="false"
+                android:id="@+id/sw_website"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 app:theme="@style/BrandedSwitch.control" />
 
             <TextView
+                android:gravity="center"
                 android:id="@+id/title_switch"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="6dp"
-                android:gravity="center"
+                android:layout_width="wrap_content"
                 android:text="אתר פעיל"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toEndOf="@+id/sw_website"
@@ -51,30 +52,30 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/backRL"
-            android:layout_width="133dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/sw_layout"
-            android:layout_marginLeft="25dp"
-            android:layout_marginBottom="5dp"
             android:background="@drawable/rv_main_background"
-            android:backgroundTint="@color/green_00c37c">
+            android:backgroundTint="@color/green_00c37c"
+            android:id="@+id/backRL"
+            android:layout_below="@+id/sw_layout"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="25dp"
+            android:layout_width="133dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:src="@drawable/ic_back" />
 
                 <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="Back"
                     android:textColor="@color/white"
                     android:textSize="15dp" />
@@ -82,46 +83,46 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/stock_tv_click"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
             android:drawableLeft="@drawable/ic_down_arrow"
             android:gravity="center"
+            android:id="@+id/stock_tv_click"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="מלאי"
             android:textColor="@color/white"
             android:textSize="22dp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
-            android:gravity="center">
+            android:layout_width="wrap_content">
 
             <LinearLayout
-                android:id="@+id/back_to_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="25dp"
                 android:gravity="center"
+                android:id="@+id/back_to_main"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:layout_width="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
                     android:layout_gravity="center"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
                     android:src="@drawable/ic_desktop" />
 
                 <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="wrap_content"
                     android:padding="3dp"
                     android:text="חזור למסך הראשי"
                     android:textColor="@color/white" />
@@ -129,15 +130,27 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/nameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_user"
                 android:drawablePadding="10dp"
+                android:drawableRight="@drawable/ic_user"
+                android:id="@+id/nameTV"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:padding="5dp"
                 android:text="שלום אנדראו"
+                android:layout_marginRight="@dimen/padding_x2"
                 android:textColor="@color/white"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
+
+            <TextView
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/ic_exit"
+                android:id="@+id/exitTV"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:text="Exit"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
 
 
         </LinearLayout>
@@ -146,17 +159,17 @@
 
     <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
+        android:layout_below="@+id/topBar"
         android:layout_height="match_parent"
-        android:layout_below="@+id/topBar" />
+        android:layout_width="match_parent" />
 
     <View
         android:id="@+id/cover_view"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_width="match_parent"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/stock_menu"
-        layout="@layout/stock_menu" />
+        layout="@layout/stock_menu"
+        android:id="@+id/stock_menu" />
 </RelativeLayout>

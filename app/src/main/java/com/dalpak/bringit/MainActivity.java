@@ -1,11 +1,13 @@
 package com.dalpak.bringit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.dalpak.bringit.databinding.ActivityMainBinding;
 import com.dalpak.bringit.dialog.DialogOpenOrder;
+import com.dalpak.bringit.dialog.ExitDialog;
 import com.dalpak.bringit.dialog.PasswordDialog;
 import com.dalpak.bringit.fragments.MainFragment;
 import com.dalpak.bringit.fragments.StockFragment;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         checkBusinessStatus();
     }
 
-    private void checkBusinessStatus(){
+    private void checkBusinessStatus() {
         Request.getInstance().checkBusinessStatus(this, isBusinessOpen -> {
             changeBusinessStatus(!isBusinessOpen);
         });
@@ -96,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().popBackStack();
             }
         });
-        binding.nameTV.setOnClickListener(v -> {
-            openPasswordDialog(true);
-        });
+        binding.nameTV.setOnClickListener(v -> openPasswordDialog(true));
+        binding.exitTV.setOnClickListener(v -> openExitDialog());
+
         binding.coverView.setOnClickListener(v -> {
             if (binding.stockMenu.getRoot().getVisibility() == View.VISIBLE) {
                 closeStockMenu();
@@ -176,6 +178,22 @@ public class MainActivity extends AppCompatActivity {
             fragment.startBoardUpdates();
             checkBusinessStatus();
         });
+    }
+
+    public void openExitDialog() {
+        ExitDialog exitDialog = new ExitDialog(this, new ExitDialog.ExitListener() {
+            @Override
+            public void onExit() {
+                finish();
+            }
+
+            @Override
+            public void onLogout() {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+        exitDialog.show();
     }
 
     public void openOrderDialog(OpenOrderModel orderModel) {

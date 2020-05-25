@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/popup_margin"
+    android:paddingStart="@dimen/popup_margin"
+    android:paddingTop="@dimen/popup_margin_top">
+
+    <ImageView
+        android:layout_height="130dp"
+        android:layout_width="130dp"
+        android:tint="@color/blue_press_2251f3"
+        android:src="@drawable/ic_exit" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/popup_padding"
+        android:layout_width="wrap_content"
+        android:text="Exit or Logout"
+        android:textColor="@color/blue_press_2251f3"
+        android:textSize="32sp"
+        tools:text="Exit or Logout" />
+
+
+    <TextView
+        android:background="@drawable/background_bottom_send"
+        android:gravity="center"
+        android:id="@+id/tv_exit"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/popup_margin"
+        android:layout_width="@dimen/popup_btn_width"
+        android:padding="@dimen/popup_margin"
+        android:text="Exit App"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        tools:text="Exit App" />
+
+    <TextView
+        android:background="@drawable/background_bottom_cancel"
+        android:gravity="center"
+        android:id="@+id/tv_logout"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_width="@dimen/popup_btn_width"
+        android:padding="@dimen/popup_margin"
+        android:text="Logout"
+        android:textColor="@color/blue_press_2251f3"
+        tools:text="Logout" />
+
+</LinearLayout>
