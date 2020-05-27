@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/popup_padding"
         android:layout_width="wrap_content"
-        android:text="Exit or Logout"
+        android:text="יציאה או התנתקות"
         android:textColor="@color/blue_press_2251f3"
         android:textSize="32sp"
         tools:text="Exit or Logout" />
@@ -36,7 +36,7 @@
         android:layout_marginTop="@dimen/popup_margin"
         android:layout_width="@dimen/popup_btn_width"
         android:padding="@dimen/popup_margin"
-        android:text="Exit App"
+        android:text="יציאה מהאפליקציה"
         android:textColor="@color/white"
         android:textSize="16sp"
         tools:text="Exit App" />
@@ -51,7 +51,7 @@
         android:layout_marginBottom="@dimen/half_margin"
         android:layout_width="@dimen/popup_btn_width"
         android:padding="@dimen/popup_margin"
-        android:text="Logout"
+        android:text="התנתקות"
         android:textColor="@color/blue_press_2251f3"
         tools:text="Logout" />
 
