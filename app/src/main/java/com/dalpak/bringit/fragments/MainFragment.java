@@ -53,6 +53,9 @@ public class MainFragment extends Fragment {
 
     private Runnable mRunnable = () -> Request.getInstance().getAllOrders(getActivity(),
             jsonObject -> {
+                if (mp != null) mp.stop();
+                if (hasDelay(jsonObject)) mp = playSound(Constants.ALERT_ORDER_OVERTIME);
+
                 if (!jsonObject.toString().equals(lastResponse)) {
                     lastResponse = jsonObject.toString();
                     updateAllRV(jsonObject);
@@ -153,9 +156,6 @@ public class MainFragment extends Fragment {
                 int cookingOrdersSize = getOrdersList(jsonObject, "cooking").size();
                 if (lastCookingOrdersSize > cookingOrdersSize) playSound(Constants.ALERT_FINISH_COOKING);
 
-                if (mp != null) mp.stop();
-                if (hasDelay(jsonObject)) mp = playSound(Constants.ALERT_ORDER_OVERTIME);
-
                 lastNewOrdersSize = newOrdersSize;
                 lastCookingOrdersSize = cookingOrdersSize;
             }
@@ -243,8 +243,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroyView() {
         removeBoardUpdates();
-        if (mp != null)
-        mp.release();
+        if (mp != null) mp.release();
         super.onDestroyView();
     }
 
