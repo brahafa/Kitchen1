@@ -243,6 +243,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroyView() {
         removeBoardUpdates();
+        if (mp != null)
         mp.release();
         super.onDestroyView();
     }
