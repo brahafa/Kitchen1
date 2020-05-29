@@ -60,9 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkBusinessStatus() {
-        Request.getInstance().checkBusinessStatus(this, isBusinessOpen -> {
-            changeBusinessStatus(!isBusinessOpen);
-        });
+        Request.getInstance().checkBusinessStatus(this, isBusinessOpen -> changeBusinessStatus(!isBusinessOpen));
     }
 
     private void initListeners() {
@@ -81,15 +79,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        binding.swLayout.setOnClickListener(v -> {
-            Request.getInstance().changeBusinessStatus(this, binding.swWebsite.isChecked() ? "close" : "open", () -> {
-                changeBusinessStatus(binding.swWebsite.isChecked());
-            });
-        });
+        binding.swLayout.setOnClickListener(v ->
+                Request.getInstance().changeBusinessStatus(this, binding.swWebsite.isChecked() ? "close" : "open", () ->
+                        changeBusinessStatus(binding.swWebsite.isChecked())));
 
-        binding.backToMain.setOnClickListener(v -> {
-            popBackStackTillEntry(1);
-        });
+        binding.backToMain.setOnClickListener(v -> popBackStackTillEntry(1));
 
         binding.backRL.setOnClickListener(v -> {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);

@@ -4,9 +4,12 @@ package com.dalpak.bringit.models;
 //}
 
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class OpenOrderModel {
+
     private String order_id;
     private String business_id;
     private String client_id;
@@ -52,6 +55,7 @@ public class OpenOrderModel {
     private String payment_display;
     private String pizza_count;
     private List<ItemModel> order_items;
+    private AddressDetailsBean addressDetails;
 
     public String getAddress() {
         return address;
@@ -149,9 +153,10 @@ public class OpenOrderModel {
         this.order_items = order_items;
     }
 
-    public  OpenOrderModel (String name){
-        this.name=name;
+    public OpenOrderModel(String name) {
+        this.name = name;
     }
+
     public String getOrder_id() {
         return order_id;
     }
@@ -414,6 +419,87 @@ public class OpenOrderModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public AddressDetailsBean getAddressDetails() {
+        return addressDetails;
+    }
+
+    public void setAddressDetails(AddressDetailsBean addressDetails) {
+        this.addressDetails = addressDetails;
+    }
+
+    public static class AddressDetailsBean {
+        @SerializedName("city_id")
+        private String mCityId;
+        @SerializedName("city_name")
+        private String mCityName;
+        @SerializedName("street")
+        private String mStreet;
+        @SerializedName("house_num")
+        private String mHouseNum;
+        @SerializedName("floor")
+        private String mFloor;
+        @SerializedName("apt_num")
+        private String mAptNum;
+        @SerializedName("entrance")
+        private String mEntrance;
+
+        public String getCityId() {
+            return mCityId;
+        }
+
+        public void setCityId(String cityId) {
+            mCityId = cityId;
+        }
+
+        public String getCityName() {
+            return mCityName;
+        }
+
+        public void setCityName(String cityName) {
+            mCityName = cityName;
+        }
+
+        public String getStreet() {
+            return mStreet;
+        }
+
+        public void setStreet(String street) {
+            mStreet = street;
+        }
+
+        public String getHouseNum() {
+            return mHouseNum;
+        }
+
+        public void setHouseNum(String houseNum) {
+            mHouseNum = houseNum;
+        }
+
+        public String getFloor() {
+            return mFloor;
+        }
+
+        public void setFloor(String floor) {
+            mFloor = floor;
+        }
+
+        public String getAptNum() {
+            return mAptNum;
+        }
+
+        public void setAptNum(String aptNum) {
+            mAptNum = aptNum;
+        }
+
+        public String getEntrance() {
+            return mEntrance;
+        }
+
+        public void setEntrance(String entrance) {
+            mEntrance = entrance;
+        }
     }
 }
 
