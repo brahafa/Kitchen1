@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
+import static com.dalpak.bringit.utils.SharedPrefs.saveData;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -189,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onLogout() {
+                saveData(Constants.TOKEN_PREF, "");
+
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
             }
