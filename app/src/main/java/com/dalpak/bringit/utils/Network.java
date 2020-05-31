@@ -34,7 +34,7 @@ public class Network {
 
     private final String SET_COOKIE_KEY = "Set-Cookie";
     private final String COOKIE_KEY = "Cookie";
-    private final String SESSION_COOKIE = "PHPSESSID";
+    private final String SESSION_COOKIE = "Apikey";
 
     private NetworkCallBack listener;
     private final String BASE_URL = "https://api.bringit.co.il/?apiCtrl=";

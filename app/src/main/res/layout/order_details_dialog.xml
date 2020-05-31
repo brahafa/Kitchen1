@@ -25,39 +25,6 @@
             android:src="@drawable/ic_clear"
             android:tint="@color/white" />
 
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_alignParentEnd="true"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:layout_width="wrap_content"
-            android:padding="3dp"
-            android:textColor="@color/white"
-            tools:text="Name: User" />
-
-        <TextView
-            android:id="@+id/tv_phone"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:layout_toStartOf="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:padding="3dp"
-            android:textColor="@color/white"
-            tools:text="Phone: 0501122334" />
-
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:layout_width="wrap_content"
-            android:padding="3dp"
-            android:textColor="@color/white"
-            tools:text="Address: City, Street 10, Entrance D, Floor 3, App 30" />
-
-
     </RelativeLayout>
 
 
@@ -114,7 +81,51 @@
 
     </LinearLayout>
 
+    <View
+        android:background="@color/blue_press_2251f3"
+        android:layout_height="2dp"
+        android:layout_width="match_parent" />
 
+    <RelativeLayout
+        android:layout_height="70dp"
+        android:layout_width="match_parent">
+
+
+
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_width="wrap_content"
+            android:padding="3dp"
+            android:textColor="@color/black_222e3b"
+            tools:text="Name: User" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_toStartOf="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:padding="3dp"
+            android:textColor="@color/black_222e3b"
+            tools:text="Phone: 0501122334" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_width="wrap_content"
+            android:padding="3dp"
+            android:textColor="@color/black_222e3b"
+            tools:text="Address: City, Street 10, Entrance D, Floor 3, App 30" />
+
+
+    </RelativeLayout>
 </LinearLayout>
 
 
