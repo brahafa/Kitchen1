@@ -350,7 +350,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:gravity="right"
-                        android:text="סוג משלוח"
+                        android:text="סוג הזמנה"
                         android:textColor="@color/white"
                         android:textSize="13sp"
                         android:textStyle="bold"

@@ -52,13 +52,14 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
 
         tvName.setText(Html.fromHtml(String.format("<b>שם:</b> %s %s", orderModel.getF_name(), orderModel.getL_name())));
         tvPhone.setText(Html.fromHtml(String.format("<b>טלפון:</b> %s", orderModel.getPhone())));
-        tvAddress.setText(Html.fromHtml(String.format(
-                "<b>כתובת:</b> %s, %s &emsp; <b>כניסה</b>: %s &emsp; <b>קומה:</b> %s &emsp; <b>דירה:</b> %s",
-                orderModel.getAddressDetails().getCityName(),
-                orderModel.getAddressDetails().getStreet(),
-                orderModel.getAddressDetails().getEntrance(),
-                orderModel.getAddressDetails().getFloor(),
-                orderModel.getAddressDetails().getAptNum())));
+        if (orderModel.getAddressDetails() != null)
+            tvAddress.setText(Html.fromHtml(String.format(
+                    "<b>כתובת:</b> %s, %s &emsp; <b>כניסה</b>: %s &emsp; <b>קומה:</b> %s &emsp; <b>דירה:</b> %s",
+                    orderModel.getAddressDetails().getCityName(),
+                    orderModel.getAddressDetails().getStreet(),
+                    orderModel.getAddressDetails().getEntrance(),
+                    orderModel.getAddressDetails().getFloor(),
+                    orderModel.getAddressDetails().getAptNum())));
 
         tvPaymentMethod.setText(orderModel.getPayment_display());
         tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPayment_display()));
