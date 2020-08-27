@@ -12,7 +12,7 @@ import com.dalpak.bringit.dialog.PasswordDialog;
 import com.dalpak.bringit.fragments.MainFragment;
 import com.dalpak.bringit.fragments.StockFragment;
 import com.dalpak.bringit.models.OpenOrderModel;
-import com.dalpak.bringit.models.StockModel;
+import com.dalpak.bringit.models.ProductItemModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
 import com.google.gson.Gson;
@@ -20,9 +20,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -35,7 +33,7 @@ import static com.dalpak.bringit.utils.SharedPrefs.saveData;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainFragment fragment;
-    List<StockModel> stockModelList;
+    ArrayList<ProductItemModel> stockModelList;
     private Gson gson;
 
     @Override
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         binding.stockMenu.spacialAdditionsStock.setOnClickListener(v -> openStockFragment("special"));
         binding.stockMenu.additionalStock.setOnClickListener(v -> openStockFragment("additionalOffer"));
         binding.stockMenu.drinkStock.setOnClickListener(v -> openStockFragment("drink"));
-        binding.stockMenu.pizzaStock.setOnClickListener(v -> openStockFragment("food"));
+        binding.stockMenu.pizzaStock.setOnClickListener(v -> openStockFragment("pizza"));
 
         binding.stockTvClick.setOnClickListener(v -> {
             if (binding.stockMenu.getRoot().getVisibility() == View.VISIBLE) {
@@ -145,12 +143,12 @@ public class MainActivity extends AppCompatActivity {
         Request.getInstance().loadBusinessItems(getApplication(), type, jsonObject -> {
             stockModelList.clear();
             try {
-                JSONArray jsonArray = jsonObject.getJSONArray("message");
+                JSONArray jsonArray = jsonObject.getJSONArray("products");
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    stockModelList.add(gson.fromJson(jsonArray.getString(i), StockModel.class));
+                    stockModelList.add(gson.fromJson(jsonArray.getString(i), ProductItemModel.class));
                 }
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("valuesArray", (Serializable) stockModelList);
+                bundle.putParcelableArrayList("valuesArray", stockModelList);
                 StockFragment stockFragment = new StockFragment();
                 stockFragment.setArguments(bundle);
                 openFragment(stockFragment, "stock");

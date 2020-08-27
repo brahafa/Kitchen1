@@ -11,25 +11,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
-import com.dalpak.bringit.dialog.DialogWarningRemoveStock;
-import com.dalpak.bringit.models.StockModel;
+import com.dalpak.bringit.models.ProductItemModel;
 import com.dalpak.bringit.utils.Constants;
-import com.dalpak.bringit.utils.Request;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
-    private List<StockModel> itemList;
+    private ArrayList<ProductItemModel> itemList;
     private Context context;
     private View itemView;
 
@@ -48,7 +44,7 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
         }
     }
 
-    public StockRV(Context context, List<StockModel> itemList) {
+    public StockRV(Context context, ArrayList<ProductItemModel> itemList) {
         this.itemList = itemList;
         this.context = context;
     }
@@ -65,27 +61,27 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
     @Override
     public void onBindViewHolder(final StockRV.StockRVHolder holder, final int position) {
-        StockModel item = itemList.get(position);
+        ProductItemModel item = itemList.get(position);
 
         holder.name.setText(item.getName());
-        holder.shippingPrice.setText(item.getDelivery_price() == null ? item.getDefault_price() + " שקל " : item.getDelivery_price() + " שקל");
-        holder.pickupPrice.setText(item.getPickup_price() + " שקל");
-        if (item.getObject_type().equals("food") || item.getObject_type().equals("deal")) {
+        holder.shippingPrice.setText(item.getDeliveryPrice() + " שקל");
+        holder.pickupPrice.setText(item.getNotDeliveryPrice() + " שקל");
+        if (item.getTypeName().equals("food") || item.getTypeName().equals("deal")) {
             holder.itemImage.setVisibility(View.GONE);
         } else {
 
-            if (item.getObject_type().equals("topping")) {
+            if (item.getTypeName().equals("topping")) {
                 int id = context.getResources().getIdentifier(item.getPicture().replace(".png", ""), "mipmap", context.getPackageName());
                 if (id > 0) {
                     Drawable drawable = context.getResources().getDrawable(id);
                     holder.itemImage.setImageDrawable(drawable);
                 }
             } else {
-                String url = Constants.IMAGES_BASE_URL + item.getObject_type() + "/" + item.getPicture();
+                String url = Constants.IMAGES_BASE_URL + item.getTypeName() + "/" + item.getPicture();
                 Glide.with(context)
                         .load(url)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .placeholder(item.getObject_type().equals("drink")
+                        .placeholder(item.getTypeName().equals("drink")
                                 ? R.drawable.ic_ph_drink
                                 : R.drawable.ic_ph_food)
                         .centerInside()
@@ -96,28 +92,31 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
         }
 
-        if (item.isObject_status()) {
+        if (item.getInInventory().equals("1")) {
             holder.inStockTvClick.setText("במלאי");
             holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background));
         } else {
             holder.inStockTvClick.setText("לא במלאי");
             holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background_not_in_stock));
         }
-        holder.inStockTvClick.setOnClickListener(v ->
-                Request.getInstance().updateItemPrice(context, item, jsonObject -> {
-                    item.setObject_status(!item.isObject_status());
-                    try {
-                        if (jsonObject.has("dealsDisabled") && jsonObject.getBoolean("dealsDisabled")) {
-                            FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
-                            DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
-                            alertDialog.show(fm, "fragment_edit_name");
+        holder.inStockTvClick.setOnClickListener(v -> {
+        });
+        //todo ask how to change item status
 
-                        }
-                        notifyItemChanged(position);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }));
+//                Request.getInstance().updateItemPrice(context, item, jsonObject -> {
+//                    item.setObject_status(!item.isObject_status());
+//                    try {
+//                        if (jsonObject.has("dealsDisabled") && jsonObject.getBoolean("dealsDisabled")) {
+//                            FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+//                            DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
+//                            alertDialog.show(fm, "fragment_edit_name");
+//
+//                        }
+//                        notifyItemChanged(position);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }));
     }
 
     private String getRemoveItems(JSONObject jsonObject) {
@@ -139,7 +138,7 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (itemList.get(position).getObject_type().equals("deal")) {
+        if (itemList.get(position).getTypeName().equals("deal")) {
             return 0;
         } else return 1;
     }

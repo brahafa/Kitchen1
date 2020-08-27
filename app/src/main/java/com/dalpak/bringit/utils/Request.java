@@ -246,7 +246,7 @@ public class Request {
 
             }
         });
-        network.sendRequest(context, Network.RequestName.LOAD_BUSINES_ITEMS, type);
+        network.sendRequest(context, Network.RequestName.LOAD_PRODUCTS, type, true);
     }
 
     public void getOrderCode(Context context, String orderId, RequestJsonCallBack requestJsonCallBack) {

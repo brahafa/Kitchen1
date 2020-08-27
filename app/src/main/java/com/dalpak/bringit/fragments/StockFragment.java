@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.StockRV;
-import com.dalpak.bringit.models.StockModel;
+import com.dalpak.bringit.models.ProductItemModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,16 +31,16 @@ public class StockFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stock, container, false);
         stockRv = view.findViewById(R.id.rvStock);
-        if (getArguments().getSerializable("valuesArray") != null) {
-            List<StockModel> stockModelList = ((ArrayList<StockModel>) getArguments().getSerializable("valuesArray"));
+        if (getArguments().getParcelableArrayList("valuesArray") != null) {
+            ArrayList<ProductItemModel> stockModelList = getArguments().getParcelableArrayList("valuesArray");
             initData(stockModelList);
         }
         return view;
     }
 
-    private void initData(List<StockModel> stockModelList) {
+    private void initData(ArrayList<ProductItemModel> stockModelList) {
         LayoutManager mLayoutManager;
-        if (stockModelList != null && stockModelList.size() > 0 && stockModelList.get(0).getObject_type().equals("deal")) {
+        if (stockModelList != null && stockModelList.size() > 0 && stockModelList.get(0).getTypeName().equals("deal")) {
             mLayoutManager = new LinearLayoutManager(getActivity());
             stockRv.setBackgroundColor(Color.parseColor("#e6ebf4"));
         } else {
