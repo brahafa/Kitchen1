@@ -7,16 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
-import com.dalpak.bringit.utils.Constants;
 
 import java.util.List;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_TOPPING;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -101,11 +105,12 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else {
             holder1 = (OrderDetailsHolder) holder;
-            if (item.getFather_id() != null) {
-                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) holder1.parent.getLayoutParams();
-                layoutParams.setMargins(0, 0, 0, 0);
-                holder1.parent.requestLayout();
-            }
+//            fixme father id
+//            if (item.getFather_id() != null) {
+//                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) holder1.parent.getLayoutParams();
+//                layoutParams.setMargins(0, 0, 0, 0);
+//                holder1.parent.requestLayout();
+//            }
 
             holder1.parent.setBackground(null);
             setItemPrice(holder1.amount, item);
@@ -113,17 +118,17 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder1.name.setText(item.getName());
             String imageUrl = "";
             int placeholderRes = R.drawable.ic_placeholder;
-            switch (item.get_ItemType()) {
-                case "Drink":
-                    imageUrl = Constants.DRINKS_URL + item.getItem_picture();
+            switch (item.getTypeName()) {
+                case ITEM_TYPE_DRINK:
+//                    imageUrl = Constants.DRINKS_URL + item.getItem_picture(); //todo ask for pictures
                     placeholderRes = R.drawable.ic_ph_drink;
                     break;
-                case "AdditionalOffer":
-                    imageUrl = Constants.ADDITIONAL_URL + item.getItem_picture();
+                case ITEM_TYPE_ADDITIONAL_OFFER:
+//                    imageUrl = Constants.ADDITIONAL_URL + item.getItem_picture(); //todo ask for pictures
                     placeholderRes = R.drawable.ic_ph_food;
                     break;
-                case "Food":
-                    imageUrl = Constants.FOOD_URL + item.getItem_picture();
+                case ITEM_TYPE_PIZZA:
+//                    imageUrl = Constants.FOOD_URL + item.getItem_picture(); //todo ask for pictures
                     placeholderRes = R.drawable.ic_ph_pizza;
                     break;
             }
@@ -206,7 +211,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        if (itemList.get(position).get_ItemType().equals("Topping")) {
+        if (itemList.get(position).getTypeName().equals(ITEM_TYPE_TOPPING)) {
             return 0;
         } else return 1;
     }

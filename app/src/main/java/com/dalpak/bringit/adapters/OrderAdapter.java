@@ -13,6 +13,10 @@ import com.woxthebox.draglistview.DragItemAdapter;
 
 import java.util.List;
 
+import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_DELIVERY;
+import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TABLE;
+import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TAKEAWAY;
+
 public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.OrderHolder> {
 
     private List<OrderModel> orderList;
@@ -56,23 +60,28 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
     public void onBindViewHolder(final OrderAdapter.OrderHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
 
-        if (orderList.get(position).getIs_delivery().equals("1")) {
-            holder.name.setText(
-                    String.format("%s %s, %s",
-                            orderList.get(position).getStreet(),
-                            orderList.get(position).getHouse_num(),
-                            orderList.get(position).getCity_name()));
-            holder.deliveryImage.setImageResource(R.drawable.ic_delivery);
-        } else if (orderList.get(position).getIs_delivery().equals("0")) {
-            holder.name.setText(orderList.get(position).getName());
-            holder.deliveryImage.setImageResource(R.drawable.ic_takeaway);
-        } else {
-            holder.deliveryImage.setImageResource(R.drawable.ic_dinner);
+        switch (orderList.get(position).getDeliveryOption()) {
+            case DELIVERY_OPTION_DELIVERY:
+                holder.name.setText(
+                        String.format("%s %s, %s",
+                                orderList.get(position).getClient().getAddress().getStreet(),
+                                orderList.get(position).getClient().getAddress().getHouseNum(),
+                                orderList.get(position).getClient().getAddress().getCity()));
+                holder.deliveryImage.setImageResource(R.drawable.ic_delivery);
+                break;
+            case DELIVERY_OPTION_TAKEAWAY:
+                holder.name.setText(orderList.get(position).getClient().getFName());
+                holder.deliveryImage.setImageResource(R.drawable.ic_takeaway);
+                break;
+            case DELIVERY_OPTION_TABLE:
+            default:
+                holder.deliveryImage.setImageResource(R.drawable.ic_dinner);
+                break;
         }
 
         holder.orderTime.setText(orderList.get(position).getStartTimeStr());
         if (orderList.get(position).getStatus().equals("received") &&
-                Utils.getOrderTimerLong(orderList.get(position).getOrder_time()) > DELAY_TIME_IN_SECONDS) {
+                Utils.getOrderTimerLong(orderList.get(position).getOrderTime()) > DELAY_TIME_IN_SECONDS) {
             holder.warningImg.setVisibility(View.VISIBLE);
         }
 
@@ -82,7 +91,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
 
     @Override
     public long getUniqueItemId(int position) {
-        return Long.parseLong(orderList.get(position).getOrder_id());
+        return Long.parseLong(orderList.get(position).getId());
     }
 
     @Override

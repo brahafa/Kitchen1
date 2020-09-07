@@ -206,7 +206,7 @@ public class MainFragment extends Fragment {
     private void initRV(final List<OrderModel> orderModels) {
 
         OrderAdapter bottomListAdapter = new OrderAdapter(orderModels, orderModel ->
-                Request.getInstance().getOrderDetailsByID(getActivity(), orderModel.getOrder_id(), jsonObject -> {
+                Request.getInstance().getOrderDetailsByID(getActivity(), orderModel.getId(), jsonObject -> {
                     try {
                         OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
                         ((MainActivity) getActivity()).openOrderDialog(openOrderModel);

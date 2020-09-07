@@ -146,7 +146,7 @@ public class Request {
                 // openAlertMsg(context, json);
             }
         });
-        network.sendRequest(context, Network.RequestName.GET_ALL_ORDERS, Integer.toString(BusinessModel.getInstance().getBusiness_id()));
+        network.sendRequest(context, Network.RequestName.GET_ALL_ORDERS, "", true);
     }
 
     public void updateItemPrice(Context context, StockModel stockModel, final RequestJsonCallBack listener) {
@@ -229,7 +229,7 @@ public class Request {
 
             }
         });
-        network.sendRequest(context, Network.RequestName.GET_ORDER_DETAILS_BY_ID, orderId);
+        network.sendRequest(context, Network.RequestName.GET_ORDER_DETAILS_BY_ID, orderId, true);
     }
 
     public void loadBusinessItems(Context context, String type, RequestJsonCallBack requestJsonCallBack) {
@@ -253,7 +253,7 @@ public class Request {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Log.d("getOrderCode ", json.toString());
+                Log.d("getOrderCode", json.toString());
                 requestJsonCallBack.onDataDone(json);
 //               try {
 //                  // requestItemsListCallBack.onDataDone(getListGlobalFromJsonArr(json.getJSONObject("Message")));
@@ -267,7 +267,7 @@ public class Request {
 
             }
         });
-        network.sendRequest(context, Network.RequestName.GET_ORDER_CODE, orderId);
+        network.sendRequest(context, Network.RequestName.GET_ORDER_CODE, orderId, true);
     }
 
     public void orderChangePos(Context context, long order_id, int oldPosition, int newPosition, boolean statusChanged, String draggedFromStatus, String draggedToStatus, final RequestJsonCallBack listener) {
@@ -391,13 +391,13 @@ public class Request {
         JSONObject params = new JSONObject();
         try {
             params.put("business_id", 1);
-            params.put("type", itemModel.getObject_type());
-            params.put("o_id", itemModel.getObject_id());
+//            params.put("type", itemModel.getObject_type());
+//            params.put("o_id", itemModel.getObject_id());
             params.put("addBy", "dalpak");
             //   getParamsFillings(params);
-            if (!itemModel.getFather_id().equals("")) {
-                params.put("f_id", itemModel.getFather_id());
-            }
+//            if (!itemModel.getFather_id().equals("")) {
+//                params.put("f_id", itemModel.getFather_id());
+//            }
             Log.d("addDrink", params.toString());
         } catch (JSONException e) {
             e.printStackTrace();

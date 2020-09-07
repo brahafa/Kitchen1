@@ -1,7 +1,6 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,17 +58,17 @@ public class OpenOrderPizzaAdapter extends RecyclerView.Adapter<OpenOrderPizzaAd
 
         holder.name.setText(item.getName());
 
-        if (item.getChange_type() != null)
-            switch (item.getChange_type()) {
-                case "DELETED":
-                    holder.tvCancel.setVisibility(View.VISIBLE);
-                    break;
-                case "NEW":
-                    holder.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-                    holder.name.setTextColor(Color.WHITE);
-                    break;
-            }
-        if (item.getItem_filling().size() != 0) initRV(item.getItem_filling(), holder.toppingsRv);
+//        if (item.getChange_type() != null)
+//            switch (item.getChange_type()) {
+//                case "DELETED":
+//                    holder.tvCancel.setVisibility(View.VISIBLE);
+//                    break;
+//                case "NEW":
+//                    holder.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+//                    holder.name.setTextColor(Color.WHITE);
+//                    break;
+//            }
+        if (item.getItems().size() != 0) initRV(item.getItems(), holder.toppingsRv);
     }
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {

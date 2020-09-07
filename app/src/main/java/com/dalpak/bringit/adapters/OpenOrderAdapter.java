@@ -1,7 +1,6 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
-import com.dalpak.bringit.utils.Constants;
 
 import java.util.List;
 
@@ -20,8 +18,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//public class OpenOrderRv  {
-//}
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_TOPPING;
+
 public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ItemModel> itemList;
@@ -31,7 +32,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     class OpenOrderHolder extends RecyclerView.ViewHolder {
         TextView name, amount;
-        ImageView itemImage, tl, tr, bl, br;
+        ImageView itemImage;
         RecyclerView rvFillings;
         TextView tvCancel;
         CardView parent;
@@ -103,54 +104,57 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             initToppingColor(item, holder2);
 
-            if (item.getChange_type() != null)
-                switch (item.getChange_type()) {
-                    case "DELETED":
-                        holder2.tvCancel.setVisibility(View.VISIBLE);
-                        break;
-                    case "NEW":
-                        holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-                        holder2.name.setTextColor(Color.WHITE);
-                        break;
-                }
+//            todo waiting for change types
+//            if (item.getChange_type() != null)
+//                switch (item.getChange_type()) {
+//                    case "DELETED":
+//                        holder2.tvCancel.setVisibility(View.VISIBLE);
+//                        break;
+//                    case "NEW":
+//                        holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+//                        holder2.name.setTextColor(Color.WHITE);
+//                        break;
+//                }
         } else {
             holder1 = (OpenOrderHolder) holder;
 
-            if (item.getChange_type() != null)
-                switch (item.getChange_type()) {
-                    case "DELETED":
-                        holder1.tvCancel.setVisibility(View.VISIBLE);
-                        break;
-                    case "NEW":
-                        holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-                        holder1.name.setTextColor(Color.WHITE);
-                        break;
-                }
+//            todo waiting for change types
+//            if (item.getChange_type() != null)
+//                switch (item.getChange_type()) {
+//                    case "DELETED":
+//                        holder1.tvCancel.setVisibility(View.VISIBLE);
+//                        break;
+//                    case "NEW":
+//                        holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+//                        holder1.name.setTextColor(Color.WHITE);
+//                        break;
+//                }
 
             holder1.name.setText(item.getName());
 
-            if (item.getItem_filling() != null && item.getItem_filling().size() != 0) {
+            if (item.getItems() != null && item.getItems().size() != 0) {
                 holder1.rvFillings.setVisibility(View.VISIBLE);
                 holder1.rvFillings.setLayoutManager(new LinearLayoutManager(context));
                 FillingAdapter fillingAdapter =
-                        new FillingAdapter(context, item.getItem_filling(),
-                                item.getChange_type() != null && item.getChange_type().equals("NEW"));
+                        new FillingAdapter(context, item.getItems(),
+                                /*item.getChange_type() != null && item.getChange_type().equals("NEW")*/false); //todo waiting for change types
+
                 holder1.rvFillings.setAdapter(fillingAdapter);
             }
 
             String imageUrl = "";
             int placeholderRes = R.drawable.ic_placeholder;
-            switch (item.get_ItemType()) {
-                case "Drink":
-                    imageUrl = Constants.DRINKS_URL + item.getItem_picture();
+            switch (item.getTypeName()) {
+                case ITEM_TYPE_DRINK:
+//                    imageUrl = Constants.DRINKS_URL + item.getItem_picture(); //todo ask for pictures
                     placeholderRes = R.drawable.ic_ph_drink;
                     break;
-                case "AdditionalOffer":
-                    imageUrl = Constants.ADDITIONAL_URL + item.getItem_picture();
+                case ITEM_TYPE_ADDITIONAL_OFFER:
+//                    imageUrl = Constants.ADDITIONAL_URL + item.getItem_picture(); //todo ask for pictures
                     placeholderRes = R.drawable.ic_ph_food;
                     break;
-                case "Food":
-                    imageUrl = Constants.FOOD_URL + item.getItem_picture();
+                case ITEM_TYPE_PIZZA:
+//                    imageUrl = Constants.FOOD_URL + item.getItem_picture(); //todo ask for pictures
                     placeholderRes = R.drawable.ic_ph_pizza;
                     break;
             }
@@ -170,7 +174,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holder.tl.setImageResource(R.mipmap.squart_red1);
                 holder.tr.setImageResource(R.mipmap.squart_red2);
                 holder.bl.setImageResource(R.mipmap.squart_red4);
-                holder.br.setImageResource(R.mipmap.squart_red3);//
+                holder.br.setImageResource(R.mipmap.squart_red3);
 
                 break;
             case "rightHalfPizza":
@@ -226,7 +230,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if (itemList.get(position).get_ItemType().equals("Topping")) {
+        if (itemList.get(position).getTypeName().equals(ITEM_TYPE_TOPPING)) {
             return 0;
         } else return 1;
     }

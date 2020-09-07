@@ -50,22 +50,22 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
         tvAddress = findViewById(R.id.tv_address);
         tvPhone = findViewById(R.id.tv_phone);
 
-        tvName.setText(Html.fromHtml(String.format("<b>שם:</b> %s %s", orderModel.getF_name(), orderModel.getL_name())));
-        tvPhone.setText(Html.fromHtml(String.format("<b>טלפון:</b> %s", orderModel.getPhone())));
-        if (orderModel.getAddressDetails() != null)
+        tvName.setText(Html.fromHtml(String.format("<b>שם:</b> %s %s", orderModel.getClient().getFName(), orderModel.getClient().getLName())));
+        tvPhone.setText(Html.fromHtml(String.format("<b>טלפון:</b> %s", orderModel.getClient().getPhone())));
+        if (orderModel.getClient().getAddress() != null)
             tvAddress.setText(Html.fromHtml(String.format(
                     "<b>כתובת:</b> %s, %s &emsp; <b>כניסה</b>: %s &emsp; <b>קומה:</b> %s &emsp; <b>דירה:</b> %s",
-                    orderModel.getAddressDetails().getCityName(),
-                    orderModel.getAddressDetails().getStreet(),
-                    orderModel.getAddressDetails().getEntrance(),
-                    orderModel.getAddressDetails().getFloor(),
-                    orderModel.getAddressDetails().getAptNum())));
+                    orderModel.getClient().getAddress().getCity(),
+                    orderModel.getClient().getAddress().getStreet(),
+                    orderModel.getClient().getAddress().getEntrance(),
+                    orderModel.getClient().getAddress().getFloor(),
+                    orderModel.getClient().getAddress().getAptNum())));
 
-        tvPaymentMethod.setText(orderModel.getPayment_display());
-        tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPayment_display()));
-        tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getOrder_total(), context.getResources().getString(R.string.shekel)));
+        tvPaymentMethod.setText(orderModel.getPaymentDisplay());
+        tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPaymentDisplay()));
+        tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
 
-        initRV(orderModel.getOrder_items(), rv);
+        initRV(orderModel.getItems(), rv);
 
         close.setOnClickListener(v -> {
             d.dismiss();

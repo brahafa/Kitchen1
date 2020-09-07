@@ -46,13 +46,15 @@ public class Network {
 
     public enum RequestName {
         SIGN_UP, GET_LOGGED_MANAGER, lOAD_SAVED_USER_DETAILS,
-        GET_ITEMS_IN_SELECTED_FOLEDER, WORKER_LOGIN, LOG_IN_MANAGER, GET_ALL_ORDERS,
-        GET_ITEMS_SHOTR_CUT_FOLEDER, ADD_TO_CART, GET_ITEMS_BY_TYPE, GET_ORDER_DETAILS_BY_ID,
-        GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS, LOAD_BUSINES_ITEMS, UPDATE_ITEM_PRICE, GET_ORDER_CODE,
+        GET_ITEMS_IN_SELECTED_FOLEDER, WORKER_LOGIN, LOG_IN_MANAGER,
+        GET_ITEMS_SHOTR_CUT_FOLEDER, ADD_TO_CART, GET_ITEMS_BY_TYPE,
+        GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS, LOAD_BUSINES_ITEMS, UPDATE_ITEM_PRICE,
         WORKER_LOGOUT, CHANGE_BUSINESS_STATUS, CHECK_BUSINESS_STATUS,
         //        API 2
         LOAD_PRODUCTS,
-        GET_ITEMS_IN_SELECTED_FOLDER
+        GET_ITEMS_IN_SELECTED_FOLDER,
+        GET_ALL_ORDERS, GET_ORDER_DETAILS_BY_ID,
+        GET_ORDER_CODE,
     }
 
     Network(NetworkCallBack listener) {
@@ -70,8 +72,11 @@ public class Network {
             case GET_LOGGED_MANAGER:
                 url += BUSINESS + "getLoggedManager" + "&u=" + BusinessModel.getInstance().getBusiness_id();
                 break;
-            case GET_ALL_ORDERS:
-                url += BUSINESS + "getAllOrders&business_id=" + param1;
+//            case GET_ALL_ORDERS:
+//                url += BUSINESS + "getAllOrders&business_id=" + param1;
+//                break;
+            case GET_ALL_ORDERS: //api 2
+                url += "orders/" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case GET_ITEMS_SHOTR_CUT_FOLEDER:
                 url += DALPAK + "getItemsInSelectedFolder&fav=1";
@@ -85,9 +90,11 @@ public class Network {
             case GET_ITEMS_BY_TYPE:
                 url += DALPAK + "getItemsByType&type=" + param1 + "&linked=2";
                 break;
-            case GET_ORDER_DETAILS_BY_ID:
-
-                url += BUSINESS + "getOrderDetailsByID&order_id=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
+//            case GET_ORDER_DETAILS_BY_ID:
+//                url += BUSINESS + "getOrderDetailsByID&order_id=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
+//                break;
+            case GET_ORDER_DETAILS_BY_ID: //api 2
+                url += "orders/" + BusinessModel.getInstance().getBusiness_id() + "/" + param1;
                 break;
             case LOAD_BUSINES_ITEMS:
                 url += BUSINESS + "loadBusinessItems&type=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
@@ -95,8 +102,11 @@ public class Network {
             case LOAD_PRODUCTS: //api 2
                 url += "products/" + param1 + "/4" /*+ BusinessModel.getInstance().getBusiness_id()*/; //fixme remove 4
                 break;
-            case GET_ORDER_CODE:
-                url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
+//            case GET_ORDER_CODE:
+//                url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
+//                break;
+            case GET_ORDER_CODE: //api 2
+                url += "orders/code/" + BusinessModel.getInstance().getBusiness_id() + "/" + param1;
                 break;
             case CHECK_BUSINESS_STATUS:
                 url += BUSINESS + "checkBusinessStatus&business_id=" + BusinessModel.getInstance().getBusiness_id();

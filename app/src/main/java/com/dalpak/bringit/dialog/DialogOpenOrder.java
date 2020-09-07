@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dalpak.bringit.R;
-import com.dalpak.bringit.adapters.OpenOrderPizzaAdapter;
 import com.dalpak.bringit.adapters.OpenOrderAdapter;
+import com.dalpak.bringit.adapters.OpenOrderPizzaAdapter;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.utils.Request;
@@ -27,6 +27,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_DELIVERY;
+import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TABLE;
+import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TAKEAWAY;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
 
 public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
@@ -56,21 +63,16 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         List<ItemModel> drinks = new ArrayList<>();
         List<ItemModel> additionals = new ArrayList<>();
         List<ItemModel> pizza = new ArrayList<>();
-        for (int i = 0; i < orderModel.getOrder_items().size(); i++) {
-            switch (orderModel.getOrder_items().get(i).get_ItemType()) {
-                case "Drink":
-                    drinks.add(orderModel.getOrder_items().get(i));
+        for (int i = 0; i < orderModel.getItems().size(); i++) {
+            switch (orderModel.getItems().get(i).getTypeName()) {
+                case ITEM_TYPE_DRINK:
+                    drinks.add(orderModel.getItems().get(i));
                     break;
-                case "AdditionalOffer":
-                    additionals.add(orderModel.getOrder_items().get(i));
+                case ITEM_TYPE_ADDITIONAL_OFFER:
+                    additionals.add(orderModel.getItems().get(i));
                     break;
-                case "Food":
-                    pizza.add(orderModel.getOrder_items().get(i));
-                    for (int j = i; j < orderModel.getOrder_items().size(); j++) {
-                        if (orderModel.getOrder_items().get(j).getFather_id() != null && orderModel.getOrder_items().get(j).getFather_id().equals(orderModel.getOrder_items().get(i).getCart_id())) {
-                            pizza.get(pizza.size() - 1).getItem_filling().add(orderModel.getOrder_items().get(j));
-                        }
-                    }
+                case ITEM_TYPE_PIZZA:
+                    pizza.add(orderModel.getItems().get(i));
                     break;
             }
         }
@@ -102,60 +104,58 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         tvTotal = findViewById(R.id.tv_total);
         tvItemsDetails = findViewById(R.id.tv_items_details);
 
-        tvItemsDetails.setOnClickListener(v -> {
-            openDetailsDialog(orderModel);
-        });
+        tvItemsDetails.setOnClickListener(v -> openDetailsDialog(orderModel));
 
-        orderDateTV.setText(orderModel.getOrder_time());
-        orderNumTV.setText(orderModel.getOrder_id());
-        orderNameTV.setText(orderModel.getF_name() + " " + orderModel.getL_name());
-        tvPayment.setText("שיטת תשלום: " + orderModel.getPayment_display());
-        tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAdded_by_system());
-        tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getOrder_total(), context.getResources().getString(R.string.shekel)));
+        orderDateTV.setText(orderModel.getOrderTime());
+        orderNumTV.setText(orderModel.getId());
+        orderNameTV.setText(orderModel.getClient().getFName() + " " + orderModel.getClient().getLName());
+        tvPayment.setText("שיטת תשלום: " + orderModel.getPaymentDisplay());
+        tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAddedBySystem());
+        tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
         viewOrderChanged.setVisibility(checkIfEdited() ? View.VISIBLE : View.GONE);
         cvComment.setCardBackgroundColor(Color.parseColor(checkIfEdited() ? "#12c395" : "#6f7888"));
 
         initOrderMethod();
-        if (orderModel.getOrder_notes() == null || orderModel.getOrder_notes().equals("")) {
+        if (orderModel.getNotes() == null || orderModel.getNotes().equals("")) {
             orderDetailsTV.setText("אין הערות להזמנה");
         } else {
-            orderDetailsTV.setText(orderModel.getOrder_notes());
+            orderDetailsTV.setText(orderModel.getNotes());
         }
     }
 
     private void initOrderMethod() {
 
-        if (orderModel.getIs_delivery().equals("0")) {
-            orderTypeTV.setText("איסוף עצמי");
-            orderMethodIV.setImageResource(R.drawable.ic_takeaway);
-
-        } else if (orderModel.getIs_delivery().equals("1")) {
-            orderTypeTV.setText("משלוח");
-            orderMethodIV.setImageResource(R.drawable.ic_delivery);
-            shippingHolder.setVisibility(View.VISIBLE);
-            shippingTvClick.setOnClickListener(v ->
-                    Request.getInstance().getOrderCode(context, orderModel.getOrder_id(), jsonObject -> {
-                        try {
-                            if (jsonObject.has("message"))
-                                shippingNumber.setText("N " + jsonObject.getString("message"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }));
-
-        } else {
-            orderTypeTV.setText("לשבת");
-            orderMethodIV.setImageResource(R.drawable.ic_dinner);
+        switch (orderModel.getDeliveryOption()) {
+            case DELIVERY_OPTION_TAKEAWAY:
+                orderTypeTV.setText("איסוף עצמי");
+                orderMethodIV.setImageResource(R.drawable.ic_takeaway);
+                break;
+            case DELIVERY_OPTION_DELIVERY:
+                orderTypeTV.setText("משלוח");
+                orderMethodIV.setImageResource(R.drawable.ic_delivery);
+                shippingHolder.setVisibility(View.VISIBLE);
+                shippingTvClick.setOnClickListener(v ->
+                        Request.getInstance().getOrderCode(context, orderModel.getId(), jsonObject -> {
+                            try {
+                                if (jsonObject.has("code"))
+                                    shippingNumber.setText("N " + jsonObject.getString("code"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }));
+                break;
+            case DELIVERY_OPTION_TABLE:
+            default:
+                orderTypeTV.setText("לשבת");
+                orderMethodIV.setImageResource(R.drawable.ic_dinner);
+                break;
         }
 
     }
 
     private void initPizzaRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
 
-        OpenOrderPizzaAdapter mAdapter = new OpenOrderPizzaAdapter(context, orderModels, new OpenOrderPizzaAdapter.AdapterCallback() {
-            @Override
-            public void onItemChoose(ItemModel itemModel) {
-            }
+        OpenOrderPizzaAdapter mAdapter = new OpenOrderPizzaAdapter(context, orderModels, itemModel -> {
         });
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -167,14 +167,9 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     }
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
-        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, new OpenOrderAdapter.AdapterCallback() {
-            @Override
-            public void onItemChoose(ItemModel itemModel) {
-
-            }
+        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, itemModel -> {
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(
-                context, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
 
         recyclerView.setAdapter(openOrderAdapter);
         //  recyclerView.setOnDragListener(Adapter.getDragInstance());
@@ -201,9 +196,9 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     }
 
     private boolean checkIfEdited() {
-        for (ItemModel model : orderModel.getOrder_items()) {
-            if (model.getChange_type() != null) return true;
-        }
+//        for (ItemModel model : orderModel.getOrder_items()) { //todo order items missing
+//            if (model.getChange_type() != null) return true;
+//        }
         return false;
     }
 }
