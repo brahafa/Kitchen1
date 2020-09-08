@@ -18,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DEAL;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_TOPPING;
@@ -130,6 +131,10 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 case ITEM_TYPE_PIZZA:
 //                    imageUrl = Constants.FOOD_URL + item.getItem_picture(); //todo ask for pictures
                     placeholderRes = R.drawable.ic_ph_pizza;
+                    break;
+                case ITEM_TYPE_DEAL:
+//                    imageUrl = Constants.FOOD_URL + item.getItem_picture(); //todo ask for pictures
+                    placeholderRes = R.drawable.ic_ph_deal;
                     break;
             }
             Glide.with(context)

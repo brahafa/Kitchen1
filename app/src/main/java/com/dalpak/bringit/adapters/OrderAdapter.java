@@ -62,11 +62,12 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
 
         switch (orderList.get(position).getDeliveryOption()) {
             case DELIVERY_OPTION_DELIVERY:
-                holder.name.setText(
-                        String.format("%s %s, %s",
-                                orderList.get(position).getClient().getAddress().getStreet(),
-                                orderList.get(position).getClient().getAddress().getHouseNum(),
-                                orderList.get(position).getClient().getAddress().getCity()));
+                if (orderList.get(position).getClient() != null)
+                    holder.name.setText(
+                            String.format("%s %s, %s",
+                                    orderList.get(position).getClient().getAddress().getStreet(),
+                                    orderList.get(position).getClient().getAddress().getHouseNum(),
+                                    orderList.get(position).getClient().getAddress().getCity()));
                 holder.deliveryImage.setImageResource(R.drawable.ic_delivery);
                 break;
             case DELIVERY_OPTION_TAKEAWAY:

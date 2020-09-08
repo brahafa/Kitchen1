@@ -32,6 +32,7 @@ import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_DELIVERY;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TABLE;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TAKEAWAY;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
+import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DEAL;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
 
@@ -63,16 +64,31 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         List<ItemModel> drinks = new ArrayList<>();
         List<ItemModel> additionals = new ArrayList<>();
         List<ItemModel> pizza = new ArrayList<>();
-        for (int i = 0; i < orderModel.getItems().size(); i++) {
-            switch (orderModel.getItems().get(i).getTypeName()) {
+        for (ItemModel orderItem : orderModel.getItems()) {
+            switch (orderItem.getTypeName()) {
                 case ITEM_TYPE_DRINK:
-                    drinks.add(orderModel.getItems().get(i));
+                    drinks.add(orderItem);
                     break;
                 case ITEM_TYPE_ADDITIONAL_OFFER:
-                    additionals.add(orderModel.getItems().get(i));
+                    additionals.add(orderItem);
                     break;
                 case ITEM_TYPE_PIZZA:
-                    pizza.add(orderModel.getItems().get(i));
+                    pizza.add(orderItem);
+                    break;
+                case ITEM_TYPE_DEAL:
+                    for (ItemModel dealItem : orderItem.getItems()) {
+                        switch (dealItem.getTypeName()) {
+                            case ITEM_TYPE_DRINK:
+                                drinks.add(dealItem);
+                                break;
+                            case ITEM_TYPE_ADDITIONAL_OFFER:
+                                additionals.add(dealItem);
+                                break;
+                            case ITEM_TYPE_PIZZA:
+                                pizza.add(dealItem);
+                                break;
+                        }
+                    }
                     break;
             }
         }

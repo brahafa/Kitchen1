@@ -67,9 +67,7 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
 
         initRV(orderModel.getItems(), rv);
 
-        close.setOnClickListener(v -> {
-            d.dismiss();
-        });
+        close.setOnClickListener(v -> d.dismiss());
     }
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
