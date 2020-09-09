@@ -100,7 +100,7 @@ public class Network {
                 url += BUSINESS + "loadBusinessItems&type=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case LOAD_PRODUCTS: //api 2
-                url += "products/" + param1 + "/4" /*+ BusinessModel.getInstance().getBusiness_id()*/; //fixme remove 4
+                url += "products/" + param1 + BusinessModel.getInstance().getBusiness_id();
                 break;
 //            case GET_ORDER_CODE:
 //                url += BUSINESS + "getOrderCode" + "&order_id=" + param1;

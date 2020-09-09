@@ -54,8 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         binding.tvGo.setOnClickListener(v ->
                 Request.getInstance().logIn(this,
-                        binding.edtPassword.getText().toString(), //todo for business id 4 "Pedro123", //
-                        binding.edtUsername.getText().toString(), //todo for business id 4 "pashtet1@gmail.com", //
+                        "pedro123", //     binding.edtPassword.getText().toString(), //todo for business id 4
+                        "pashtet1@gmail.com", //       binding.edtUsername.getText().toString(), //todo for business id 4
                         isDataSuccess -> {
                             if (isDataSuccess) {
                                 saveData(Constants.USER_ALREADY_CONNECTED_PREF, true);
