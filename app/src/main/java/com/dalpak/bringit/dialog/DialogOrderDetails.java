@@ -69,8 +69,8 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
         tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
 
         List<ItemModel> separatedItems = new ArrayList<>();
-        for (ItemModel item : orderModel.getItems()) {
-            if (item.getTypeName().equals(ITEM_TYPE_DEAL)) separatedItems.addAll(item.getItems());
+        for (ItemModel item : orderModel.getProducts()) {
+            if (item.getTypeName().equals(ITEM_TYPE_DEAL)) separatedItems.addAll(item.getProducts());
             else separatedItems.add(item);
         }
 

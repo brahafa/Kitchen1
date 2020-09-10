@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
+import static com.dalpak.bringit.utils.Network.RequestName.UPDATE_PRODUCT_STATUS;
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
 
 public class Network {
@@ -55,6 +56,7 @@ public class Network {
         GET_ITEMS_IN_SELECTED_FOLDER,
         GET_ALL_ORDERS, GET_ORDER_DETAILS_BY_ID,
         GET_ORDER_CODE,
+        UPDATE_PRODUCT_STATUS
     }
 
     Network(NetworkCallBack listener) {
@@ -100,7 +102,7 @@ public class Network {
                 url += BUSINESS + "loadBusinessItems&type=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case LOAD_PRODUCTS: //api 2
-                url += "products/" + param1 + BusinessModel.getInstance().getBusiness_id();
+                url += "products/" + param1 + "/" + BusinessModel.getInstance().getBusiness_id();
                 break;
 //            case GET_ORDER_CODE:
 //                url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
@@ -174,9 +176,13 @@ public class Network {
     }
 
     public void sendPostRequest(final Context context, final JSONObject params, final RequestName requestName) {
+        sendPostRequest(context, params, requestName, false);
+    }
+
+    public void sendPostRequest(final Context context, final JSONObject params, final RequestName requestName, boolean isApi2) {
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
-        String url = BASE_URL;
+        String url = isApi2 ? BASE_URL_2 : BASE_URL;
         switch (requestName) {
             case SIGN_UP:
                 url += BUSINESS + "signup";
@@ -202,6 +208,9 @@ public class Network {
             case UPDATE_ITEM_PRICE:
                 url += BUSINESS + "updateItemPrice";
                 break;
+            case UPDATE_PRODUCT_STATUS: //api 2
+                url += "products/status";
+                break;
             case WORKER_LOGOUT:
                 url += DALPAK + "workerLogout";
                 break;
@@ -210,16 +219,17 @@ public class Network {
 
         }
         Log.d("POST url  ", url);
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, params,
-                response -> {
-                    try {
-                        listener.onDataDone(response);
-                        VolleyLog.v("Response:%n %s", response.toString(4));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("ERROR POST REQUEST", e.toString());
-                    }
-                }, error -> {
+        JsonObjectRequest req = new JsonObjectRequest(
+                requestName.equals(UPDATE_PRODUCT_STATUS) ? Request.Method.PUT : Request.Method.POST,
+                url, params, response -> {
+            try {
+                listener.onDataDone(response);
+                VolleyLog.v("Response:%n %s", response.toString(4));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("ERROR POST REQUEST", e.toString());
+            }
+        }, error -> {
             VolleyLog.e("Error  11: ", error.getMessage());
             manageErrors(error, context);
             //                try {

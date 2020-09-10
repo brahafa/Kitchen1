@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ProductItemModel;
 import com.dalpak.bringit.utils.Constants;
+import com.dalpak.bringit.utils.Request;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,23 +101,18 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
             holder.inStockTvClick.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_background_not_in_stock));
         }
         holder.inStockTvClick.setOnClickListener(v -> {
-        });
-        //todo ask how to change item status
 
-//                Request.getInstance().updateItemPrice(context, item, jsonObject -> {
-//                    item.setObject_status(!item.isObject_status());
-//                    try {
-//                        if (jsonObject.has("dealsDisabled") && jsonObject.getBoolean("dealsDisabled")) {
-//                            FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
-//                            DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
-//                            alertDialog.show(fm, "fragment_edit_name");
-//
-//                        }
-//                        notifyItemChanged(position);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }));
+            Request.getInstance().updateProductStatus(context, item, isDataSuccess -> {
+                item.setInInventory(String.valueOf(1 ^ Integer.parseInt(item.getInInventory())));
+
+//                FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+//                DialogWarningRemoveStock alertDialog = DialogWarningRemoveStock.newInstance(getRemoveItems(jsonObject));
+//                alertDialog.show(fm, "fragment_edit_name");
+
+                notifyItemChanged(position);
+            });
+        });
+
     }
 
     private String getRemoveItems(JSONObject jsonObject) {

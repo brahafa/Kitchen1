@@ -43,8 +43,8 @@ public class OpenOrderModel {
     private String mAddedBySystem;
     @SerializedName("client")
     private ClientModel mClient;
-    @SerializedName("items")
-    private List<ItemModel> mItems;
+    @SerializedName("products")
+    private List<ItemModel> mProducts;
 
     public String getId() {
         return mId;
@@ -190,12 +190,12 @@ public class OpenOrderModel {
         this.mAddedBySystem = mAddedBySystem;
     }
 
-    public List<ItemModel> getItems() {
-        return mItems;
+    public List<ItemModel> getProducts() {
+        return mProducts;
     }
 
-    public void setItems(List<ItemModel> mItems) {
-        this.mItems = mItems;
+    public void setProducts(List<ItemModel> mProducts) {
+        this.mProducts = mProducts;
     }
 }
 

@@ -21,8 +21,10 @@ public class ItemModel {
     private String mLocation;
     @SerializedName("is_compensation")
     private String mIsCompensation;
-    @SerializedName("items")
-    private List<ItemModel> mItems;
+    @SerializedName("products")
+    private List<ItemModel> mProducts;
+    @SerializedName("categories")
+    private List<OrderCategoryModel> mCategories;
 
     public String getId() {
         return mId;
@@ -80,11 +82,19 @@ public class ItemModel {
         mIsCompensation = isCompensation;
     }
 
-    public List<ItemModel> getItems() {
-        return mItems;
+    public List<ItemModel> getProducts() {
+        return mProducts;
     }
 
-    public void setItems(List<ItemModel> mItems) {
-        this.mItems = mItems;
+    public void setProducts(List<ItemModel> products) {
+        mProducts = products;
+    }
+
+    public List<OrderCategoryModel> getCategories() {
+        return mCategories;
+    }
+
+    public void setCategories(List<OrderCategoryModel> mCategories) {
+        this.mCategories = mCategories;
     }
 }

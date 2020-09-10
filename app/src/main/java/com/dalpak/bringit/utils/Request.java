@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
-import com.dalpak.bringit.models.StockModel;
+import com.dalpak.bringit.models.ProductItemModel;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -149,23 +149,12 @@ public class Request {
         network.sendRequest(context, Network.RequestName.GET_ALL_ORDERS, "", true);
     }
 
-    public void updateItemPrice(Context context, StockModel stockModel, final RequestJsonCallBack listener) {
+    public void updateProductStatus(Context context, ProductItemModel itemModel, final RequestCallBackSuccess listener) {
         JSONObject jsonObject = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObject1 = new JSONObject();
         try {
-            // jsonObject.put("object_status", !stockModel.isObject_status());
-            jsonObject.put("object_status", !stockModel.isObject_status());
-            jsonObject.put("id", stockModel.getId());
-            jsonObject.put("object_id", stockModel.getObject_id());
-            jsonObject.put("object_type", stockModel.getObject_type());
-            jsonObject.put(stockModel.getObject_type() + "_id", stockModel.getObject_id());
-
-            // jsonObject.put("object_type",stockModel.getObject_type());
-            jsonArray.put((jsonObject));
-            jsonObject1.put("items", jsonArray);
-            jsonObject1.put("business_id", BusinessModel.getInstance().getBusiness_id());
-            Log.d("send data: ", jsonObject1.toString());
+            jsonObject.put("id", itemModel.getId());
+            jsonObject.put("status", 1 ^ Integer.parseInt(itemModel.getInInventory()));
+            Log.d("send data: ", jsonObject.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -173,8 +162,8 @@ public class Request {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Log.d("UPDATE_ITEM_PRICE", json.toString());
-                listener.onDataDone(json);
+                Log.d("update status", json.toString());
+                listener.onDataDone(true);
             }
 
             @Override
@@ -182,7 +171,7 @@ public class Request {
                 openAlertMsg(context, json);
             }
         });
-        network.sendPostRequest(context, jsonObject1, Network.RequestName.UPDATE_ITEM_PRICE);
+        network.sendPostRequest(context, jsonObject, Network.RequestName.UPDATE_PRODUCT_STATUS, true);
     }
 
     public void updateOrderStatus(Context context, long order_id, String status, final RequestJsonCallBack listener) {
@@ -236,7 +225,7 @@ public class Request {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Log.d("getOrderDetailsByID", json.toString());
+                Log.d("load products " + type, json.toString());
                 requestJsonCallBack.onDataDone(json);
 
             }

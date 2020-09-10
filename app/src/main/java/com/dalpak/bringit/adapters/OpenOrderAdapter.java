@@ -132,11 +132,11 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             holder1.name.setText(item.getName());
 
-            if (item.getItems() != null && item.getItems().size() != 0) {
+            if (item.getCategories() != null && item.getCategories().size() != 0) {
                 holder1.rvFillings.setVisibility(View.VISIBLE);
                 holder1.rvFillings.setLayoutManager(new LinearLayoutManager(context));
                 FillingAdapter fillingAdapter =
-                        new FillingAdapter(context, item.getItems(),
+                        new FillingAdapter(context, item.getCategories().get(0).getProducts(),
                                 /*item.getChange_type() != null && item.getChange_type().equals("NEW")*/false); //todo waiting for change types
 
                 holder1.rvFillings.setAdapter(fillingAdapter);
@@ -169,53 +169,54 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void initToppingColor(ItemModel itemModel, OpenOrderHolderTopping holder) {
-        switch (itemModel.getLocation()) {
-            case "full":
-                holder.tl.setImageResource(R.mipmap.squart_red1);
-                holder.tr.setImageResource(R.mipmap.squart_red2);
-                holder.bl.setImageResource(R.mipmap.squart_red4);
-                holder.br.setImageResource(R.mipmap.squart_red3);
+        if (itemModel.getLocation() != null)
+            switch (itemModel.getLocation()) {
+                case "full":
+                    holder.tl.setImageResource(R.mipmap.squart_red1);
+                    holder.tr.setImageResource(R.mipmap.squart_red2);
+                    holder.bl.setImageResource(R.mipmap.squart_red4);
+                    holder.br.setImageResource(R.mipmap.squart_red3);
 
-                break;
-            case "rightHalfPizza":
-                holder.tr.setImageResource(R.mipmap.squart_red2);
-                holder.br.setImageResource(R.mipmap.squart_red3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tl.setImageResource(R.mipmap.squart1);
-                break;
-            case "leftHalfPizza":
-                holder.tl.setImageResource(R.mipmap.squart_red1);
-                holder.bl.setImageResource(R.mipmap.squart_red4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.br.setImageResource(R.mipmap.squart3);
-                break;
-            case "br":
-                holder.br.setImageResource(R.mipmap.squart_red3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.tl.setImageResource(R.mipmap.squart1);
+                    break;
+                case "rightHalfPizza":
+                    holder.tr.setImageResource(R.mipmap.squart_red2);
+                    holder.br.setImageResource(R.mipmap.squart_red3);
+                    holder.bl.setImageResource(R.mipmap.squart4);
+                    holder.tl.setImageResource(R.mipmap.squart1);
+                    break;
+                case "leftHalfPizza":
+                    holder.tl.setImageResource(R.mipmap.squart_red1);
+                    holder.bl.setImageResource(R.mipmap.squart_red4);
+                    holder.tr.setImageResource(R.mipmap.squart2);
+                    holder.br.setImageResource(R.mipmap.squart3);
+                    break;
+                case "br":
+                    holder.br.setImageResource(R.mipmap.squart_red3);
+                    holder.bl.setImageResource(R.mipmap.squart4);
+                    holder.tr.setImageResource(R.mipmap.squart2);
+                    holder.tl.setImageResource(R.mipmap.squart1);
 
 
-                break;
-            case "bl":
-                holder.br.setImageResource(R.mipmap.squart3);
-                holder.bl.setImageResource(R.mipmap.squart_red4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.tl.setImageResource(R.mipmap.squart1);
-                break;
-            case "tr":
-                holder.br.setImageResource(R.mipmap.squart3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tr.setImageResource(R.mipmap.squart_red2);
-                holder.tl.setImageResource(R.mipmap.squart1);
-                break;
-            case "tl":
-                holder.br.setImageResource(R.mipmap.squart3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.tl.setImageResource(R.mipmap.squart_red1);
-                break;
-        }
+                    break;
+                case "bl":
+                    holder.br.setImageResource(R.mipmap.squart3);
+                    holder.bl.setImageResource(R.mipmap.squart_red4);
+                    holder.tr.setImageResource(R.mipmap.squart2);
+                    holder.tl.setImageResource(R.mipmap.squart1);
+                    break;
+                case "tr":
+                    holder.br.setImageResource(R.mipmap.squart3);
+                    holder.bl.setImageResource(R.mipmap.squart4);
+                    holder.tr.setImageResource(R.mipmap.squart_red2);
+                    holder.tl.setImageResource(R.mipmap.squart1);
+                    break;
+                case "tl":
+                    holder.br.setImageResource(R.mipmap.squart3);
+                    holder.bl.setImageResource(R.mipmap.squart4);
+                    holder.tr.setImageResource(R.mipmap.squart2);
+                    holder.tl.setImageResource(R.mipmap.squart_red1);
+                    break;
+            }
     }
 
     @Override

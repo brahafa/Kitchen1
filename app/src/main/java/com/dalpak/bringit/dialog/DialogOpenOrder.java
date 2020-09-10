@@ -64,7 +64,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         List<ItemModel> drinks = new ArrayList<>();
         List<ItemModel> additionals = new ArrayList<>();
         List<ItemModel> pizza = new ArrayList<>();
-        for (ItemModel orderItem : orderModel.getItems()) {
+        for (ItemModel orderItem : orderModel.getProducts()) {
             switch (orderItem.getTypeName()) {
                 case ITEM_TYPE_DRINK:
                     drinks.add(orderItem);
@@ -76,7 +76,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
                     pizza.add(orderItem);
                     break;
                 case ITEM_TYPE_DEAL:
-                    for (ItemModel dealItem : orderItem.getItems()) {
+                    for (ItemModel dealItem : orderItem.getProducts()) {
                         switch (dealItem.getTypeName()) {
                             case ITEM_TYPE_DRINK:
                                 drinks.add(dealItem);

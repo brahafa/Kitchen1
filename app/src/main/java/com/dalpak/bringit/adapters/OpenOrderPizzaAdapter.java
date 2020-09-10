@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
+import com.dalpak.bringit.models.OrderCategoryModel;
 
 import java.util.List;
 
@@ -68,12 +69,12 @@ public class OpenOrderPizzaAdapter extends RecyclerView.Adapter<OpenOrderPizzaAd
 //                    holder.name.setTextColor(Color.WHITE);
 //                    break;
 //            }
-        if (item.getItems().size() != 0) initRV(item.getItems(), holder.toppingsRv);
+        if (item.getCategories().size() != 0) initRV(item.getCategories(), holder.toppingsRv);
     }
 
-    private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
+    private void initRV(final List<OrderCategoryModel> categoryModels, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, itemModel -> {
+        CategoriesAdapter openOrderAdapter = new CategoriesAdapter(context, categoryModels, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
