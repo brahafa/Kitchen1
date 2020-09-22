@@ -9,7 +9,7 @@ public class OrderCategoryModel {
     @SerializedName("name")
     private String mName;
     @SerializedName("is_topping_divided")
-    private String mIsToppingDivided;
+    private boolean mIsToppingDivided;
     @SerializedName("products")
     private List<ItemModel> mProducts;
 
@@ -21,11 +21,11 @@ public class OrderCategoryModel {
         mName = name;
     }
 
-    public String getIsToppingDivided() {
+    public boolean isToppingDivided() {
         return mIsToppingDivided;
     }
 
-    public void setIsToppingDivided(String isToppingDivided) {
+    public void setIsToppingDivided(boolean isToppingDivided) {
         mIsToppingDivided = isToppingDivided;
     }
 

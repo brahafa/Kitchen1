@@ -31,6 +31,15 @@ public class Constants {
     public static final String ITEM_TYPE_SPECIAL = "special";
     public static final String ITEM_TYPE_DEAL = "deal";
 
+    //    pizza topping locations
+    public static final String PIZZA_TYPE_FULL = "full";
+    public static final String PIZZA_TYPE_RH = "rightHalfPizza";
+    public static final String PIZZA_TYPE_LH = "leftHalfPizza";
+    public static final String PIZZA_TYPE_TL = "tl";
+    public static final String PIZZA_TYPE_TR = "tr";
+    public static final String PIZZA_TYPE_BL = "bl";
+    public static final String PIZZA_TYPE_BR = "br";
+
     public static int maximumWaitTimePreparing = 10;
     public static int maximumWaitTimeReceived = 10;
     public static int maximumWaitTimeCooking = 10;

@@ -56,12 +56,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         holder.name.setText(item.getName());
 
-        if (item.getProducts().size() != 0) initRV(item.getProducts(), holder.toppingsRv);
+        if (item.getProducts().size() != 0) initRV(item.getProducts(), item.isToppingDivided(), holder.toppingsRv);
     }
 
-    private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
+    private void initRV(final List<ItemModel> orderModels, boolean isToppingDivided, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, itemModel -> {
+        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, isToppingDivided, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

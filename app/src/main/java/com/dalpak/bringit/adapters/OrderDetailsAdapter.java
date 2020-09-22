@@ -22,6 +22,13 @@ import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DEAL;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_TOPPING;
+import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_BL;
+import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_BR;
+import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_FULL;
+import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_LH;
+import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_RH;
+import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TL;
+import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TR;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -49,7 +56,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     class OrderDetailsHolderTopping extends RecyclerView.ViewHolder {
         TextView name, amount;
-        ImageView itemImage, tl, tr, bl, br;
+        ImageView ivToppingLocation;
         CardView parent;
 
         OrderDetailsHolderTopping(View view) {
@@ -58,11 +65,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             parent = view.findViewById(R.id.parent);
             name = view.findViewById(R.id.name);
             amount = view.findViewById(R.id.amount);
-            itemImage = view.findViewById(R.id.itemImage);
-            tl = view.findViewById(R.id.tl);
-            tr = view.findViewById(R.id.tr);
-            bl = view.findViewById(R.id.bl);
-            br = view.findViewById(R.id.br);
+            ivToppingLocation = view.findViewById(R.id.iv_topping_location);
 
         }
     }
@@ -102,7 +105,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder2.parent.requestLayout();
             holder2.name.setText(item.getName());
             setItemPrice(holder2.amount, item);
-            initToppingColor(item, holder2);
+            if (item.getLocation() != null) holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
 
         } else {
             holder1 = (OrderDetailsHolder) holder;
@@ -159,54 +162,32 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    private void initToppingColor(ItemModel itemModel, OrderDetailsHolderTopping holder) {
-        switch (itemModel.getLocation()) {
-            case "full":
-                holder.tl.setImageResource(R.mipmap.squart_red1);
-                holder.tr.setImageResource(R.mipmap.squart_red2);
-                holder.bl.setImageResource(R.mipmap.squart_red4);
-                holder.br.setImageResource(R.mipmap.squart_red3);//
-
+    private int getImageRes(String viewType) {
+        int imageRes = R.drawable.ic_pizza_full_active;
+        switch (viewType) {
+            case PIZZA_TYPE_FULL:
+                imageRes = R.drawable.ic_pizza_full_active;
                 break;
-            case "rightHalfPizza":
-                holder.tr.setImageResource(R.mipmap.squart_red2);
-                holder.br.setImageResource(R.mipmap.squart_red3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tl.setImageResource(R.mipmap.squart1);
+            case PIZZA_TYPE_RH:
+                imageRes = R.drawable.ic_pizza_rh_active;
                 break;
-            case "leftHalfPizza":
-                holder.tl.setImageResource(R.mipmap.squart_red1);
-                holder.bl.setImageResource(R.mipmap.squart_red4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.br.setImageResource(R.mipmap.squart3);
+            case PIZZA_TYPE_LH:
+                imageRes = R.drawable.ic_pizza_lh_active;
                 break;
-            case "br":
-                holder.br.setImageResource(R.mipmap.squart_red3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.tl.setImageResource(R.mipmap.squart1);
-
-
+            case PIZZA_TYPE_TR:
+                imageRes = R.drawable.ic_pizza_tr_cart;
                 break;
-            case "bl":
-                holder.br.setImageResource(R.mipmap.squart3);
-                holder.bl.setImageResource(R.mipmap.squart_red4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.tl.setImageResource(R.mipmap.squart1);
+            case PIZZA_TYPE_TL:
+                imageRes = R.drawable.ic_pizza_tl_cart;
                 break;
-            case "tr":
-                holder.br.setImageResource(R.mipmap.squart3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tr.setImageResource(R.mipmap.squart_red2);
-                holder.tl.setImageResource(R.mipmap.squart1);
+            case PIZZA_TYPE_BR:
+                imageRes = R.drawable.ic_pizza_br_cart;
                 break;
-            case "tl":
-                holder.br.setImageResource(R.mipmap.squart3);
-                holder.bl.setImageResource(R.mipmap.squart4);
-                holder.tr.setImageResource(R.mipmap.squart2);
-                holder.tl.setImageResource(R.mipmap.squart_red1);
+            case PIZZA_TYPE_BL:
+                imageRes = R.drawable.ic_pizza_bl_cart;
                 break;
         }
+        return imageRes;
     }
 
     @Override
