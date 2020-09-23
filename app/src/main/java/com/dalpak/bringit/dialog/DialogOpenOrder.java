@@ -153,8 +153,11 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
                 shippingTvClick.setOnClickListener(v ->
                         Request.getInstance().getOrderCode(context, orderModel.getId(), jsonObject -> {
                             try {
-                                if (jsonObject.has("code"))
+                                if (jsonObject.has("code")) {
+                                    shippingNumber.setVisibility(View.VISIBLE);
+                                    shippingTvClick.setVisibility(View.GONE);
                                     shippingNumber.setText("N " + jsonObject.getString("code"));
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

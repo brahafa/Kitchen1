@@ -13,14 +13,11 @@ import com.dalpak.bringit.adapters.OrderDetailsAdapter;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DEAL;
 
 public class DialogOrderDetails extends Dialog implements View.OnClickListener {
 
@@ -68,13 +65,7 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
         tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPaymentDisplay()));
         tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
 
-        List<ItemModel> separatedItems = new ArrayList<>();
-        for (ItemModel item : orderModel.getProducts()) {
-            if (item.getTypeName().equals(ITEM_TYPE_DEAL)) separatedItems.addAll(item.getProducts());
-            else separatedItems.add(item);
-        }
-
-        initRV(separatedItems, rv);
+        initRV(orderModel.getProducts(), rv);
 
         close.setOnClickListener(v -> d.dismiss());
     }

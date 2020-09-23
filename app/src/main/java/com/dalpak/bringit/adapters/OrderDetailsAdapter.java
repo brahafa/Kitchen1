@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
+import com.dalpak.bringit.models.OrderCategoryModel;
 
 import java.util.List;
 
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
@@ -83,7 +85,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.topping_item, parent, false);
             return new OrderDetailsAdapter.OrderDetailsHolderTopping(itemView);
         } else {
-            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.open_order_item, parent, false);
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item_order_details, parent, false);
             return new OrderDetailsAdapter.OrderDetailsHolder(itemView);
         }
 
@@ -103,6 +105,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) holder2.parent.getLayoutParams();
             layoutParams.setMargins(0, 0, 60, 0);
             holder2.parent.requestLayout();
+
             holder2.name.setText(item.getName());
             setItemPrice(holder2.amount, item);
             if (item.getLocation() != null) holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
@@ -145,9 +148,24 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(placeholderRes)
                     .into(holder1.itemImage);
+
+            if (item.getProducts() != null) initDealRV(item.getProducts(), holder1.rvFillings);
+            else if (item.getCategories().size() != 0) initRV(item.getCategories(), holder1.rvFillings);
         }
+    }
 
+    private void initRV(final List<OrderCategoryModel> categoryModels, RecyclerView recyclerView) {
+        recyclerView.setVisibility(View.VISIBLE);
+        CategoriesDetailsAdapter categoriesDetailsAdapter = new CategoriesDetailsAdapter(context, categoryModels);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(categoriesDetailsAdapter);
+    }
 
+    private void initDealRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
+        recyclerView.setVisibility(View.VISIBLE);
+        OrderDetailsAdapter orderDetailsAdapter = new OrderDetailsAdapter(context, orderModels);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(orderDetailsAdapter);
     }
 
     private void setItemPrice(TextView amount, ItemModel item) {

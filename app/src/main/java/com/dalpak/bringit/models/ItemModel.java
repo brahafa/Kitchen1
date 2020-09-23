@@ -3,6 +3,7 @@ package com.dalpak.bringit.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemModel {
@@ -24,7 +25,7 @@ public class ItemModel {
     @SerializedName("products")
     private List<ItemModel> mProducts;
     @SerializedName("categories")
-    private List<OrderCategoryModel> mCategories;
+    private List<OrderCategoryModel> mCategories = new ArrayList<>();
 
     public String getId() {
         return mId;
