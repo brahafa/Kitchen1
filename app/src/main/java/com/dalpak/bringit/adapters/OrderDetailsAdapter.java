@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
+import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OrderCategoryModel;
 
@@ -19,6 +20,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.dalpak.bringit.utils.Constants.BUSINESS_TOPPING_TYPE_LAYER;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DEAL;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
@@ -107,7 +109,11 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder2.parent.requestLayout();
 
             holder2.name.setText(item.getName());
-            setItemPrice(holder2.amount, item);
+
+            if (item.getLocation() == null ||
+                    !BusinessModel.getInstance().getTopping_method_name().equals(BUSINESS_TOPPING_TYPE_LAYER))
+                setItemPrice(holder2.amount, item);
+
             if (item.getLocation() != null) holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
 
         } else {

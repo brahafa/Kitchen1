@@ -1,9 +1,6 @@
 package com.dalpak.bringit.models;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 public class BusinessModel {
@@ -21,7 +18,8 @@ public class BusinessModel {
     private String business_delivery_time;
     private String additional_delivery_time_in_minute;
     private String logo_url;
-    private String utoken;
+    private String topping_method_id;
+    private String topping_method_name;
 
     private List<ItemModel> drinkList;
 
@@ -33,21 +31,20 @@ public class BusinessModel {
         return instance;
     }
 
-    public void initData(JSONObject jsonObjectMsg) throws JSONException {
-
-        business_id = jsonObjectMsg.getInt("business_id");
-        business_name_formal = jsonObjectMsg.getString("business_name_formal");
-        business_name_commercial = jsonObjectMsg.getString("business_name_commercial");
-        business_email = jsonObjectMsg.getString("business_email");
-        business_register_date = jsonObjectMsg.getString("business_register_date");
-        business_last_login = jsonObjectMsg.getString("business_last_login");
-        business_phone = jsonObjectMsg.getString("business_phone");
-        business_address = jsonObjectMsg.getString("business_address");
-        business_delivery_time = jsonObjectMsg.getString("business_delivery_time");
-        additional_delivery_time_in_minute = jsonObjectMsg.getString("additional_delivery_time_in_minute");
-        logo_url = jsonObjectMsg.getString("logo_url");
-
-
+    public void initData(BusinessModel businessModel) {
+        this.business_id = businessModel.business_id;
+        this.business_name_formal = businessModel.business_name_formal;
+        this.business_name_commercial = businessModel.business_name_commercial;
+        this.business_email = businessModel.business_email;
+        this.business_register_date = businessModel.business_register_date;
+        this.business_last_login = businessModel.business_last_login;
+        this.business_phone = businessModel.business_phone;
+        this.business_address = businessModel.business_address;
+        this.business_delivery_time = businessModel.business_delivery_time;
+        this.additional_delivery_time_in_minute = businessModel.additional_delivery_time_in_minute;
+        this.logo_url = businessModel.logo_url;
+        this.topping_method_id = businessModel.topping_method_id;
+        this.topping_method_name = businessModel.topping_method_name;
     }
 
     public void setDrinkList(List<ItemModel> drinkList) {
@@ -146,11 +143,19 @@ public class BusinessModel {
         this.logo_url = logo_url;
     }
 
-    public String getUtoken() {
-        return utoken;
+    public String getTopping_method_id() {
+        return topping_method_id;
     }
 
-    public void setUtoken(String utoken) {
-        this.utoken = utoken;
+    public void setTopping_method_id(String topping_method_id) {
+        this.topping_method_id = topping_method_id;
+    }
+
+    public String getTopping_method_name() {
+        return topping_method_name;
+    }
+
+    public void setTopping_method_name(String topping_method_name) {
+        this.topping_method_name = topping_method_name;
     }
 }

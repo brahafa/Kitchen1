@@ -7,29 +7,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dalpak.bringit.R;
+import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OrderCategoryModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDetailsAdapter.CategoriesAdapterRvHolder> {
+import static com.dalpak.bringit.utils.Constants.BUSINESS_TOPPING_TYPE_LAYER;
+
+public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDetailsAdapter.CategoriesDetailsAdapterRvHolder> {
 
     private List<OrderCategoryModel> itemList;
     private Context context;
 
-    class CategoriesAdapterRvHolder extends RecyclerView.ViewHolder {
+    class CategoriesDetailsAdapterRvHolder extends RecyclerView.ViewHolder {
         TextView name;
         RecyclerView toppingsRv;
-        CardView parent;
+        RecyclerView layersRv;
 
-        CategoriesAdapterRvHolder(View view) {
+        CategoriesDetailsAdapterRvHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
             toppingsRv = view.findViewById(R.id.rvTopping);
+            layersRv = view.findViewById(R.id.rvLayers);
         }
 
     }
@@ -42,19 +46,23 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
 
 
     @Override
-    public CategoriesDetailsAdapter.CategoriesAdapterRvHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoriesDetailsAdapterRvHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
-        return new CategoriesDetailsAdapter.CategoriesAdapterRvHolder(itemView);
+        return new CategoriesDetailsAdapterRvHolder(itemView);
     }
 
 
     @Override
-    public void onBindViewHolder(final CategoriesDetailsAdapter.CategoriesAdapterRvHolder holder, final int position) {
+    public void onBindViewHolder(final CategoriesDetailsAdapterRvHolder holder, final int position) {
         OrderCategoryModel item = itemList.get(position);
 
         holder.name.setText(item.getName());
 
         if (item.getProducts().size() != 0) initRV(item.getProducts(), item.isToppingDivided(), holder.toppingsRv);
+
+        if (item.getProducts().get(0).getLocation() != null &&
+                BusinessModel.getInstance().getTopping_method_name().equals(BUSINESS_TOPPING_TYPE_LAYER))
+            initLayerRV(item.getProducts(), holder.layersRv);
     }
 
     private void initRV(final List<ItemModel> orderModels, boolean isToppingDivided, RecyclerView recyclerView) {
@@ -64,6 +72,20 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
                 context, LinearLayoutManager.VERTICAL, false));
 
         recyclerView.setAdapter(openOrderAdapter);
+    }
+
+    private void initLayerRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
+        recyclerView.setVisibility(View.VISIBLE);
+
+        ArrayList<String> layerPrices = new ArrayList<>();
+        for (ItemModel itemModel : orderModels)
+            if (!itemModel.getPrice().equals("0.00")) layerPrices.add(itemModel.getPrice());
+
+        LayerAdapter layerAdapter = new LayerAdapter(context, layerPrices);
+        recyclerView.setLayoutManager(new LinearLayoutManager(
+                context, LinearLayoutManager.VERTICAL, false));
+
+        recyclerView.setAdapter(layerAdapter);
     }
 
     @Override

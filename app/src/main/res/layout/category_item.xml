@@ -38,10 +38,23 @@
             android:layout_width="0dp"
             android:padding="5dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/name"
             app:layout_constraintStart_toStartOf="@+id/name"
             app:layout_constraintTop_toBottomOf="@+id/name"
+            tools:itemCount="3"
+            tools:listitem="@layout/topping_item"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLayers"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/name"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/rvTopping"
             tools:itemCount="3"
             tools:listitem="@layout/topping_item"
             tools:visibility="visible" />

@@ -45,8 +45,9 @@ public class Request {
             public void onDataDone(JSONObject json) {
                 Log.d("response: ", json.toString());
                 try {
-                    JSONObject jsonBusinessModel = json.getJSONObject("message");
-                    BusinessModel.getInstance().initData(jsonBusinessModel);
+                    Gson gson = new Gson();
+                    BusinessModel businessModel = gson.fromJson(json.getJSONObject("message").toString(), BusinessModel.class);
+                    BusinessModel.getInstance().initData(businessModel);
 
                     saveData(Constants.TOKEN_PREF, json.getString("utoken"));
                     saveData(Constants.LOG_IN_JSON_PREF, json.toString());
@@ -465,8 +466,9 @@ public class Request {
             @Override
             public void onDataDone(JSONObject json) {
                 try {
-                    JSONObject jsonBusinessModel = json.getJSONObject("user");
-                    BusinessModel.getInstance().initData(jsonBusinessModel);
+                    Gson gson = new Gson();
+                    BusinessModel businessModel = gson.fromJson(json.getJSONObject("user").toString(), BusinessModel.class);
+                    BusinessModel.getInstance().initData(businessModel);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
