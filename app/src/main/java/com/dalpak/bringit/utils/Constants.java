@@ -45,6 +45,11 @@ public class Constants {
     public static final String BUSINESS_TOPPING_TYPE_LAYER = "layer";
     public static final String BUSINESS_TOPPING_TYPE_FIXED = "fixed";
 
+    //    pizza shape
+    public static final String PIZZA_TYPE_CIRCLE = "circle";
+    public static final String PIZZA_TYPE_RECTANGLE = "rectangle";
+    public static final String PIZZA_TYPE_ONE_SLICE = "slice";
+
     public static int maximumWaitTimePreparing = 10;
     public static int maximumWaitTimeReceived = 10;
     public static int maximumWaitTimeCooking = 10;

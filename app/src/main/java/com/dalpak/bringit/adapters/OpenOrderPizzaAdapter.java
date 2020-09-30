@@ -69,12 +69,12 @@ public class OpenOrderPizzaAdapter extends RecyclerView.Adapter<OpenOrderPizzaAd
 //                    holder.name.setTextColor(Color.WHITE);
 //                    break;
 //            }
-        if (item.getCategories().size() != 0) initRV(item.getCategories(), holder.toppingsRv);
+        if (item.getCategories().size() != 0) initRV(item.getCategories(), item.getShape(), holder.toppingsRv);
     }
 
-    private void initRV(final List<OrderCategoryModel> categoryModels, RecyclerView recyclerView) {
+    private void initRV(final List<OrderCategoryModel> categoryModels, String shape, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        CategoriesAdapter openOrderAdapter = new CategoriesAdapter(context, categoryModels, itemModel -> {
+        CategoriesAdapter openOrderAdapter = new CategoriesAdapter(context, categoryModels,shape, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

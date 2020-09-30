@@ -1,0 +1,21 @@
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <stroke
+                android:color="@color/santas_gray_A3A3A4"
+                android:width="1dp" />
+            <solid android:color="@color/santas_gray_10_A3A3A4" />
+        </shape>
+    </item>
+
+    <item android:right="@dimen/pizza_size">
+        <shape>
+            <stroke
+                android:color="@color/burning_orange_FB6D3A"
+                android:width="2dp" />
+            <solid android:color="@color/burning_orange_20_FB6D3A" />
+        </shape>
+    </item>
+
+</layer-list>

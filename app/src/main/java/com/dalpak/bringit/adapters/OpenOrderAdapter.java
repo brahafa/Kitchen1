@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
+import com.dalpak.bringit.utils.Constants;
 
 import java.util.List;
 
@@ -22,21 +23,16 @@ import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_TOPPING;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_BL;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_BR;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_FULL;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_LH;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_RH;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TL;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TR;
+import static com.dalpak.bringit.utils.Utils.getImageRes;
+import static com.dalpak.bringit.utils.Utils.getImageResRect;
 
 public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ItemModel> itemList;
     private Context context;
+    private String shape;
     private boolean isToppingDivided = true;
     AdapterCallback adapterCallback;
-    private View itemView;
 
     class OpenOrderHolder extends RecyclerView.ViewHolder {
         TextView name, amount;
@@ -59,6 +55,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     class OpenOrderHolderTopping extends RecyclerView.ViewHolder {
         TextView name, amount;
         ImageView ivToppingLocation;
+        ImageView ivToppingLocationRect;
         CardView parent;
         TextView tvCancel;
 
@@ -70,6 +67,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             name = view.findViewById(R.id.name);
             amount = view.findViewById(R.id.order_time);
             ivToppingLocation = view.findViewById(R.id.iv_topping_location);
+            ivToppingLocationRect = view.findViewById(R.id.iv_topping_location_rect);
 
         }
     }
@@ -80,9 +78,10 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.adapterCallback = adapterCallback;
     }
 
-    public OpenOrderAdapter(Context context, List<ItemModel> itemList, boolean isToppingDivided, AdapterCallback adapterCallback) {
+    public OpenOrderAdapter(Context context, List<ItemModel> itemList, String shape, boolean isToppingDivided, AdapterCallback adapterCallback) {
         this.itemList = itemList;
         this.context = context;
+        this.shape = shape;
         this.isToppingDivided = isToppingDivided;
         this.adapterCallback = adapterCallback;
     }
@@ -91,6 +90,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        View itemView;
         if (viewType == 0) {// topping type
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.topping_item, parent, false);
             return new OpenOrderAdapter.OpenOrderHolderTopping(itemView);
@@ -113,8 +113,22 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder2 = (OpenOrderHolderTopping) holder;
             holder2.name.setText(item.getName());
 
-            holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
-            if (item.getLocation() != null) holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
+            switch (shape) {
+                case Constants.PIZZA_TYPE_CIRCLE:
+                    holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                    if (item.getLocation() != null)
+                        holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
+                    break;
+                case Constants.PIZZA_TYPE_RECTANGLE:
+                    holder2.ivToppingLocationRect.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                    if (item.getLocation() != null)
+                        holder2.ivToppingLocationRect.setImageResource(getImageResRect(item.getLocation()));
+                    break;
+                case Constants.PIZZA_TYPE_ONE_SLICE:
+                    holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                    holder2.ivToppingLocation.setImageResource(R.drawable.ic_pizza_slice_active);
+                    break;
+            }
 
 //            todo waiting for change types
 //            if (item.getChange_type() != null)
@@ -180,33 +194,8 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
-    private int getImageRes(String viewType) {
-        int imageRes = R.drawable.ic_pizza_full_active;
-        switch (viewType) {
-            case PIZZA_TYPE_FULL:
-                imageRes = R.drawable.ic_pizza_full_active;
-                break;
-            case PIZZA_TYPE_RH:
-                imageRes = R.drawable.ic_pizza_rh_active;
-                break;
-            case PIZZA_TYPE_LH:
-                imageRes = R.drawable.ic_pizza_lh_active;
-                break;
-            case PIZZA_TYPE_TR:
-                imageRes = R.drawable.ic_pizza_tr_cart;
-                break;
-            case PIZZA_TYPE_TL:
-                imageRes = R.drawable.ic_pizza_tl_cart;
-                break;
-            case PIZZA_TYPE_BR:
-                imageRes = R.drawable.ic_pizza_br_cart;
-                break;
-            case PIZZA_TYPE_BL:
-                imageRes = R.drawable.ic_pizza_bl_cart;
-                break;
-        }
-        return imageRes;
-    }
+
+
 
     @Override
     public int getItemCount() {

@@ -20,6 +20,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     private List<OrderCategoryModel> itemList;
     private Context context;
+    private final String shape;
     AdapterCallback adapterCallback;
 
     class CategoriesAdapterRvHolder extends RecyclerView.ViewHolder {
@@ -36,9 +37,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
 
-    public CategoriesAdapter(Context context, List<OrderCategoryModel> itemList, AdapterCallback adapterCallback) {
+    public CategoriesAdapter(Context context, List<OrderCategoryModel> itemList, String shape, AdapterCallback adapterCallback) {
         this.itemList = itemList;
         this.context = context;
+        this.shape = shape;
         this.adapterCallback = adapterCallback;
     }
 
@@ -56,12 +58,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         holder.name.setText(item.getName());
 
-        if (item.getProducts().size() != 0) initRV(item.getProducts(), item.isToppingDivided(), holder.toppingsRv);
+        if (item.getProducts().size() != 0)
+            initRV(item.getProducts(), item.isToppingDivided(), shape, holder.toppingsRv);
     }
 
-    private void initRV(final List<ItemModel> orderModels, boolean isToppingDivided, RecyclerView recyclerView) {
+    private void initRV(final List<ItemModel> orderModels, boolean isToppingDivided, String shape, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, isToppingDivided, itemModel -> {
+        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, shape, isToppingDivided, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

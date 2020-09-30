@@ -23,6 +23,7 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
 
     private List<OrderCategoryModel> itemList;
     private Context context;
+    private final String shape;
 
     class CategoriesDetailsAdapterRvHolder extends RecyclerView.ViewHolder {
         TextView name;
@@ -39,9 +40,10 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
     }
 
 
-    public CategoriesDetailsAdapter(Context context, List<OrderCategoryModel> itemList) {
+    public CategoriesDetailsAdapter(Context context, List<OrderCategoryModel> itemList, String shape) {
         this.itemList = itemList;
         this.context = context;
+        this.shape = shape;
     }
 
 
@@ -58,16 +60,17 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
 
         holder.name.setText(item.getName());
 
-        if (item.getProducts().size() != 0) initRV(item.getProducts(), item.isToppingDivided(), holder.toppingsRv);
+        if (item.getProducts().size() != 0)
+            initRV(item.getProducts(), shape, item.isToppingDivided(), holder.toppingsRv);
 
         if (item.getProducts().get(0).getLocation() != null &&
-                BusinessModel.getInstance().getTopping_method_name().equals(BUSINESS_TOPPING_TYPE_LAYER))
+                BusinessModel.getInstance().getTopping_method_display().equals(BUSINESS_TOPPING_TYPE_LAYER))
             initLayerRV(item.getProducts(), holder.layersRv);
     }
 
-    private void initRV(final List<ItemModel> orderModels, boolean isToppingDivided, RecyclerView recyclerView) {
+    private void initRV(final List<ItemModel> orderModels, String shape, boolean isToppingDivided, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OrderDetailsAdapter openOrderAdapter = new OrderDetailsAdapter(context, orderModels);
+        OrderDetailsAdapter openOrderAdapter = new OrderDetailsAdapter(context, orderModels, shape, isToppingDivided);
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
 

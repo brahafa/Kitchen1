@@ -19,7 +19,7 @@ public class BusinessModel {
     private String additional_delivery_time_in_minute;
     private String logo_url;
     private String topping_method_id;
-    private String topping_method_name;
+    private String topping_method_display;
 
     private List<ItemModel> drinkList;
 
@@ -44,7 +44,7 @@ public class BusinessModel {
         this.additional_delivery_time_in_minute = businessModel.additional_delivery_time_in_minute;
         this.logo_url = businessModel.logo_url;
         this.topping_method_id = businessModel.topping_method_id;
-        this.topping_method_name = businessModel.topping_method_name;
+        this.topping_method_display = businessModel.topping_method_display;
     }
 
     public void setDrinkList(List<ItemModel> drinkList) {
@@ -151,11 +151,11 @@ public class BusinessModel {
         this.topping_method_id = topping_method_id;
     }
 
-    public String getTopping_method_name() {
-        return topping_method_name;
+    public String getTopping_method_display() {
+        return topping_method_display;
     }
 
-    public void setTopping_method_name(String topping_method_name) {
-        this.topping_method_name = topping_method_name;
+    public void setTopping_method_display(String topping_method_display) {
+        this.topping_method_display = topping_method_display;
     }
 }

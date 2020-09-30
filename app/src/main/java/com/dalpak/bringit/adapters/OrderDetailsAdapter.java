@@ -13,6 +13,7 @@ import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OrderCategoryModel;
+import com.dalpak.bringit.utils.Constants;
 
 import java.util.List;
 
@@ -26,19 +27,15 @@ import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DEAL;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_TOPPING;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_BL;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_BR;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_FULL;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_LH;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_RH;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TL;
-import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TR;
+import static com.dalpak.bringit.utils.Utils.getImageRes;
+import static com.dalpak.bringit.utils.Utils.getImageResRect;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ItemModel> itemList;
     private Context context;
-    private View itemView;
+    private String shape;
+    private boolean isToppingDivided;
 
     class OrderDetailsHolder extends RecyclerView.ViewHolder {
         TextView name, amount;
@@ -61,6 +58,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class OrderDetailsHolderTopping extends RecyclerView.ViewHolder {
         TextView name, amount;
         ImageView ivToppingLocation;
+        ImageView ivToppingLocationRect;
         CardView parent;
 
         OrderDetailsHolderTopping(View view) {
@@ -70,6 +68,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             name = view.findViewById(R.id.name);
             amount = view.findViewById(R.id.amount);
             ivToppingLocation = view.findViewById(R.id.iv_topping_location);
+            ivToppingLocationRect = view.findViewById(R.id.iv_topping_location_rect);
 
         }
     }
@@ -79,10 +78,18 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.context = context;
     }
 
+    public OrderDetailsAdapter(Context context, List<ItemModel> itemList, String shape, boolean isToppingDivided) {
+        this.itemList = itemList;
+        this.context = context;
+        this.shape = shape;
+        this.isToppingDivided = isToppingDivided;
+    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        View itemView;
         if (viewType == 0) {// topping type
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.topping_item, parent, false);
             return new OrderDetailsAdapter.OrderDetailsHolderTopping(itemView);
@@ -111,10 +118,25 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder2.name.setText(item.getName());
 
             if (item.getLocation() == null ||
-                    !BusinessModel.getInstance().getTopping_method_name().equals(BUSINESS_TOPPING_TYPE_LAYER))
+                    !BusinessModel.getInstance().getTopping_method_display().equals(BUSINESS_TOPPING_TYPE_LAYER))
                 setItemPrice(holder2.amount, item);
 
-            if (item.getLocation() != null) holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
+            switch (shape) {
+                case Constants.PIZZA_TYPE_CIRCLE:
+                    holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                    if (item.getLocation() != null)
+                        holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
+                    break;
+                case Constants.PIZZA_TYPE_RECTANGLE:
+                    holder2.ivToppingLocationRect.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                    if (item.getLocation() != null)
+                        holder2.ivToppingLocationRect.setImageResource(getImageResRect(item.getLocation()));
+                    break;
+                case Constants.PIZZA_TYPE_ONE_SLICE:
+                    holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                    holder2.ivToppingLocation.setImageResource(R.drawable.ic_pizza_slice_active);
+                    break;
+            }
 
         } else {
             holder1 = (OrderDetailsHolder) holder;
@@ -156,20 +178,21 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .into(holder1.itemImage);
 
             if (item.getProducts() != null) initDealRV(item.getProducts(), holder1.rvFillings);
-            else if (item.getCategories().size() != 0) initRV(item.getCategories(), holder1.rvFillings);
+            else if (item.getCategories().size() != 0)
+                initRV(item.getCategories(), item.getShape(), holder1.rvFillings);
         }
     }
 
-    private void initRV(final List<OrderCategoryModel> categoryModels, RecyclerView recyclerView) {
+    private void initRV(final List<OrderCategoryModel> categoryModels, String shape, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        CategoriesDetailsAdapter categoriesDetailsAdapter = new CategoriesDetailsAdapter(context, categoryModels);
+        CategoriesDetailsAdapter categoriesDetailsAdapter = new CategoriesDetailsAdapter(context, categoryModels, shape);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(categoriesDetailsAdapter);
     }
 
     private void initDealRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OrderDetailsAdapter orderDetailsAdapter = new OrderDetailsAdapter(context, orderModels);
+        OrderDetailsAdapter orderDetailsAdapter = new OrderDetailsAdapter(context, orderModels, shape, isToppingDivided);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(orderDetailsAdapter);
     }
@@ -184,34 +207,6 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             amount.setTextColor(context.getResources().getColor(R.color.blue_2060e5));
         }
 
-    }
-
-    private int getImageRes(String viewType) {
-        int imageRes = R.drawable.ic_pizza_full_active;
-        switch (viewType) {
-            case PIZZA_TYPE_FULL:
-                imageRes = R.drawable.ic_pizza_full_active;
-                break;
-            case PIZZA_TYPE_RH:
-                imageRes = R.drawable.ic_pizza_rh_active;
-                break;
-            case PIZZA_TYPE_LH:
-                imageRes = R.drawable.ic_pizza_lh_active;
-                break;
-            case PIZZA_TYPE_TR:
-                imageRes = R.drawable.ic_pizza_tr_cart;
-                break;
-            case PIZZA_TYPE_TL:
-                imageRes = R.drawable.ic_pizza_tl_cart;
-                break;
-            case PIZZA_TYPE_BR:
-                imageRes = R.drawable.ic_pizza_br_cart;
-                break;
-            case PIZZA_TYPE_BL:
-                imageRes = R.drawable.ic_pizza_bl_cart;
-                break;
-        }
-        return imageRes;
     }
 
     @Override

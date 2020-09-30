@@ -18,6 +18,8 @@ public class ItemModel {
     private String mTypeName;
     @SerializedName("price")
     private String mPrice;
+    @SerializedName("shape")
+    private String mShape = "";
     @SerializedName("location")
     private String mLocation;
     @SerializedName("is_compensation")
@@ -97,5 +99,13 @@ public class ItemModel {
 
     public void setCategories(List<OrderCategoryModel> mCategories) {
         this.mCategories = mCategories;
+    }
+
+    public String getShape() {
+        return mShape;
+    }
+
+    public void setShape(String mShape) {
+        this.mShape = mShape;
     }
 }
