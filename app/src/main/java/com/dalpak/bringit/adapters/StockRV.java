@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ProductItemModel;
-import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
 
 import org.json.JSONArray;
@@ -78,9 +77,9 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
                     holder.itemImage.setImageDrawable(drawable);
                 }
             } else {
-                String url = Constants.IMAGES_BASE_URL + item.getTypeName() + "/" + item.getPicture();
+//                String url = Constants.IMAGES_BASE_URL + item.getTypeName() + "/" + item.getPicture();
                 Glide.with(context)
-                        .load(url)
+                        .load(item.getImageUrl())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(item.getTypeName().equals("drink")
                                 ? R.drawable.ic_ph_drink

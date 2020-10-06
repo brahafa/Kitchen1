@@ -23,6 +23,8 @@ public class ProductItemModel implements Parcelable {
     private int mNotDeliveryPrice;
     @SerializedName("picture")
     private String mPicture;
+    @SerializedName("imageUrl")
+    private String mImageUrl;
     @SerializedName("business_id")
     private String mBusinessId;
     @SerializedName("in_inventory")
@@ -43,6 +45,7 @@ public class ProductItemModel implements Parcelable {
         mDeliveryPrice = in.readInt();
         mNotDeliveryPrice = in.readInt();
         mPicture = in.readString();
+        mImageUrl = in.readString();
         mBusinessId = in.readString();
         mInInventory = in.readString();
         mShape = in.readString();
@@ -175,6 +178,7 @@ public class ProductItemModel implements Parcelable {
         dest.writeInt(mDeliveryPrice);
         dest.writeInt(mNotDeliveryPrice);
         dest.writeString(mPicture);
+        dest.writeString(mImageUrl);
         dest.writeString(mBusinessId);
         dest.writeString(mInInventory);
         dest.writeString(mShape);
@@ -182,4 +186,11 @@ public class ProductItemModel implements Parcelable {
         dest.writeTypedList(mCategories);
     }
 
+    public String getImageUrl() {
+        return mImageUrl;
+    }
+
+    public void setImageUrl(String mImageUrl) {
+        this.mImageUrl = mImageUrl;
+    }
 }
