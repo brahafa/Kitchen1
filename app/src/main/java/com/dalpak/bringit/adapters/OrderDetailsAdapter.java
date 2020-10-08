@@ -121,22 +121,23 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     !BusinessModel.getInstance().getTopping_method_display().equals(BUSINESS_TOPPING_TYPE_LAYER))
                 setItemPrice(holder2.amount, item);
 
-            switch (shape) {
-                case Constants.PIZZA_TYPE_CIRCLE:
-                    holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
-                    if (item.getLocation() != null)
-                        holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
-                    break;
-                case Constants.PIZZA_TYPE_RECTANGLE:
-                    holder2.ivToppingLocationRect.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
-                    if (item.getLocation() != null)
-                        holder2.ivToppingLocationRect.setImageResource(getImageResRect(item.getLocation()));
-                    break;
-                case Constants.PIZZA_TYPE_ONE_SLICE:
-                    holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
-                    holder2.ivToppingLocation.setImageResource(R.drawable.ic_pizza_slice_active);
-                    break;
-            }
+            if (shape != null)
+                switch (shape) {
+                    case Constants.PIZZA_TYPE_CIRCLE:
+                        holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                        if (item.getLocation() != null)
+                            holder2.ivToppingLocation.setImageResource(getImageRes(item.getLocation()));
+                        break;
+                    case Constants.PIZZA_TYPE_RECTANGLE:
+                        holder2.ivToppingLocationRect.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                        if (item.getLocation() != null)
+                            holder2.ivToppingLocationRect.setImageResource(getImageResRect(item.getLocation()));
+                        break;
+                    case Constants.PIZZA_TYPE_ONE_SLICE:
+                        holder2.ivToppingLocation.setVisibility(isToppingDivided ? View.VISIBLE : View.GONE);
+                        holder2.ivToppingLocation.setImageResource(R.drawable.ic_pizza_slice_active);
+                        break;
+                }
 
         } else {
             holder1 = (OrderDetailsHolder) holder;
