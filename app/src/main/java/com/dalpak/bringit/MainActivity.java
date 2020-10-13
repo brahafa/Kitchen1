@@ -15,6 +15,7 @@ import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.ProductItemModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.utils.Utils;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private MainFragment fragment;
     ArrayList<ProductItemModel> stockModelList;
     private Gson gson;
+
+    private final int TYPE_SWITCH_BUSINESS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +60,6 @@ public class MainActivity extends AppCompatActivity {
         checkBusinessStatus();
     }
 
-    private void checkBusinessStatus() {
-        Request.getInstance().checkBusinessStatus(this, isBusinessOpen -> changeBusinessStatus(!isBusinessOpen));
-    }
-
     private void initListeners() {
         binding.stockMenu.sailStock.setOnClickListener(v -> openStockFragment("deal"));
         binding.stockMenu.extraStock.setOnClickListener(v -> openStockFragment("topping"));
@@ -77,9 +76,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        binding.swLayout.setOnClickListener(v ->
-                Request.getInstance().changeBusinessStatus(this, binding.swWebsite.isChecked() ? "close" : "open", () ->
-                        changeBusinessStatus(binding.swWebsite.isChecked())));
+        binding.swLayout.setOnClickListener(v -> openPasswordDialog(false, TYPE_SWITCH_BUSINESS));
 
         binding.backToMain.setOnClickListener(v -> popBackStackTillEntry(1));
 
@@ -101,15 +98,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void changeBusinessStatus(boolean status) {
-        if (status) {
-            binding.titleSwitch.setText("אתר לא פעיל");
-            binding.swWebsite.setChecked(false);
 
-        } else {
-            binding.titleSwitch.setText("אתר פעיל");
-            binding.swWebsite.setChecked(true);
-        }
+    private void checkBusinessStatus() {
+        Request.getInstance().checkBusinessStatus(this, this::setBusinessStatus);
+    }
+
+    private void changeBusinessStatus(boolean isOpen) {
+        Request.getInstance().changeBusinessStatus(this, isOpen, isDataSuccess -> setBusinessStatus(isOpen));
+    }
+
+    private void setBusinessStatus(boolean isBusinessOpen) {
+        binding.swWebsite.setChecked(isBusinessOpen);
+        binding.titleSwitch.setText(isBusinessOpen ? "אתר פעיל" : "אתר לא פעיל");
+
+        binding.swWebsite.setOnCheckedChangeListener((buttonView, isChecked) -> changeBusinessStatus(isChecked));
     }
 
     @Override
@@ -159,6 +161,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openPasswordDialog(boolean needLogout) {
+        openPasswordDialog(needLogout, 0);
+    }
+
+    public void openPasswordDialog(boolean needLogout, int type) {
         if (needLogout) {
             Request.getInstance().workerLogout(this);
         }
@@ -167,9 +173,14 @@ public class MainActivity extends AppCompatActivity {
         passwordDialog.show();
 
         passwordDialog.setOnDismissListener(dialog -> {
-            setName();
-            fragment.startBoardUpdates();
-            checkBusinessStatus();
+            if (type == TYPE_SWITCH_BUSINESS) {
+                if (passwordDialog.getWorker().getPermissions().getOpenCloseBusiness().equals("1"))
+                    binding.swWebsite.setChecked(!binding.swWebsite.isChecked());
+                else Utils.openPermissionAlertDialog(this);
+            } else {
+                setName();
+                fragment.startBoardUpdates();
+            }
         });
     }
 

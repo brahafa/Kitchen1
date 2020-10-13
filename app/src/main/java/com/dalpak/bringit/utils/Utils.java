@@ -22,6 +22,10 @@ import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TR;
 
 public class Utils {
 
+    public static void openPermissionAlertDialog(Context context) {
+        openAlertDialog(context, "You don't have permission for this action", "Permission denied");
+    }
+
     public static void openAlertDialog(Context context, String msg, String title) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.ProductItemModel;
+import com.dalpak.bringit.models.WorkerResponse;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -74,7 +75,7 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.LOG_IN_MANAGER);
     }
 
-    public void settingsLogin(final Context context, String password, final RequestCallBackSuccess listener) {
+    public void settingsLogin(final Context context, String password, final RequestWorkerCallBack listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("password", password);
@@ -86,25 +87,17 @@ public class Request {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                try {
-                    if (json.has("status") && json.getBoolean("status")) {
-                        if (json.getJSONObject("user").has("name")) {
-                            saveData(Constants.NAME_PREF, (json.getJSONObject("user")).getString("name"));
-                        }
-                        listener.onDataDone(true);
-                    } else {
-                        listener.onDataDone(false);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.d("GET_ALL_ORDERS", json.toString());
+                Gson gson = new Gson();
+                WorkerResponse response = gson.fromJson(json.toString(), WorkerResponse.class);
+                listener.onDataDone(response);
+                Log.d("settingsLogin", json.toString());
             }
 
             @Override
             public void onDataError(JSONObject json) {
+                Log.e("settingsLogin error", json.toString());
                 openAlertMsg(context, json);
+                listener.onDataDone(new WorkerResponse());
             }
         });
         network.sendPostRequest(context, jsonObject, Network.RequestName.WORKER_LOGIN);
@@ -309,11 +302,11 @@ public class Request {
         network.sendRequest(context, Network.RequestName.CHECK_BUSINESS_STATUS, null);
     }
 
-    public void changeBusinessStatus(Context context, String status, Runnable runnable) {
+    public void changeBusinessStatus(Context context, boolean isOpen,final RequestCallBackSuccess listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("business_id", BusinessModel.getInstance().getBusiness_id());
-            jsonObject.put("status", status);
+            jsonObject.put("status", isOpen ? "open" : "close");
             Log.d("send data: ", jsonObject.toString());
 
         } catch (JSONException e) {
@@ -323,12 +316,12 @@ public class Request {
             @Override
             public void onDataDone(JSONObject json) {
                 Log.d("changeBusinessStatus ", json.toString());
-                runnable.run();
+                listener.onDataDone(true);
             }
 
             @Override
             public void onDataError(JSONObject json) {
-                Log.d("changeStatus Err", json.toString());
+                Log.e("changeStatus Err", json.toString());
             }
         });
         network.sendPostRequest(context, jsonObject, Network.RequestName.CHANGE_BUSINESS_STATUS);
@@ -507,5 +500,9 @@ public class Request {
 
     public interface RequestItemsListCallBack {
         void onDataDone(List<ItemModel> itemModels);
+    }
+
+    public interface RequestWorkerCallBack {
+        void onDataDone(WorkerResponse response);
     }
 }

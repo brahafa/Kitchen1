@@ -5,8 +5,12 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.dalpak.bringit.R;
+import com.dalpak.bringit.models.WorkerModel;
+import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.NumberKeyboardView;
 import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.utils.SharedPrefs;
+import com.dalpak.bringit.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -14,11 +18,11 @@ import androidx.core.content.ContextCompat;
 
 public class PasswordDialog extends Dialog {
 
-    String password = "";
     int passwordIndex = -1;
     TextView tv1, tv2, tv3, tv4;
     TextView[] passwordTVs;
     Context context;
+    private WorkerModel mWorker;
 
     public PasswordDialog(@NonNull final Context context) {
         super(context);
@@ -31,34 +35,34 @@ public class PasswordDialog extends Dialog {
         passwordTVs = new TextView[]{tv1, tv2, tv3, tv4};
 
         NumberKeyboardView numberKeyboardView = findViewById(R.id.numberKeyboardView);
-        numberKeyboardView.keyListener(new NumberKeyboardView.KeyPressListener() {
-            @Override
-            public void onKeyPress(String keyTxt) {
-                if (!keyTxt.equals("X")) {
-                    if (passwordIndex == 3) {
-                        return;
-                    }
-                    passwordIndex++;
-                    passwordTVs[passwordIndex].setText(keyTxt);
-                    if (passwordIndex == 3) {
-                        Request.getInstance().settingsLogin(context, getThePassword(), new Request.RequestCallBackSuccess() {
-                            @Override
-                            public void onDataDone(boolean isDataSuccess) {
-                                if (isDataSuccess) {
-                                    PasswordDialog.this.dismiss();
-                                } else {
-                                    initErrorState();
-                                }
-                            }
-                        });
-                    }
-                } else if (passwordIndex >= 0) {
-                    if (passwordIndex == 3) {
-                        initSuccessState();
-                    }
-                    passwordTVs[passwordIndex].setText("");
-                    passwordIndex--;
+        numberKeyboardView.keyListener(keyTxt -> {
+            if (!keyTxt.equals("X")) {
+                if (passwordIndex == 3) {
+                    return;
                 }
+                passwordIndex++;
+                passwordTVs[passwordIndex].setText(keyTxt);
+                if (passwordIndex == 3) {
+                    Request.getInstance().settingsLogin(context, getThePassword(), response -> {
+                        if (response.isStatus()) {
+                            mWorker = response.getUser();
+                            if (response.getUser().getPermissions().getKitchen().equals("1")) {
+                                SharedPrefs.saveData(Constants.NAME_PREF, response.getUser().getName());
+//                                  SharedPrefs.saveData(Constants.ROLE_PREF, response.getUser().getRole());
+                                PasswordDialog.this.dismiss();
+                            } else
+                                Utils.openPermissionAlertDialog(context);
+                        } else {
+                            initErrorState();
+                        }
+                    });
+                }
+            } else if (passwordIndex >= 0) {
+                if (passwordIndex == 3) {
+                    initSuccessState();
+                }
+                passwordTVs[passwordIndex].setText("");
+                passwordIndex--;
             }
         });
 
@@ -91,6 +95,10 @@ public class PasswordDialog extends Dialog {
         tv2.setTextColor(context.getResources().getColor(R.color.text_color));
         tv3.setTextColor(context.getResources().getColor(R.color.text_color));
         tv4.setTextColor(context.getResources().getColor(R.color.text_color));
+    }
+
+    public WorkerModel getWorker() {
+        return mWorker;
     }
 }
 
