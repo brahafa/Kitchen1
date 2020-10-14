@@ -9,6 +9,8 @@ public class WorkerModel {
     private String mName;
     @SerializedName("phone")
     private String mPhone;
+    @SerializedName("role")
+    private String mRole;
     @SerializedName("permissions")
     private PermissionsBean mPermissions;
 
@@ -36,6 +38,14 @@ public class WorkerModel {
         mPhone = phone;
     }
 
+    public String getRole() {
+        return mRole;
+    }
+
+    public void setRole(String mRole) {
+        this.mRole = mRole;
+    }
+
     public PermissionsBean getPermissions() {
         return mPermissions;
     }
@@ -45,23 +55,21 @@ public class WorkerModel {
     }
 
     public class PermissionsBean {
-        @SerializedName("moneybox")
-        private String mMoneybox;
+        @SerializedName("pos")
+        private String mPos;
         @SerializedName("kitchen")
         private String mKitchen;
         @SerializedName("management")
         private String mManagement;
-        @SerializedName("delivering")
-        private String mDelivering;
         @SerializedName("openCloseBusiness")
         private String mOpenCloseBusiness;
 
-        public String getMoneybox() {
-            return mMoneybox;
+        public String getPos() {
+            return mPos;
         }
 
-        public void setMoneybox(String moneybox) {
-            mMoneybox = moneybox;
+        public void setPos(String pos) {
+            mPos = pos;
         }
 
         public String getKitchen() {
@@ -78,14 +86,6 @@ public class WorkerModel {
 
         public void setManagement(String management) {
             mManagement = management;
-        }
-
-        public String getDelivering() {
-            return mDelivering;
-        }
-
-        public void setDelivering(String delivering) {
-            mDelivering = delivering;
         }
 
         public String getOpenCloseBusiness() {
