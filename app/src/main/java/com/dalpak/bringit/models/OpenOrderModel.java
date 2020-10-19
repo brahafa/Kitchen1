@@ -31,6 +31,10 @@ public class OpenOrderModel {
     private String mStatus;
     @SerializedName("notes")
     private String mNotes;
+    @SerializedName("order_notes")
+    private String mOrderNotes;
+    @SerializedName("delivery_notes")
+    private String mDeliveryNotes;
     @SerializedName("table_id")
     private String mTableId;
     @SerializedName("delivery_option")
@@ -140,6 +144,22 @@ public class OpenOrderModel {
 
     public void setNotes(String notes) {
         mNotes = notes;
+    }
+
+    public String getOrderNotes() {
+        return mOrderNotes;
+    }
+
+    public void setOrderNotes(String mOrderNotes) {
+        this.mOrderNotes = mOrderNotes;
+    }
+
+    public String getDeliveryNotes() {
+        return mDeliveryNotes;
+    }
+
+    public void setDeliveryNotes(String mDeliveryNotes) {
+        this.mDeliveryNotes = mDeliveryNotes;
     }
 
     public String getTableId() {

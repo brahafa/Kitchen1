@@ -43,8 +43,9 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     private OpenOrderModel orderModel;
     private View viewOrderChanged;
     private CardView cvComment;
-    private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, shippingNumber, shippingTvClick, tvOrderSrc, tvPayment;
+    private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, deliveryDetailsTV, shippingNumber, shippingTvClick, tvOrderSrc, tvPayment;
     private TextView tvTotal, tvItemsDetails;
+    private View gDeliveryNotes;
     private ImageView orderMethodIV;
     private RecyclerView rvDrink, rvPizza, rvAdditional;
     private LinearLayout shippingHolder;
@@ -108,6 +109,8 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         orderNumTV = findViewById(R.id.tv_order_num);
         orderTypeTV = findViewById(R.id.tv_order_type);
         orderDetailsTV = findViewById(R.id.tv_order_details);
+        deliveryDetailsTV = findViewById(R.id.tv_delivery_details);
+        gDeliveryNotes = findViewById(R.id.g_delivery_notes);
         orderMethodIV = findViewById(R.id.iv_order_type);
         shippingHolder = findViewById(R.id.ll_shipping);
         shippingNumber = findViewById(R.id.shipping_number);
@@ -132,10 +135,15 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         cvComment.setCardBackgroundColor(Color.parseColor(checkIfEdited() ? "#12c395" : "#6f7888"));
 
         initOrderMethod();
-        if (orderModel.getNotes() == null || orderModel.getNotes().equals("")) {
+        if (orderModel.getOrderNotes() == null || orderModel.getOrderNotes().equals("")) {
             orderDetailsTV.setText("אין הערות להזמנה");
         } else {
-            orderDetailsTV.setText(orderModel.getNotes());
+            orderDetailsTV.setText(orderModel.getOrderNotes());
+        }
+
+        if (orderModel.getDeliveryNotes() != null && !orderModel.getDeliveryNotes().equals("")) {
+            gDeliveryNotes.setVisibility(View.VISIBLE);
+            deliveryDetailsTV.setText(orderModel.getDeliveryNotes());
         }
     }
 
