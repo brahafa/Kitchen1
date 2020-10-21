@@ -10,6 +10,7 @@ import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OrderCategoryModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.cardview.widget.CardView;
@@ -64,7 +65,22 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     private void initRV(final List<ItemModel> orderModels, boolean isToppingDivided, String shape, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, orderModels, shape, isToppingDivided, itemModel -> {
+
+        List<ItemModel> groupedList = new ArrayList<>();
+        if (!isToppingDivided) {
+            for (ItemModel oldItem : orderModels) {
+                boolean isNew = true;
+                for (ItemModel groupItem : groupedList) {
+                    if (groupItem.getName().equals(oldItem.getName())) {
+                        groupItem.setCount(groupItem.getCount() + 1);
+                        isNew = false;
+                    }
+                }
+                if (isNew) groupedList.add(oldItem);
+            }
+        } else groupedList = orderModels;
+
+        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, groupedList, shape, isToppingDivided, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

@@ -13,6 +13,7 @@ import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.cardview.widget.CardView;
@@ -111,7 +112,10 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         if (holder.getItemViewType() == 0) {
             holder2 = (OpenOrderHolderTopping) holder;
-            holder2.name.setText(item.getName());
+
+            String name = item.getName();
+            if (item.getCount() > 1) name = name.concat(" x" + item.getCount());
+            holder2.name.setText(name);
 
             switch (shape) {
                 case Constants.PIZZA_TYPE_CIRCLE:
@@ -161,8 +165,20 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (item.getCategories() != null && item.getCategories().size() != 0) {
                 holder1.rvFillings.setVisibility(View.VISIBLE);
                 holder1.rvFillings.setLayoutManager(new LinearLayoutManager(context));
+
+                ArrayList<ItemModel> groupedList = new ArrayList<>();
+                for (ItemModel oldItem : item.getCategories().get(0).getProducts()) {
+                    boolean isNew = true;
+                    for (ItemModel groupItem : groupedList) {
+                        if (groupItem.getName().equals(oldItem.getName())) {
+                            groupItem.setCount(groupItem.getCount() + 1);
+                            isNew = false;
+                        }
+                    }
+                    if (isNew) groupedList.add(oldItem);
+                }
                 FillingAdapter fillingAdapter =
-                        new FillingAdapter(context, item.getCategories().get(0).getProducts(),
+                        new FillingAdapter(context, groupedList,
                                 /*item.getChange_type() != null && item.getChange_type().equals("NEW")*/false); //todo waiting for change types
 
                 holder1.rvFillings.setAdapter(fillingAdapter);
@@ -193,8 +209,6 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     }
-
-
 
 
     @Override

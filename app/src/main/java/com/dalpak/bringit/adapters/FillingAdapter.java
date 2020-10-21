@@ -45,7 +45,11 @@ public class FillingAdapter extends RecyclerView.Adapter<FillingAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.fillingName.setText(itemList.get(position).getName());
+        ItemModel item = itemList.get(position);
+        String name = item.getName();
+        if (item.getCount() > 1) name = name.concat(" x" + item.getCount());
+
+        holder.fillingName.setText(name);
         holder.fillingName.setTextColor(isEdited ? Color.WHITE : Color.BLACK);
     }
 

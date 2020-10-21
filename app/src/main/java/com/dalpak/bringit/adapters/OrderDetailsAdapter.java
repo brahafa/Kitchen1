@@ -115,7 +115,9 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             layoutParams.setMargins(0, 0, 60, 0);
             holder2.parent.requestLayout();
 
-            holder2.name.setText(item.getName());
+            String name = item.getName();
+            if (item.getCount() > 1) name = name.concat(" x" + item.getCount());
+            holder2.name.setText(name);
 
             if (item.getLocation() == null ||
                     !BusinessModel.getInstance().getTopping_method_display().equals(BUSINESS_TOPPING_TYPE_LAYER))

@@ -70,7 +70,23 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
 
     private void initRV(final List<ItemModel> orderModels, String shape, boolean isToppingDivided, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        OrderDetailsAdapter openOrderAdapter = new OrderDetailsAdapter(context, orderModels, shape, isToppingDivided);
+
+        List<ItemModel> groupedList = new ArrayList<>();
+        if (!isToppingDivided) {
+            for (ItemModel oldItem : orderModels) {
+                oldItem.setCount(1);
+                boolean isNew = true;
+                for (ItemModel groupItem : groupedList) {
+                    if (groupItem.getName().equals(oldItem.getName())) {
+                        groupItem.setCount(groupItem.getCount() + 1);
+                        isNew = false;
+                    }
+                }
+                if (isNew) groupedList.add(oldItem);
+            }
+        } else groupedList = orderModels;
+
+        OrderDetailsAdapter openOrderAdapter = new OrderDetailsAdapter(context, groupedList, shape, isToppingDivided);
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
 

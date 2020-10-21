@@ -29,6 +29,8 @@ public class ItemModel {
     @SerializedName("categories")
     private List<OrderCategoryModel> mCategories = new ArrayList<>();
 
+    private transient int mCount = 1;
+
     public String getId() {
         return mId;
     }
@@ -108,4 +110,14 @@ public class ItemModel {
     public void setShape(String mShape) {
         this.mShape = mShape;
     }
+
+    public int getCount() {
+        return mCount;
+    }
+
+    public void setCount(int mCount) {
+        this.mCount = mCount;
+    }
+
+
 }
