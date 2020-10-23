@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
@@ -15,10 +19,6 @@ import com.dalpak.bringit.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
@@ -170,7 +170,8 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 for (ItemModel oldItem : item.getCategories().get(0).getProducts()) {
                     boolean isNew = true;
                     for (ItemModel groupItem : groupedList) {
-                        if (groupItem.getName().equals(oldItem.getName())) {
+                        if (groupItem.getName().equals(oldItem.getName()) &&
+                                groupItem.getPrice().equals(oldItem.getPrice())) {
                             groupItem.setCount(groupItem.getCount() + 1);
                             isNew = false;
                         }

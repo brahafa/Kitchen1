@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dalpak.bringit.R;
@@ -16,10 +20,6 @@ import com.dalpak.bringit.models.OrderCategoryModel;
 import com.dalpak.bringit.utils.Constants;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static com.dalpak.bringit.utils.Constants.BUSINESS_TOPPING_TYPE_LAYER;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
@@ -120,7 +120,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder2.name.setText(name);
 
             if (item.getLocation() == null ||
-                    !BusinessModel.getInstance().getTopping_method_display().equals(BUSINESS_TOPPING_TYPE_LAYER))
+                    !(BusinessModel.getInstance().getTopping_method_display().equals(BUSINESS_TOPPING_TYPE_LAYER) && isToppingDivided))
                 setItemPrice(holder2.amount, item);
 
             if (shape != null)
@@ -206,7 +206,9 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             amount.setText("במבצע");
             amount.setTextColor(context.getResources().getColor(R.color.red_F52E2E));
         } else {
-            amount.setText(String.format("%s %s", item.getPrice(), context.getResources().getString(R.string.shekel)));
+            String multiplier = item.getCount() > 1 ? "x" + item.getCount() + " " : "";
+
+            amount.setText(String.format("%s%s %s", multiplier, context.getResources().getString(R.string.shekel), item.getPrice()));
             amount.setTextColor(context.getResources().getColor(R.color.blue_2060e5));
         }
 

@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
@@ -13,9 +16,6 @@ import com.dalpak.bringit.models.OrderCategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static com.dalpak.bringit.utils.Constants.BUSINESS_TOPPING_TYPE_LAYER;
 
@@ -63,7 +63,7 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
         if (item.getProducts().size() != 0)
             initRV(item.getProducts(), shape, item.isToppingDivided(), holder.toppingsRv);
 
-        if (item.getProducts().get(0).getLocation() != null &&
+        if (item.getProducts().get(0).getLocation() != null && item.isToppingDivided() &&
                 BusinessModel.getInstance().getTopping_method_display().equals(BUSINESS_TOPPING_TYPE_LAYER))
             initLayerRV(item.getProducts(), holder.layersRv);
     }
@@ -74,12 +74,14 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
         List<ItemModel> groupedList = new ArrayList<>();
         if (!isToppingDivided) {
             for (ItemModel oldItem : orderModels) {
-                oldItem.setCount(1);
+//                oldItem.setCount(1);
                 boolean isNew = true;
                 for (ItemModel groupItem : groupedList) {
-                    if (groupItem.getName().equals(oldItem.getName())) {
-                        groupItem.setCount(groupItem.getCount() + 1);
+                    if (groupItem.getName().equals(oldItem.getName()) &&
+                            groupItem.getPrice().equals(oldItem.getPrice())) {
+//                        groupItem.setCount(groupItem.getCount() + 1);
                         isNew = false;
+                        break;
                     }
                 }
                 if (isNew) groupedList.add(oldItem);

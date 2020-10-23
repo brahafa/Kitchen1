@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.dalpak.bringit.R;
 
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class LayerAdapter extends RecyclerView.Adapter<LayerAdapter.ViewHolder> {
 
@@ -44,7 +44,7 @@ public class LayerAdapter extends RecyclerView.Adapter<LayerAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.layerName.setText(String.format("שכבת תוספות %d", position + 1));
-        holder.layerPrice.setText(String.format("%s %s", itemList.get(position), context.getResources().getString(R.string.shekel)));
+        holder.layerPrice.setText(String.format("%s %s", context.getResources().getString(R.string.shekel), itemList.get(position)));
     }
 
     @Override
