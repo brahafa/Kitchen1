@@ -10,6 +10,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OpenOrderAdapter;
 import com.dalpak.bringit.adapters.OpenOrderPizzaAdapter;
@@ -21,12 +27,6 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_DELIVERY;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TABLE;
@@ -127,7 +127,10 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
         orderDateTV.setText(orderModel.getOrderTime());
         orderNumTV.setText(orderModel.getId());
-        orderNameTV.setText(orderModel.getClient().getFName() + " " + orderModel.getClient().getLName());
+        if (orderModel.getClient() != null)
+            orderNameTV.setText(String.format("%s %s",
+                    orderModel.getClient().getFName(),
+                    orderModel.getClient().getLName()));
         tvPayment.setText("שיטת תשלום: " + orderModel.getPaymentDisplay());
         tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAddedBySystem());
         tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));

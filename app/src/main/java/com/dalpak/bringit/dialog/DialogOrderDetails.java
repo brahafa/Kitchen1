@@ -8,16 +8,16 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OrderDetailsAdapter;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class DialogOrderDetails extends Dialog implements View.OnClickListener {
 
@@ -50,17 +50,18 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
         tvAddress = findViewById(R.id.tv_address);
         tvPhone = findViewById(R.id.tv_phone);
 
-        tvName.setText(Html.fromHtml(String.format("<b>שם:</b> %s %s", orderModel.getClient().getFName(), orderModel.getClient().getLName())));
-        tvPhone.setText(Html.fromHtml(String.format("<b>טלפון:</b> %s", orderModel.getClient().getPhone())));
-        if (orderModel.getClient().getAddress() != null)
-            tvAddress.setText(Html.fromHtml(String.format(
-                    "<b>כתובת:</b> %s, %s &emsp; <b>כניסה</b>: %s &emsp; <b>קומה:</b> %s &emsp; <b>דירה:</b> %s",
-                    orderModel.getClient().getAddress().getCity(),
-                    orderModel.getClient().getAddress().getStreet(),
-                    orderModel.getClient().getAddress().getEntrance(),
-                    orderModel.getClient().getAddress().getFloor(),
-                    orderModel.getClient().getAddress().getAptNum())));
-
+        if (orderModel.getClient() != null) {
+            tvName.setText(Html.fromHtml(String.format("<b>שם:</b> %s %s", orderModel.getClient().getFName(), orderModel.getClient().getLName())));
+            tvPhone.setText(Html.fromHtml(String.format("<b>טלפון:</b> %s", orderModel.getClient().getPhone())));
+            if (orderModel.getClient().getAddress() != null)
+                tvAddress.setText(Html.fromHtml(String.format(
+                        "<b>כתובת:</b> %s, %s &emsp; <b>כניסה</b>: %s &emsp; <b>קומה:</b> %s &emsp; <b>דירה:</b> %s",
+                        orderModel.getClient().getAddress().getCity(),
+                        orderModel.getClient().getAddress().getStreet(),
+                        orderModel.getClient().getAddress().getEntrance(),
+                        orderModel.getClient().getAddress().getFloor(),
+                        orderModel.getClient().getAddress().getAptNum())));
+        }
         tvPaymentMethod.setText(orderModel.getPaymentDisplay());
         tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPaymentDisplay()));
         tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
