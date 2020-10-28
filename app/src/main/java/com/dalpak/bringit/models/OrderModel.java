@@ -33,6 +33,8 @@ public class OrderModel {
     private int mCookingTime;
     @SerializedName("startTimeStr")
     private String mStartTimeStr;
+    @SerializedName("color")
+    private String mColor;
     @SerializedName("client")
     private ClientModel mClient;
 
@@ -157,4 +159,11 @@ public class OrderModel {
         this.mDeliveryOption = mDeliveryOption;
     }
 
+    public String getColor() {
+        return mColor;
+    }
+
+    public void setColor(String mColor) {
+        this.mColor = mColor;
+    }
 }

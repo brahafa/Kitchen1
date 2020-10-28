@@ -1,5 +1,6 @@
 package com.dalpak.bringit.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
     class OrderHolder extends DragItemAdapter.ViewHolder {
         TextView name, orderTime;
         ImageView deliveryImage, warningImg;
+        View vOrderColor;
 
         OrderHolder(View view) {
             super(view, R.id.parent, true);
@@ -35,6 +37,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
             warningImg = view.findViewById(R.id.warning_image);
             orderTime = view.findViewById(R.id.order_time);
             deliveryImage = view.findViewById(R.id.delivery_image);
+            vOrderColor = view.findViewById(R.id.v_dot);
 
         }
 
@@ -60,18 +63,20 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
     public void onBindViewHolder(final OrderAdapter.OrderHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
 
-        switch (orderList.get(position).getDeliveryOption()) {
+        OrderModel order = orderList.get(position);
+
+        switch (order.getDeliveryOption()) {
             case DELIVERY_OPTION_DELIVERY:
-                if (orderList.get(position).getClient() != null)
+                if (order.getClient() != null)
                     holder.name.setText(
                             String.format("%s %s, %s",
-                                    orderList.get(position).getClient().getAddress().getStreet(),
-                                    orderList.get(position).getClient().getAddress().getHouseNum(),
-                                    orderList.get(position).getClient().getAddress().getCity()));
+                                    order.getClient().getAddress().getStreet(),
+                                    order.getClient().getAddress().getHouseNum(),
+                                    order.getClient().getAddress().getCity()));
                 holder.deliveryImage.setImageResource(R.drawable.ic_delivery);
                 break;
             case DELIVERY_OPTION_TAKEAWAY:
-                holder.name.setText(orderList.get(position).getClient().getFName());
+                holder.name.setText(order.getClient().getFName());
                 holder.deliveryImage.setImageResource(R.drawable.ic_takeaway);
                 break;
             case DELIVERY_OPTION_TABLE:
@@ -80,13 +85,17 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
                 break;
         }
 
-        holder.orderTime.setText(orderList.get(position).getStartTimeStr());
-        if (orderList.get(position).getStatus().equals("received") &&
-                Utils.getOrderTimerLong(orderList.get(position).getOrderTime()) > DELAY_TIME_IN_SECONDS) {
+        holder.orderTime.setText(order.getStartTimeStr());
+
+        if (order.getColor() != null) {
+            holder.vOrderColor.setBackgroundColor(Color.parseColor(order.getColor()));
+        }
+        if (order.getStatus().equals("received") &&
+                Utils.getOrderTimerLong(order.getOrderTime()) > DELAY_TIME_IN_SECONDS) {
             holder.warningImg.setVisibility(View.VISIBLE);
         }
 
-        holder.itemView.setOnClickListener(v -> adapterCallback.onItemChoose(orderList.get(position)));
+        holder.itemView.setOnClickListener(v -> adapterCallback.onItemChoose(order));
 
     }
 
