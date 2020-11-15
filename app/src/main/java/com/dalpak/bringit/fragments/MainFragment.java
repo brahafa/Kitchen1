@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.dalpak.bringit.MainActivity;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OrderAdapter;
+import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
+import com.dalpak.bringit.models.OrderCategoryModel;
 import com.dalpak.bringit.models.OrderModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Request;
@@ -28,11 +30,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import static com.dalpak.bringit.utils.Utils.CHANGE_TYPE_CANCELED;
+import static com.dalpak.bringit.utils.Utils.createNotificationChannel;
 
 public class MainFragment extends Fragment {
 
@@ -57,11 +64,84 @@ public class MainFragment extends Fragment {
                 if (hasDelay(jsonObject)) mp = playSound(Constants.ALERT_ORDER_OVERTIME);
 
                 if (!jsonObject.toString().equals(lastResponse)) {
+                    checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
                     lastResponse = jsonObject.toString();
                     updateAllRV(jsonObject);
                 }
                 setupBoardUpdates();
             });
+
+    private void checkIfOrderHasBeenUpdated(String lastResponse, JSONObject jsonObject) {
+        try {
+            JSONArray lastJsonArray = (new JSONObject(lastResponse)).getJSONArray("orders");
+            JSONArray currentJsonArray = jsonObject.getJSONArray("orders");
+            JSONObject lastJsonObj, currentJsonObj;
+            for (int i = 0; i < lastJsonArray.length(); i++) {
+                for (int j = 0; j < currentJsonArray.length(); j++) {
+                    lastJsonObj = lastJsonArray.getJSONObject(i);
+                    currentJsonObj = currentJsonArray.getJSONObject(j);
+                    if (lastJsonObj.getString("id").equals(currentJsonObj.get("change_for_order_id")) && !lastJsonObj.getString("change_type").equals(currentJsonObj.getString("change_type"))) {
+                        String msg;
+                        if (lastJsonArray.getJSONObject(i) == null || !lastJsonArray.getJSONObject(i).has("client")) {
+                            msg = "יש עדכון בהזמנות";
+                        } else {
+                            msg = " הזמנה של " + lastJsonArray.getJSONObject(i).getJSONObject("client").getString("f_name") + " עודכנה";
+                        }
+                        playSound(Constants.ALERT_EDIT_ORDER);
+                        createNotificationChannel(Objects.requireNonNull(getContext()), msg);
+                        if (((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder != null &&
+                                ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.isShowing() &&
+                                (((MainActivity) getActivity()).dialogOpenOrder).orderModel.getId().equals(lastJsonObj.getString("id"))) {
+                            updateOrderDetailsDialog(currentJsonObj.getString("id"));
+                        }
+
+                    }
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateOrderDetailsDialog(String id) {
+        Request.getInstance().getOrderDetailsByID(getActivity(), id, jsonObject -> {
+            try {
+                OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
+                prepareOrder(openOrderModel);
+                openOrderModel.setTotal(Utils.getTotalOrder(openOrderModel) +"");
+                ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.editDialog(openOrderModel);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void prepareOrder(OpenOrderModel openOrderModel) {
+        for (int i = 0; i < openOrderModel.getProducts().size(); i++) {
+            List<OrderCategoryModel> categoryModels = openOrderModel.getProducts().get(i).getCategories();
+            for (int j = 0; j < categoryModels.size(); j++) {
+                if (categoryModels.get(j).getCategoryHasFixedPrice()) {
+                    sortToppingsRec(categoryModels.get(j).getProducts());
+                    //if productFixPrice = 0 it is mean that all the product will get the fix price
+                    int productsFixPrice = categoryModels.get(j).getProductsFixedPrice() == 0 ? 100000 : categoryModels.get(j).getProductsFixedPrice();
+                    for (int k = 0; k < categoryModels.get(j).getProducts().size(); k++) {
+                        if (productsFixPrice > 0) {
+                            categoryModels.get(j).getProducts().get(k).setPrice(categoryModels.get(j).getFixedPrice() + "");
+                            productsFixPrice--;
+                        } else {
+                            return;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    private static void sortToppingsRec(List<ItemModel> toppingModels) {
+        Collections.sort(toppingModels, (u1, u2) -> (Integer.parseInt(u1.getPrice()) - Integer.parseInt(u2.getPrice())));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -184,7 +264,8 @@ public class MainFragment extends Fragment {
             if (jsonObject.getJSONObject("ordersByStatus").has(orderStatus))
                 jsonArray = jsonObject.getJSONObject("ordersByStatus").getJSONArray(orderStatus);
             for (int i = 0; i < jsonArray.length(); i++) {
-                orderModels.add(gson.fromJson(jsonArray.getString(i), OrderModel.class));
+                if (!((gson.fromJson(jsonArray.getString(i), OrderModel.class)).getChangeType().equals(CHANGE_TYPE_CANCELED)))
+                    orderModels.add(gson.fromJson(jsonArray.getString(i), OrderModel.class));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -209,6 +290,8 @@ public class MainFragment extends Fragment {
                 Request.getInstance().getOrderDetailsByID(getActivity(), orderModel.getId(), jsonObject -> {
                     try {
                         OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
+                        prepareOrder(openOrderModel);
+                        openOrderModel.setTotal(Utils.getTotalOrder(openOrderModel) +"");
                         ((MainActivity) getActivity()).openOrderDialog(openOrderModel);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -291,8 +374,10 @@ public class MainFragment extends Fragment {
             jsonArray.put(jsonObject.getJSONObject("ordersByStatus").getJSONArray("received"));
             for (int i = 0; i < jsonArray.length(); i++) {
                 for (int j = 0; j < jsonArray.getJSONArray(i).length(); j++) {
-                    String orderTime = jsonArray.getJSONArray(i).getJSONObject(j).getString("order_has_changes");
-                    if (orderTime.equals("1")) return true;
+                    if (jsonArray.getJSONArray(i).getJSONObject(j).has("order_has_changes")) {
+                        String orderTime = jsonArray.getJSONArray(i).getJSONObject(j).getString("order_has_changes");
+                        if (orderTime.equals("1")) return true;
+                    }
                 }
             }
 

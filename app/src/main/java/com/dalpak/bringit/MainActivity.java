@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Gson gson;
 
     private final int TYPE_SWITCH_BUSINESS = 1;
+    public DialogOpenOrder dialogOpenOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,13 +204,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openOrderDialog(OpenOrderModel orderModel) {
-        DialogOpenOrder d = new DialogOpenOrder(this, orderModel);
+        dialogOpenOrder = new DialogOpenOrder(this, orderModel);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(d.getWindow().getAttributes());
+        lp.copyFrom(dialogOpenOrder.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        d.show();
-        d.getWindow().setAttributes(lp);
+        dialogOpenOrder.show();
+        dialogOpenOrder.getWindow().setAttributes(lp);
     }
 
     private void openFragment(Fragment fragmentToOpen, String tag) {

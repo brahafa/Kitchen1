@@ -1,6 +1,7 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,22 +60,26 @@ public class OpenOrderPizzaAdapter extends RecyclerView.Adapter<OpenOrderPizzaAd
 
         holder.name.setText(item.getName());
 
-//        if (item.getChange_type() != null)
-//            switch (item.getChange_type()) {
-//                case "DELETED":
-//                    holder.tvCancel.setVisibility(View.VISIBLE);
-//                    break;
-//                case "NEW":
-//                    holder.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-//                    holder.name.setTextColor(Color.WHITE);
-//                    break;
-//            }
-        if (item.getCategories().size() != 0) initRV(item.getCategories(), item.getShape(), holder.toppingsRv);
+
+        if (item.isCanceled() || item.isDeleted()) {
+            holder.tvCancel.setVisibility(View.VISIBLE);
+        } else holder.tvCancel.setVisibility(View.GONE);
+
+        if (item.isNew()) {
+            holder.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+            holder.name.setTextColor(Color.WHITE);
+        } else {
+            holder.parent.setCardBackgroundColor(Color.WHITE);
+            holder.name.setTextColor(context.getResources().getColor(R.color.text_color));
+        }
+
+        if (item.getCategories().size() != 0)
+            initRV(item.getCategories(), item.getShape(), holder.toppingsRv);
     }
 
     private void initRV(final List<OrderCategoryModel> categoryModels, String shape, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        CategoriesAdapter openOrderAdapter = new CategoriesAdapter(context, categoryModels,shape, itemModel -> {
+        CategoriesAdapter openOrderAdapter = new CategoriesAdapter(context, categoryModels, shape, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

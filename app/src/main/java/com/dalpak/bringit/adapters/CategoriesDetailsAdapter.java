@@ -100,8 +100,7 @@ public class CategoriesDetailsAdapter extends RecyclerView.Adapter<CategoriesDet
 
         ArrayList<String> layerPrices = new ArrayList<>();
         for (ItemModel itemModel : orderModels)
-            if (!itemModel.getPrice().equals("0.00")) layerPrices.add(itemModel.getPrice());
-
+            if (!itemModel.getPrice().equals("0.00") && !itemModel.getPrice().equals("0")) layerPrices.add(itemModel.getPrice());
         LayerAdapter layerAdapter = new LayerAdapter(context, layerPrices);
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

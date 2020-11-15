@@ -1,6 +1,7 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +111,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         OpenOrderHolder holder1;
         OpenOrderHolderTopping holder2;
 
-        if (holder.getItemViewType() == 0) {
+        if (holder.getItemViewType() == 0) {// topping type
             holder2 = (OpenOrderHolderTopping) holder;
 
             String name = item.getName();
@@ -148,17 +149,19 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             holder1 = (OpenOrderHolder) holder;
 
-//            todo waiting for change types
-//            if (item.getChange_type() != null)
-//                switch (item.getChange_type()) {
-//                    case "DELETED":
-//                        holder1.tvCancel.setVisibility(View.VISIBLE);
-//                        break;
-//                    case "NEW":
-//                        holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-//                        holder1.name.setTextColor(Color.WHITE);
-//                        break;
-//                }
+
+            if(item.isCanceled() || item.isDeleted()){
+                holder1.tvCancel.setVisibility(View.VISIBLE);
+            }else{
+                holder1.tvCancel.setVisibility(View.GONE);
+            }
+            if(item.isNew()){
+                holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+                holder1.name.setTextColor(Color.WHITE);
+            }else{
+                holder1.parent.setCardBackgroundColor(Color.WHITE);
+                holder1.name.setTextColor(context.getResources().getColor(R.color.text_color) );
+            }
 
             holder1.name.setText(item.getName());
 

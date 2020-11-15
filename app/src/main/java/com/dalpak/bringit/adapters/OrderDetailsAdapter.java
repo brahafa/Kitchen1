@@ -1,6 +1,7 @@
 package com.dalpak.bringit.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,8 +151,21 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                holder1.parent.requestLayout();
 //            }
 
-            holder1.parent.setBackground(null);
+
             setItemPrice(holder1.amount, item);
+
+            if(item.isCanceled() || item.isDeleted()){
+                holder1.tvCancel.setVisibility(View.VISIBLE);
+            }else{
+                holder1.tvCancel.setVisibility(View.GONE);
+            }
+            if(item.isNew()){
+                holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+                holder1.name.setTextColor(Color.WHITE);
+            }else{
+                holder1.parent.setBackground(null);
+                holder1.name.setTextColor(context.getResources().getColor(R.color.text_color) );
+            }
 
             holder1.name.setText(item.getName());
             String imageUrl = "";
@@ -180,7 +194,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .placeholder(placeholderRes)
                     .into(holder1.itemImage);
 
-            if (item.getProducts() != null) initDealRV(item.getProducts(), holder1.rvFillings);
+            if (item.getProducts().size() > 0) initDealRV(item.getProducts(), holder1.rvFillings);
             else if (item.getCategories().size() != 0)
                 initRV(item.getCategories(), item.getShape(), holder1.rvFillings);
         }

@@ -200,16 +200,11 @@ public class Request {
             public void onDataDone(JSONObject json) {
                 Log.d("getOrderDetailsByID", json.toString());
                 requestJsonCallBack.onDataDone(json);
-//               try {
-//                  // requestItemsListCallBack.onDataDone(getListGlobalFromJsonArr(json.getJSONObject("Message")));
-//               } catch (JSONException e) {
-//                   e.printStackTrace();
-//               }
             }
 
             @Override
             public void onDataError(JSONObject json) {
-
+                Log.d("ERROR OrderDetailsByID", json.toString());
             }
         });
         network.sendRequest(context, Network.RequestName.GET_ORDER_DETAILS_BY_ID, orderId, true);

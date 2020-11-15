@@ -76,7 +76,8 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
                 holder.deliveryImage.setImageResource(R.drawable.ic_delivery);
                 break;
             case DELIVERY_OPTION_TAKEAWAY:
-                holder.name.setText(order.getClient().getFName());
+                if (order.getClient() != null)
+                    holder.name.setText(order.getClient().getFName());
                 holder.deliveryImage.setImageResource(R.drawable.ic_takeaway);
                 break;
             case DELIVERY_OPTION_TABLE:
@@ -90,8 +91,8 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
         if (order.getColor() != null) {
             holder.vOrderColor.setBackgroundColor(Color.parseColor(order.getColor()));
         }
-        if (order.getStatus().equals("received") &&
-                Utils.getOrderTimerLong(order.getOrderTime()) > DELAY_TIME_IN_SECONDS) {
+
+        if (order.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE)) {
             holder.warningImg.setVisibility(View.VISIBLE);
         }
 

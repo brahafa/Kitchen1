@@ -10,8 +10,39 @@ public class OrderCategoryModel {
     private String mName;
     @SerializedName("is_topping_divided")
     private boolean mIsToppingDivided;
+    @SerializedName("products_fixed_price")
+    private int mProductsFixedPrice;
+    @SerializedName("category_has_fixed_price")
+    private boolean mCategoryHasFixedPrice;
+    @SerializedName("fixed_price")
+    private int mFixedPrice;
     @SerializedName("products")
     private List<ItemModel> mProducts;
+
+    public int getProductsFixedPrice() {
+        return mProductsFixedPrice;
+    }
+
+    public void setProductsFixedPrice(int productsFixedPrice) {
+        mProductsFixedPrice = productsFixedPrice;
+    }
+
+    public boolean getCategoryHasFixedPrice() {
+        return mCategoryHasFixedPrice;
+    }
+
+    public void setCategoryHasFixedPrice(boolean categoryHasFixedPrice) {
+        mCategoryHasFixedPrice = categoryHasFixedPrice;
+    }
+
+    public int getFixedPrice() {
+        return mFixedPrice;
+    }
+
+    public void setFixedPrice(int fixedPrice) {
+        mFixedPrice = fixedPrice;
+    }
+
 
     public String getName() {
         return mName;

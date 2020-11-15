@@ -25,9 +25,28 @@ public class ItemModel {
     @SerializedName("is_compensation")
     private String mIsCompensation;
     @SerializedName("products")
-    private List<ItemModel> mProducts;
+    private List<ItemModel> mProducts = new ArrayList<>();
+
     @SerializedName("categories")
     private List<OrderCategoryModel> mCategories = new ArrayList<>();
+    @SerializedName("is_deleted")
+    private int mIsDeleted;
+    @SerializedName("is_new")
+    private int mIsNew;
+    @SerializedName("is_canceled")
+    private int mIsCanceled;
+
+    public boolean isDeleted() {
+        return 1 == mIsDeleted;
+    }
+
+    public boolean isNew() {
+        return 1 == mIsNew;
+    }
+
+    public boolean isCanceled() {
+        return 1 == mIsCanceled;
+    }
 
     private transient int mCount = 1;
 

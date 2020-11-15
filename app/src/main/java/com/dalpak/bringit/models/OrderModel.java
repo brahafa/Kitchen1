@@ -17,6 +17,8 @@ public class OrderModel {
     private boolean mIsDelivery;
     @SerializedName("status")
     private String mStatus;
+    @SerializedName("change_type")
+    private String mChangeType;
     @SerializedName("total_paid")
     private int mTotalPaid;
     @SerializedName("is_paid")
@@ -38,6 +40,9 @@ public class OrderModel {
     @SerializedName("client")
     private ClientModel mClient;
 
+    public String getChangeType() {
+        return mChangeType;
+    }
 
     public String getId() {
         return mId;

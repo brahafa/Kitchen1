@@ -35,6 +35,8 @@ public class ProductItemModel implements Parcelable {
     private String mTypeName;
     @SerializedName("categories")
     private List<CategoryModel> mCategories;
+    @SerializedName("products")
+    private List<ProductItemModel> mProducts;
 
 
     protected ProductItemModel(Parcel in) {
@@ -51,6 +53,7 @@ public class ProductItemModel implements Parcelable {
         mShape = in.readString();
         mTypeName = in.readString();
         mCategories = in.createTypedArrayList(CategoryModel.CREATOR);
+        mProducts = in.createTypedArrayList(ProductItemModel.CREATOR);
     }
 
     public static final Creator<ProductItemModel> CREATOR = new Creator<ProductItemModel>() {
@@ -66,6 +69,14 @@ public class ProductItemModel implements Parcelable {
     };
 
     public ProductItemModel() {
+    }
+
+    public List<ProductItemModel> getProducts() {
+        return mProducts;
+    }
+
+    public void setProducts(List<ProductItemModel> products) {
+        mProducts = products;
     }
 
     public String getId() {

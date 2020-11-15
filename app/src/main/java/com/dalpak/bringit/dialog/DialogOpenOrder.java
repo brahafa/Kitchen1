@@ -40,7 +40,7 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
     private Dialog d;
     private Context context;
-    private OpenOrderModel orderModel;
+    public OpenOrderModel orderModel;
     private View viewOrderChanged;
     private CardView cvComment;
     private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, deliveryDetailsTV, shippingNumber, shippingTvClick, tvOrderSrc, tvPayment;
@@ -49,16 +49,26 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
     private ImageView orderMethodIV;
     private RecyclerView rvDrink, rvPizza, rvAdditional;
     private LinearLayout shippingHolder;
+    private boolean ifEdited = false;
 
     public DialogOpenOrder(@NonNull final Context context, OpenOrderModel orderModel) {
         super(context);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.context = context;
-        this.orderModel = orderModel;
         setContentView(R.layout.open_order_dialog);
         d = this;
+        updateDialog(orderModel);
+    }
+
+    private void updateDialog(OpenOrderModel orderModel){
+        this.orderModel = orderModel;
         initData();
         initLists();
+    }
+
+    public void editDialog(OpenOrderModel openOrderModel){
+        ifEdited = true;
+        updateDialog(openOrderModel);
     }
 
     private void initLists() {
@@ -134,8 +144,8 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         tvPayment.setText("שיטת תשלום: " + orderModel.getPaymentDisplay());
         tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAddedBySystem());
         tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
-        viewOrderChanged.setVisibility(checkIfEdited() ? View.VISIBLE : View.GONE);
-        cvComment.setCardBackgroundColor(Color.parseColor(checkIfEdited() ? "#12c395" : "#6f7888"));
+        viewOrderChanged.setVisibility(ifEdited ? View.VISIBLE : View.GONE);
+        cvComment.setCardBackgroundColor(Color.parseColor(ifEdited ? "#12c395" : "#6f7888"));
 
         initOrderMethod();
         if (orderModel.getOrderNotes() == null || orderModel.getOrderNotes().equals("")) {
@@ -225,10 +235,4 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
         d.getWindow().setAttributes(lp);
     }
 
-    private boolean checkIfEdited() {
-//        for (ItemModel model : orderModel.getOrder_items()) { //todo order items missing
-//            if (model.getChange_type() != null) return true;
-//        }
-        return false;
-    }
 }

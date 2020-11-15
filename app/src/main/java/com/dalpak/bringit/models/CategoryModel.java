@@ -20,11 +20,11 @@ public class CategoryModel implements Parcelable {
     @SerializedName("products_limit")
     private String mProductsLimit;
     @SerializedName("products_fixed_price")
-    private String mProductsFixedPrice;
+    private int mProductsFixedPrice;
     @SerializedName("category_has_fixed_price")
-    private String mCategoryHasFixedPrice;
+    private boolean mCategoryHasFixedPrice;
     @SerializedName("fixed_price")
-    private String mFixedPrice;
+    private int mFixedPrice;
     @SerializedName("is_topping_divided")
     private String mIsToppingDivided;
     @SerializedName("is_mandatory")
@@ -38,9 +38,9 @@ public class CategoryModel implements Parcelable {
         mName = in.readString();
         mListOrder = in.readString();
         mProductsLimit = in.readString();
-        mProductsFixedPrice = in.readString();
-        mCategoryHasFixedPrice = in.readString();
-        mFixedPrice = in.readString();
+        mProductsFixedPrice = in.readInt();
+        mCategoryHasFixedPrice = in.readBoolean();
+        mFixedPrice = in.readInt();
         mIsToppingDivided = in.readString();
         mIsMandatory = in.readString();
         mProducts = in.createTypedArrayList(InnerProductsModel.CREATOR);
@@ -98,27 +98,27 @@ public class CategoryModel implements Parcelable {
         mProductsLimit = productsLimit;
     }
 
-    public String getProductsFixedPrice() {
+    public int getProductsFixedPrice() {
         return mProductsFixedPrice;
     }
 
-    public void setProductsFixedPrice(String productsFixedPrice) {
+    public void setProductsFixedPrice(int productsFixedPrice) {
         mProductsFixedPrice = productsFixedPrice;
     }
 
-    public String getCategoryHasFixedPrice() {
+    public boolean getCategoryHasFixedPrice() {
         return mCategoryHasFixedPrice;
     }
 
-    public void setCategoryHasFixedPrice(String categoryHasFixedPrice) {
+    public void setCategoryHasFixedPrice(boolean categoryHasFixedPrice) {
         mCategoryHasFixedPrice = categoryHasFixedPrice;
     }
 
-    public String getFixedPrice() {
+    public int getFixedPrice() {
         return mFixedPrice;
     }
 
-    public void setFixedPrice(String fixedPrice) {
+    public void setFixedPrice(int fixedPrice) {
         mFixedPrice = fixedPrice;
     }
 
@@ -158,9 +158,9 @@ public class CategoryModel implements Parcelable {
         dest.writeString(mName);
         dest.writeString(mListOrder);
         dest.writeString(mProductsLimit);
-        dest.writeString(mProductsFixedPrice);
-        dest.writeString(mCategoryHasFixedPrice);
-        dest.writeString(mFixedPrice);
+        dest.writeInt(mProductsFixedPrice);
+        dest.writeBoolean(mCategoryHasFixedPrice);
+        dest.writeInt(mFixedPrice);
         dest.writeString(mIsToppingDivided);
         dest.writeString(mIsMandatory);
         dest.writeTypedList(mProducts);
