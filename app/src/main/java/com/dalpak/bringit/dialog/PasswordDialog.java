@@ -33,6 +33,7 @@ public class PasswordDialog extends Dialog {
         tv3 = findViewById(R.id.tv3);
         tv4 = findViewById(R.id.tv4);
         passwordTVs = new TextView[]{tv1, tv2, tv3, tv4};
+        (findViewById(R.id.tv_version)).setOnLongClickListener(v ->{((TextView)findViewById(R.id.tv_version)).setText(Utils.getVersionApp(getContext())); return false;});
 
         NumberKeyboardView numberKeyboardView = findViewById(R.id.numberKeyboardView);
         numberKeyboardView.keyListener(keyTxt -> {

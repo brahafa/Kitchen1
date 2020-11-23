@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
@@ -173,6 +175,15 @@ public class Utils {
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         notificationManager.notify(1, builder.build());
+    }
+    public static String getVersionApp(Context context){
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }
