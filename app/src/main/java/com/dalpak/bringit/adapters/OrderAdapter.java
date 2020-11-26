@@ -28,7 +28,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
     class OrderHolder extends DragItemAdapter.ViewHolder {
         TextView name, orderTime;
         ImageView deliveryImage, warningImg;
-        View vOrderColor;
+        View vOrderColor, vHolder;
 
         OrderHolder(View view) {
             super(view, R.id.parent, true);
@@ -38,6 +38,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
             orderTime = view.findViewById(R.id.order_time);
             deliveryImage = view.findViewById(R.id.delivery_image);
             vOrderColor = view.findViewById(R.id.v_dot);
+            vHolder = view.findViewById(R.id.v_holder);
 
         }
 
@@ -94,6 +95,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
 
         if (order.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE)) {
             holder.warningImg.setVisibility(View.VISIBLE);
+            holder.vHolder.setBackgroundResource(R.drawable.background_changed);
         }
 
         holder.itemView.setOnClickListener(v -> adapterCallback.onItemChoose(order));
