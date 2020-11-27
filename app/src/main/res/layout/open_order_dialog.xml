@@ -1,98 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="10dp"
     tools:context=".fragments.MainFragment">
 
     <RelativeLayout
-        android:background="@color/gray_e6ebf4"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_width="match_parent">
+        android:background="@color/gray_e6ebf4">
 
         <ImageView
-            android:background="@drawable/time_backgroung"
             android:id="@+id/close"
-            android:layout_centerVertical="true"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/time_backgroung"
             android:src="@drawable/ic_clear"
             android:tint="@color/white" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_approve_changes"
+            android:layout_width="133dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
             android:background="@drawable/change_in_order"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:text="Approve changes"
+            android:textColor="@color/black_222e3b"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <LinearLayout
             android:id="@+id/ll_change_in_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
+            android:background="@drawable/change_in_order"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingEnd="12dp"
             android:paddingStart="12dp"
             android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
             android:tint="@color/white"
             android:visibility="gone"
             tools:visibility="visible">
 
             <TextView
-                android:gravity="right"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="12dp"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="12dp"
+                android:gravity="right"
                 android:text="שים לב, יש שינויים בהזמנה"
                 android:textColor="@color/error"
                 android:textSize="13sp" />
 
             <ImageView
-                android:layout_height="30dp"
                 android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/exclamation" />
         </LinearLayout>
 
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_height="50dp"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
 
         <TextView
-            android:gravity="center"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:layout_width="0dp"
+            android:gravity="center"
             android:text="שתייה"
             android:textColor="@color/text_color"
             android:textSize="17sp" />
 
         <TextView
-            android:gravity="center"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:layout_width="0dp"
+            android:gravity="center"
             android:text="מצרים נוספים"
             android:textColor="@color/text_color"
             android:textSize="17sp" />
 
         <TextView
-            android:gravity="center"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
             android:layout_weight="3"
-            android:layout_width="0dp"
+            android:gravity="center"
             android:text="פיצה"
             android:textColor="@color/text_color"
             android:textSize="17sp" />
@@ -101,71 +112,71 @@
 
 
     <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="match_parent"
         android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@drawable/rv_open_order"
-            android:clipToPadding="false"
             android:id="@+id/rvDrink"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:layout_width="0dp"
+            android:background="@drawable/rv_open_order"
+            android:clipToPadding="false"
             android:paddingBottom="8dp" />
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@drawable/rv_open_order"
-            android:clipToPadding="false"
             android:id="@+id/rvAdditional"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:layout_width="0dp"
+            android:background="@drawable/rv_open_order"
+            android:clipToPadding="false"
             android:paddingBottom="8dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@drawable/rv_open_order"
-            android:clipToPadding="false"
             android:id="@+id/rvPizza"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
             android:layout_weight="3"
-            android:layout_width="0dp"
+            android:background="@drawable/rv_open_order"
+            android:clipToPadding="false"
             android:paddingBottom="8dp" />
 
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:elevation="0dp"
         android:id="@+id/cv_comment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
+        android:layout_marginEnd="10dp"
+        android:elevation="0dp"
         app:cardBackgroundColor="@color/black_6f7888"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:padding="8dp">
 
             <ImageView
-                android:background="@drawable/shipping_num_btn_back"
                 android:id="@+id/iv_comment"
-                android:layout_gravity="center_vertical"
-                android:layout_height="36dp"
                 android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shipping_num_btn_back"
                 android:padding="10dp"
                 android:src="@drawable/ic_chat"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -173,11 +184,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:gravity="right"
                 android:id="@+id/tv_title_comment"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
-                android:layout_width="0dp"
+                android:gravity="right"
                 android:text="הערות להזמנה"
                 android:textColor="@color/white"
                 android:textSize="13sp"
@@ -188,11 +199,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:gravity="right"
                 android:id="@+id/tv_order_details"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_width="0dp"
+                android:gravity="right"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -202,11 +213,11 @@
                 tools:text="הערות להזמנ" />
 
             <ImageView
-                android:background="@drawable/shipping_num_btn_back"
                 android:id="@+id/iv_comment_delivery"
-                android:layout_gravity="center_vertical"
-                android:layout_height="36dp"
                 android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shipping_num_btn_back"
                 android:padding="10dp"
                 android:src="@drawable/ic_delivery"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -215,11 +226,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:gravity="right"
                 android:id="@+id/tv_title_comment_delivery"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
-                android:layout_width="0dp"
+                android:gravity="right"
                 android:text="Delivery notes"
                 android:textColor="@color/white"
                 android:textSize="13sp"
@@ -230,11 +241,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:gravity="right"
                 android:id="@+id/tv_delivery_details"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_width="0dp"
+                android:gravity="right"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -244,9 +255,9 @@
                 tools:text="הערות להזמנ" />
 
             <androidx.constraintlayout.widget.Group
-                android:layout_height="0dp"
-                android:layout_width="0dp"
                 android:id="@+id/g_delivery_notes"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:visibility="gone"
                 app:constraint_referenced_ids="iv_comment_delivery, tv_title_comment_delivery, tv_delivery_details" />
 
@@ -254,33 +265,33 @@
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
-        android:gravity="center_vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:gravity="center"
             android:id="@+id/ll_shipping"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_width="0dp"
+            android:gravity="center"
             android:orientation="horizontal"
             android:visibility="gone"
             android:weightSum="2"
             tools:visibility="visible">
 
             <TextView
-                android:gravity="center"
                 android:id="@+id/shipping_number"
-                android:layout_gravity="center_vertical"
-                android:layout_height="40dp"
                 android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
                 android:minWidth="100dp"
-                android:paddingEnd="16dp"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textColor="@color/text_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -288,15 +299,15 @@
                 tools:text="N 42" />
 
             <TextView
-                android:background="@drawable/shipping_num_btn_back"
-                android:gravity="center"
                 android:id="@+id/shipping_tv_click"
+                android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:paddingEnd="16dp"
+                android:background="@drawable/shipping_num_btn_back"
+                android:gravity="center"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="הצג מספר משלוח"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
@@ -304,46 +315,46 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:elevation="0dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_weight="5"
-            android:layout_width="0dp"
+            android:elevation="0dp"
             app:cardBackgroundColor="@color/black_6f7888"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">
 
             <LinearLayout
-                android:gravity="center_vertical"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="8dp">
 
                 <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
                     android:orientation="vertical">
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_total"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginRight="8dp"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="3dp"
+                        android:gravity="right"
                         android:text="jkgjg"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
                     <TextView
-                        android:background="@drawable/shipping_num_btn_back"
-                        android:gravity="center"
                         android:id="@+id/tv_items_details"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_width="match_parent"
+                        android:background="@drawable/shipping_num_btn_back"
+                        android:gravity="center"
                         android:padding="2dp"
                         android:text="פירוט הזמנה"
                         android:textColor="@color/white"
@@ -352,16 +363,16 @@
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_width="0dp">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_payment"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:textColor="@color/white"
                         android:textSize="13sp"
                         android:textStyle="bold"
@@ -371,11 +382,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_order_src"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold"
@@ -386,10 +397,10 @@
                         tools:text="שיטת תשלום:" />
 
                     <ImageView
-                        android:background="@drawable/shipping_num_btn_back"
                         android:id="@+id/iv_order_src"
-                        android:layout_height="36dp"
                         android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/shipping_num_btn_back"
                         android:padding="10dp"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -398,16 +409,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_width="0dp">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_title_order_type"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:text="סוג הזמנה"
                         android:textColor="@color/white"
                         android:textSize="13sp"
@@ -418,11 +429,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_order_type"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -432,10 +443,10 @@
                         tools:text="הערות להזמנ" />
 
                     <ImageView
-                        android:background="@drawable/shipping_num_btn_back"
                         android:id="@+id/iv_order_type"
-                        android:layout_height="36dp"
                         android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/shipping_num_btn_back"
                         android:padding="10dp"
                         android:src="@drawable/ic_delivery"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -444,16 +455,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_width="0dp">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_title_order_name"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:text="שם לקוח"
                         android:textColor="@color/white"
                         android:textSize="13sp"
@@ -464,11 +475,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_order_name"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -478,10 +489,10 @@
                         tools:text="הערות להזמנ" />
 
                     <ImageView
-                        android:background="@drawable/shipping_num_btn_back"
                         android:id="@+id/iv_order_name"
-                        android:layout_height="36dp"
                         android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/shipping_num_btn_back"
                         android:padding="10dp"
                         android:src="@drawable/ic_user"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -490,16 +501,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_width="0dp">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_title_order_num"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:text="מספר הזמנה"
                         android:textColor="@color/white"
                         android:textSize="13sp"
@@ -510,11 +521,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_order_num"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -524,10 +535,10 @@
                         tools:text="הערות להזמנ" />
 
                     <ImageView
-                        android:background="@drawable/shipping_num_btn_back"
                         android:id="@+id/iv_order_num"
-                        android:layout_height="36dp"
                         android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/shipping_num_btn_back"
                         android:padding="10dp"
                         android:src="@drawable/ic_receipt"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -536,16 +547,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_width="0dp">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_title_order_date"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:text="תאריך הזמנה"
                         android:textColor="@color/white"
                         android:textSize="13sp"
@@ -556,11 +567,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_order_date"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_width="0dp"
+                        android:gravity="right"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -570,10 +581,10 @@
                         tools:text="הערות להזמנ" />
 
                     <ImageView
-                        android:background="@drawable/shipping_num_btn_back"
                         android:id="@+id/iv_order_date"
-                        android:layout_height="36dp"
                         android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/shipping_num_btn_back"
                         android:padding="10dp"
                         android:src="@drawable/ic_calendar"
                         app:layout_constraintBottom_toBottomOf="parent"

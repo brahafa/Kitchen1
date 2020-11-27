@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.dalpak.bringit.MainActivity;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OrderAdapter;
@@ -34,11 +38,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import static com.dalpak.bringit.utils.Utils.CHANGE_TYPE_CANCELED;
+import static com.dalpak.bringit.utils.Utils.CHANGE_TYPE_CHANGE;
 import static com.dalpak.bringit.utils.Utils.createNotificationChannel;
 
 public class MainFragment extends Fragment {
@@ -109,7 +110,7 @@ public class MainFragment extends Fragment {
             try {
                 OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
                 prepareOrder(openOrderModel);
-                openOrderModel.setTotal(Utils.getTotalOrder(openOrderModel) +"");
+                openOrderModel.setTotal(Utils.getTotalOrder(openOrderModel) + "");
                 ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.editDialog(openOrderModel);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -234,7 +235,8 @@ public class MainFragment extends Fragment {
                 if (isEdited(jsonObject)) playSound(Constants.ALERT_EDIT_ORDER);
 
                 int cookingOrdersSize = getOrdersList(jsonObject, "cooking").size();
-                if (lastCookingOrdersSize > cookingOrdersSize) playSound(Constants.ALERT_FINISH_COOKING);
+                if (lastCookingOrdersSize > cookingOrdersSize)
+                    playSound(Constants.ALERT_FINISH_COOKING);
 
                 lastNewOrdersSize = newOrdersSize;
                 lastCookingOrdersSize = cookingOrdersSize;
@@ -291,7 +293,7 @@ public class MainFragment extends Fragment {
                     try {
                         OpenOrderModel openOrderModel = gson.fromJson(jsonObject.getString("order"), OpenOrderModel.class);
                         prepareOrder(openOrderModel);
-                        openOrderModel.setTotal(Utils.getTotalOrder(openOrderModel) +"");
+                        openOrderModel.setTotal(Utils.getTotalOrder(openOrderModel) + "");
                         ((MainActivity) getActivity()).openOrderDialog(openOrderModel);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -374,9 +376,10 @@ public class MainFragment extends Fragment {
             jsonArray.put(jsonObject.getJSONObject("ordersByStatus").getJSONArray("received"));
             for (int i = 0; i < jsonArray.length(); i++) {
                 for (int j = 0; j < jsonArray.getJSONArray(i).length(); j++) {
-                    if (jsonArray.getJSONArray(i).getJSONObject(j).has("order_has_changes")) {
-                        String orderTime = jsonArray.getJSONArray(i).getJSONObject(j).getString("order_has_changes");
-                        if (orderTime.equals("1")) return true;
+                    if (jsonArray.getJSONArray(i).getJSONObject(j).has("is_change_confirmed")) {
+                        boolean isConfirmed = jsonArray.getJSONArray(i).getJSONObject(j).getBoolean("is_change_confirmed");
+                        String changeType = jsonArray.getJSONArray(i).getJSONObject(j).getString("change_type");
+                        if (changeType.equals(CHANGE_TYPE_CHANGE) && !isConfirmed) return true;
                     }
                 }
             }

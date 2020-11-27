@@ -297,7 +297,7 @@ public class Request {
         network.sendRequest(context, Network.RequestName.CHECK_BUSINESS_STATUS, null);
     }
 
-    public void changeBusinessStatus(Context context, boolean isOpen,final RequestCallBackSuccess listener) {
+    public void changeBusinessStatus(Context context, boolean isOpen, final RequestCallBackSuccess listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("business_id", BusinessModel.getInstance().getBusiness_id());
@@ -320,6 +320,31 @@ public class Request {
             }
         });
         network.sendPostRequest(context, jsonObject, Network.RequestName.CHANGE_BUSINESS_STATUS);
+    }
+
+    public void approveOrderChanges(Context context, String orderId, final RequestCallBackSuccess listener) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("business_id", BusinessModel.getInstance().getBusiness_id());
+            jsonObject.put("order_id", orderId);
+            Log.d("send data: ", jsonObject.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Network network = new Network(new Network.NetworkCallBack() {
+            @Override
+            public void onDataDone(JSONObject json) {
+                Log.d("approveOrderChanges ", json.toString());
+                listener.onDataDone(true);
+            }
+
+            @Override
+            public void onDataError(JSONObject json) {
+                Log.e("approveOrderChanges Err", json.toString());
+            }
+        });
+        network.sendPostRequest(context, jsonObject, Network.RequestName.APPROVE_ORDER_CHANGES, true);
     }
 
     public void getItemsInSelectedFolder(Context context, String param, Network.RequestName getItemsInSelectedFoleder, final RequestJsonCallBack listener) {

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
+import static com.dalpak.bringit.utils.Network.RequestName.APPROVE_ORDER_CHANGES;
 import static com.dalpak.bringit.utils.Network.RequestName.UPDATE_PRODUCT_STATUS;
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
 
@@ -56,7 +57,8 @@ public class Network {
         GET_ITEMS_IN_SELECTED_FOLDER,
         GET_ALL_ORDERS, GET_ORDER_DETAILS_BY_ID,
         GET_ORDER_CODE,
-        UPDATE_PRODUCT_STATUS
+        UPDATE_PRODUCT_STATUS,
+        APPROVE_ORDER_CHANGES
     }
 
     Network(NetworkCallBack listener) {
@@ -211,6 +213,9 @@ public class Network {
             case UPDATE_PRODUCT_STATUS: //api 2
                 url += "products/status";
                 break;
+            case APPROVE_ORDER_CHANGES: //api 2
+                url += "/orders/confirmChanges";
+                break;
             case WORKER_LOGOUT:
                 url += DALPAK + "workerLogout";
                 break;
@@ -220,7 +225,9 @@ public class Network {
         }
         Log.d("POST url  ", url);
         JsonObjectRequest req = new JsonObjectRequest(
-                requestName.equals(UPDATE_PRODUCT_STATUS) ? Request.Method.PUT : Request.Method.POST,
+                requestName.equals(UPDATE_PRODUCT_STATUS) ||
+                        requestName.equals(APPROVE_ORDER_CHANGES)
+                        ? Request.Method.PUT : Request.Method.POST,
                 url, params, response -> {
             try {
                 listener.onDataDone(response);

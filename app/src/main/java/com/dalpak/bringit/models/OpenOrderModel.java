@@ -45,6 +45,10 @@ public class OpenOrderModel {
     private String mPaymentDisplay;
     @SerializedName("added_by_system")
     private String mAddedBySystem;
+    @SerializedName("change_type")
+    private String mChangeType;
+    @SerializedName("change_for_order_id")
+    private String mChangeForOrderId;
     @SerializedName("client")
     private ClientModel mClient;
     @SerializedName("products")
@@ -216,6 +220,22 @@ public class OpenOrderModel {
 
     public void setProducts(List<ItemModel> mProducts) {
         this.mProducts = mProducts;
+    }
+
+    public String getChangeType() {
+        return mChangeType;
+    }
+
+    public void setChangeType(String mChangeType) {
+        this.mChangeType = mChangeType;
+    }
+
+    public String getChangeForOrderId() {
+        return mChangeForOrderId;
+    }
+
+    public void setChangeForOrderId(String mChangeForOrderId) {
+        this.mChangeForOrderId = mChangeForOrderId;
     }
 }
 

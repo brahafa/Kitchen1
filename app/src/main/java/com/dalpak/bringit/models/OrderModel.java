@@ -15,6 +15,8 @@ public class OrderModel {
     private String mOrderTime;
     @SerializedName("is_delivery")
     private boolean mIsDelivery;
+    @SerializedName("is_change_confirmed")
+    private boolean mIsChangeConfirmed;
     @SerializedName("status")
     private String mStatus;
     @SerializedName("change_type")
@@ -170,5 +172,13 @@ public class OrderModel {
 
     public void setColor(String mColor) {
         this.mColor = mColor;
+    }
+
+    public boolean isChangeConfirmed() {
+        return mIsChangeConfirmed;
+    }
+
+    public void setIsChangeConfirmed(boolean mIsChangeConfirmed) {
+        this.mIsChangeConfirmed = mIsChangeConfirmed;
     }
 }

@@ -6,12 +6,9 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -19,9 +16,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OpenOrderAdapter;
 import com.dalpak.bringit.adapters.OpenOrderPizzaAdapter;
+import com.dalpak.bringit.databinding.OpenOrderDialogBinding;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.utils.Utils;
 
 import org.json.JSONException;
 
@@ -36,37 +35,34 @@ import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DEAL;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_DRINK;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_PIZZA;
 
-public class DialogOpenOrder extends Dialog implements View.OnClickListener {
+public class DialogOpenOrder extends Dialog {
+
+    private OpenOrderDialogBinding binding;
 
     private Dialog d;
     private Context context;
     public OpenOrderModel orderModel;
-    private View viewOrderChanged;
-    private CardView cvComment;
-    private TextView orderDateTV, orderNumTV, orderNameTV, orderTypeTV, orderDetailsTV, deliveryDetailsTV, shippingNumber, shippingTvClick, tvOrderSrc, tvPayment;
-    private TextView tvTotal, tvItemsDetails;
-    private View gDeliveryNotes;
-    private ImageView orderMethodIV;
-    private RecyclerView rvDrink, rvPizza, rvAdditional;
-    private LinearLayout shippingHolder;
     private boolean ifEdited = false;
 
     public DialogOpenOrder(@NonNull final Context context, OpenOrderModel orderModel) {
         super(context);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        binding = OpenOrderDialogBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         this.context = context;
-        setContentView(R.layout.open_order_dialog);
         d = this;
         updateDialog(orderModel);
     }
 
-    private void updateDialog(OpenOrderModel orderModel){
+    private void updateDialog(OpenOrderModel orderModel) {
         this.orderModel = orderModel;
         initData();
         initLists();
     }
 
-    public void editDialog(OpenOrderModel openOrderModel){
+    public void editDialog(OpenOrderModel openOrderModel) {
         ifEdited = true;
         updateDialog(openOrderModel);
     }
@@ -104,80 +100,65 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
             }
         }
 
-        initRV(drinks, rvDrink);
-        initRV(additionals, rvAdditional);
-        initPizzaRV(pizza, rvPizza);
+        initRV(drinks, binding.rvDrink);
+        initRV(additionals, binding.rvAdditional);
+        initPizzaRV(pizza, binding.rvPizza);
     }
 
     private void initData() {
-        (findViewById(R.id.close)).setOnClickListener(this);
-        viewOrderChanged = findViewById(R.id.ll_change_in_order);
-        cvComment = findViewById(R.id.cv_comment);
+        binding.close.setOnClickListener(v -> d.dismiss());
 
-        orderDateTV = findViewById(R.id.tv_order_date);
-        orderNameTV = findViewById(R.id.tv_order_name);
-        orderNumTV = findViewById(R.id.tv_order_num);
-        orderTypeTV = findViewById(R.id.tv_order_type);
-        orderDetailsTV = findViewById(R.id.tv_order_details);
-        deliveryDetailsTV = findViewById(R.id.tv_delivery_details);
-        gDeliveryNotes = findViewById(R.id.g_delivery_notes);
-        orderMethodIV = findViewById(R.id.iv_order_type);
-        shippingHolder = findViewById(R.id.ll_shipping);
-        shippingNumber = findViewById(R.id.shipping_number);
-        shippingTvClick = findViewById(R.id.shipping_tv_click);
-        rvDrink = findViewById(R.id.rvDrink);
-        rvAdditional = findViewById(R.id.rvAdditional);
-        rvPizza = findViewById(R.id.rvPizza);
-        tvOrderSrc = findViewById(R.id.tv_order_src);
-        tvPayment = findViewById(R.id.tv_payment);
-        tvTotal = findViewById(R.id.tv_total);
-        tvItemsDetails = findViewById(R.id.tv_items_details);
+        binding.tvItemsDetails.setOnClickListener(v -> openDetailsDialog(orderModel));
 
-        tvItemsDetails.setOnClickListener(v -> openDetailsDialog(orderModel));
-
-        orderDateTV.setText(orderModel.getOrderTime());
-        orderNumTV.setText(orderModel.getId());
+        binding.tvOrderDate.setText(orderModel.getOrderTime());
+        binding.tvOrderNum.setText(orderModel.getId());
         if (orderModel.getClient() != null)
-            orderNameTV.setText(String.format("%s %s",
+            binding.tvOrderName.setText(String.format("%s %s",
                     orderModel.getClient().getFName(),
                     orderModel.getClient().getLName()));
-        tvPayment.setText("שיטת תשלום: " + orderModel.getPaymentDisplay());
-        tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAddedBySystem());
-        tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
-        viewOrderChanged.setVisibility(ifEdited ? View.VISIBLE : View.GONE);
-        cvComment.setCardBackgroundColor(Color.parseColor(ifEdited ? "#12c395" : "#6f7888"));
+        binding.tvPayment.setText("שיטת תשלום: " + orderModel.getPaymentDisplay());
+        binding.tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAddedBySystem());
+        binding.tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
+        binding.llChangeInOrder.setVisibility(orderModel.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
+        binding.tvApproveChanges.setVisibility(orderModel.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
+        binding.cvComment.setCardBackgroundColor(Color.parseColor(ifEdited ? "#12c395" : "#6f7888"));
 
         initOrderMethod();
         if (orderModel.getOrderNotes() == null || orderModel.getOrderNotes().equals("")) {
-            orderDetailsTV.setText("אין הערות להזמנה");
+            binding.tvOrderDetails.setText("אין הערות להזמנה");
         } else {
-            orderDetailsTV.setText(orderModel.getOrderNotes());
+            binding.tvOrderDetails.setText(orderModel.getOrderNotes());
         }
 
         if (orderModel.getDeliveryNotes() != null && !orderModel.getDeliveryNotes().equals("")) {
-            gDeliveryNotes.setVisibility(View.VISIBLE);
-            deliveryDetailsTV.setText(orderModel.getDeliveryNotes());
+            binding.gDeliveryNotes.setVisibility(View.VISIBLE);
+            binding.tvDeliveryDetails.setText(orderModel.getDeliveryNotes());
         }
+
+        binding.tvApproveChanges.setOnClickListener(v -> Request.getInstance().approveOrderChanges(context, orderModel.getId(), isDataSuccess -> {
+            if (isDataSuccess)
+                Toast.makeText(context, "Changes approved", Toast.LENGTH_SHORT).show();
+        }));
     }
 
     private void initOrderMethod() {
 
         switch (orderModel.getDeliveryOption()) {
             case DELIVERY_OPTION_TAKEAWAY:
-                orderTypeTV.setText("איסוף עצמי");
-                orderMethodIV.setImageResource(R.drawable.ic_takeaway);
+                binding.tvOrderType.setText("איסוף עצמי");
+                binding.ivOrderType.setImageResource(R.drawable.ic_takeaway);
                 break;
             case DELIVERY_OPTION_DELIVERY:
-                orderTypeTV.setText("משלוח");
-                orderMethodIV.setImageResource(R.drawable.ic_delivery);
-                shippingHolder.setVisibility(View.VISIBLE);
-                shippingTvClick.setOnClickListener(v ->
+                binding.tvOrderType.setText("משלוח");
+                binding.ivOrderType.setImageResource(R.drawable.ic_delivery);
+                binding.llShipping.setVisibility(View.VISIBLE);
+                binding.shippingTvClick.setOnClickListener(v ->
                         Request.getInstance().getOrderCode(context, orderModel.getId(), jsonObject -> {
                             try {
                                 if (jsonObject.has("code")) {
-                                    shippingNumber.setVisibility(View.VISIBLE);
-                                    shippingTvClick.setVisibility(View.GONE);
-                                    shippingNumber.setText("N " + jsonObject.getString("code"));
+                                    binding.shippingNumber.setVisibility(View.VISIBLE);
+                                    binding.shippingTvClick.setVisibility(View.GONE);
+                                    binding.shippingNumber.setText("N " + jsonObject.getString("code"));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -186,8 +167,8 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
                 break;
             case DELIVERY_OPTION_TABLE:
             default:
-                orderTypeTV.setText("לשבת");
-                orderMethodIV.setImageResource(R.drawable.ic_dinner);
+                binding.tvOrderType.setText("לשבת");
+                binding.ivOrderType.setImageResource(R.drawable.ic_dinner);
                 break;
         }
 
@@ -213,16 +194,6 @@ public class DialogOpenOrder extends Dialog implements View.OnClickListener {
 
         recyclerView.setAdapter(openOrderAdapter);
         //  recyclerView.setOnDragListener(Adapter.getDragInstance());
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.close:
-                d.dismiss();
-                break;
-
-        }
     }
 
     private void openDetailsDialog(OpenOrderModel orderModel) {

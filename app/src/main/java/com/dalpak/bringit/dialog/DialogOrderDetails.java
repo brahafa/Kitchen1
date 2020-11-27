@@ -5,8 +5,6 @@ import android.content.Context;
 import android.text.Html;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OrderDetailsAdapter;
+import com.dalpak.bringit.databinding.OrderDetailsDialogBinding;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 
@@ -21,40 +20,33 @@ import java.util.List;
 
 public class DialogOrderDetails extends Dialog implements View.OnClickListener {
 
+    private OrderDetailsDialogBinding binding;
+
     Context context;
     OpenOrderModel orderModel;
-    ImageView close;
-    TextView tvPaymentMethod, tvPayment;
-    TextView tvName, tvAddress, tvPhone;
-    private RecyclerView rv;
     Dialog d;
 
     public DialogOrderDetails(@NonNull final Context context, OpenOrderModel orderModel) {
         super(context);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        binding = OrderDetailsDialogBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         this.context = context;
         this.orderModel = orderModel;
-        setContentView(R.layout.order_details_dialog);
         d = this;
         initData();
 
     }
 
     private void initData() {
-        rv = findViewById(R.id.rv_details);
-        close = findViewById(R.id.close);
-        tvPaymentMethod = findViewById(R.id.tv_payment_method);
-        tvPayment = findViewById(R.id.tv_payment);
-
-        tvName = findViewById(R.id.tv_name);
-        tvAddress = findViewById(R.id.tv_address);
-        tvPhone = findViewById(R.id.tv_phone);
 
         if (orderModel.getClient() != null) {
-            tvName.setText(Html.fromHtml(String.format("<b>שם:</b> %s %s", orderModel.getClient().getFName(), orderModel.getClient().getLName())));
-            tvPhone.setText(Html.fromHtml(String.format("<b>טלפון:</b> %s", orderModel.getClient().getPhone())));
+            binding.tvName.setText(Html.fromHtml(String.format("<b>שם:</b> %s %s", orderModel.getClient().getFName(), orderModel.getClient().getLName())));
+            binding.tvPhone.setText(Html.fromHtml(String.format("<b>טלפון:</b> %s", orderModel.getClient().getPhone())));
             if (orderModel.getClient().getAddress() != null)
-                tvAddress.setText(Html.fromHtml(String.format(
+                binding.tvAddress.setText(Html.fromHtml(String.format(
                         "<b>כתובת:</b> %s, %s &emsp; <b>כניסה</b>: %s &emsp; <b>קומה:</b> %s &emsp; <b>דירה:</b> %s",
                         orderModel.getClient().getAddress().getCity(),
                         orderModel.getClient().getAddress().getStreet(),
@@ -62,13 +54,13 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
                         orderModel.getClient().getAddress().getFloor(),
                         orderModel.getClient().getAddress().getAptNum())));
         }
-        tvPaymentMethod.setText(orderModel.getPaymentDisplay());
-        tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPaymentDisplay()));
-        tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
+        binding.tvPaymentMethod.setText(orderModel.getPaymentDisplay());
+        binding.tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPaymentDisplay()));
+        binding.tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
 
-        initRV(orderModel.getProducts(), rv);
+        initRV(orderModel.getProducts(), binding.rvDetails);
 
-        close.setOnClickListener(v -> d.dismiss());
+        binding.        close.setOnClickListener(v -> d.dismiss());
     }
 
     private void initRV(final List<ItemModel> orderModels, RecyclerView recyclerView) {
