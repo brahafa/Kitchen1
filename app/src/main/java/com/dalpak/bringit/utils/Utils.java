@@ -142,7 +142,7 @@ public class Utils {
             }
             sum += Double.parseDouble(openOrderModel.getProducts().get(i).getPrice());
             sum += getTotalToppings(openOrderModel.getProducts().get(i).getCategories());
-            for (int j = 0; j < openOrderModel.getProducts().get(i).getProducts().size(); j++) {
+            for (int j = 0; j < openOrderModel.getProducts().get(i).getProducts().size(); j++) {//DEAL
                 sum += Double.parseDouble(openOrderModel.getProducts().get(i).getProducts().get(j).getPrice());
                 sum += getTotalToppings(openOrderModel.getProducts().get(i).getProducts().get(j).getCategories());
             }
@@ -152,10 +152,17 @@ public class Utils {
 
     public static double getTotalToppings(List<OrderCategoryModel> categoryModels) {
         double sum = 0;
+        double fixPriceCounter = 0;
         for (int i = 0; i < categoryModels.size(); i++) {
+            fixPriceCounter = categoryModels.get(i).getProductsFixedPrice();
             for (int j = 0; j < categoryModels.get(i).getProducts().size(); j++) {
-                if(categoryModels.get(i).getCategoryHasFixedPrice() && Double.parseDouble(categoryModels.get(i).getProducts().get(j).getPrice()) == 0){
-                    sum += categoryModels.get(i).getFixedPrice();
+                if(categoryModels.get(i).getCategoryHasFixedPrice()){
+                    fixPriceCounter --;
+                    if(fixPriceCounter >= 0) {
+                        sum += categoryModels.get(i).getFixedPrice();
+                    }else{
+                        sum += Double.parseDouble(categoryModels.get(i).getProducts().get(j).getPrice());
+                    }
                 }else{
                     sum += Double.parseDouble(categoryModels.get(i).getProducts().get(j).getPrice());
                 }
@@ -165,17 +172,6 @@ public class Utils {
         return sum;
     }
 
-    public static void createNotificationChannel(Context context, String userData) {
-        NotificationManager notificationManager;
-        notificationManager = context.getSystemService(NotificationManager.class);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
-                .setSmallIcon(R.drawable.exclamation)
-                .setContentTitle("יש שינוי בהזמנה")
-                .setContentText(userData)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
-
-        notificationManager.notify(1, builder.build());
-    }
     public static String getVersionApp(Context context){
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
