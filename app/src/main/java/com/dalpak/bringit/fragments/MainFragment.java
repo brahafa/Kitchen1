@@ -40,7 +40,6 @@ import java.util.Objects;
 
 import static com.dalpak.bringit.utils.Utils.CHANGE_TYPE_CANCELED;
 import static com.dalpak.bringit.utils.Utils.CHANGE_TYPE_CHANGE;
-import static com.dalpak.bringit.utils.Utils.createNotificationChannel;
 
 public class MainFragment extends Fragment {
 
@@ -89,7 +88,6 @@ public class MainFragment extends Fragment {
                             msg = " הזמנה של " + lastJsonArray.getJSONObject(i).getJSONObject("client").getString("f_name") + " עודכנה";
                         }
                         playSound(Constants.ALERT_EDIT_ORDER);
-                        createNotificationChannel(Objects.requireNonNull(getContext()), msg);
                         if (((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder != null &&
                                 ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.isShowing() &&
                                 (((MainActivity) getActivity()).dialogOpenOrder).orderModel.getId().equals(lastJsonObj.getString("id"))) {
