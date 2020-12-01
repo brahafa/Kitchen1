@@ -94,9 +94,10 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
         }
 
         if (order.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE)) {
-            holder.warningImg.setVisibility(View.VISIBLE);
-            if (!order.isChangeConfirmed())
+            if (!order.isChangeConfirmed()) {
+                holder.warningImg.setVisibility(View.VISIBLE);
                 holder.vHolder.setBackgroundResource(R.drawable.background_changed);
+            }
         }
 
         holder.itemView.setOnClickListener(v -> adapterCallback.onItemChoose(order));
