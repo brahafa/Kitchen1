@@ -146,21 +146,28 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //                        holder2.name.setTextColor(Color.WHITE);
 //                        break;
 //                }
+            if (item.isCanceled() || item.isDeleted()) {
+                holder2.tvCancel.setVisibility(View.VISIBLE);
+            } else if (item.isNew()) {
+                holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+                holder2.name.setTextColor(Color.WHITE);
+            }
+
         } else {
             holder1 = (OpenOrderHolder) holder;
 
 
-            if(item.isCanceled() || item.isDeleted()){
+            if (item.isCanceled() || item.isDeleted()) {
                 holder1.tvCancel.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 holder1.tvCancel.setVisibility(View.GONE);
             }
-            if(item.isNew()){
+            if (item.isNew()) {
                 holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
                 holder1.name.setTextColor(Color.WHITE);
-            }else{
+            } else {
                 holder1.parent.setCardBackgroundColor(Color.WHITE);
-                holder1.name.setTextColor(context.getResources().getColor(R.color.text_color) );
+                holder1.name.setTextColor(context.getResources().getColor(R.color.text_color));
             }
 
             holder1.name.setText(item.getName());
