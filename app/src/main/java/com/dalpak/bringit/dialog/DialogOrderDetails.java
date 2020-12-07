@@ -56,7 +56,11 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
         }
         binding.tvPaymentMethod.setText(orderModel.getPaymentDisplay());
         binding.tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPaymentDisplay()));
-        binding.tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
+        binding.tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotalWithDelivery(), context.getResources().getString(R.string.shekel)));
+        if (!orderModel.getDeliveryPrice().equals("0")) {
+            binding.tvDeliveryPrice.setVisibility(View.VISIBLE);
+            binding.tvDeliveryPrice.setText(String.format("  משלוח:   %s%s", orderModel.getDeliveryPrice(), context.getResources().getString(R.string.shekel)));
+        }
 
         initRV(orderModel.getProducts(), binding.rvDetails);
 

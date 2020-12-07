@@ -118,7 +118,7 @@ public class DialogOpenOrder extends Dialog {
                     orderModel.getClient().getLName()));
         binding.tvPayment.setText("שיטת תשלום: " + orderModel.getPaymentDisplay());
         binding.tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAddedBySystem());
-        binding.tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getTotal(), context.getResources().getString(R.string.shekel)));
+        binding.tvTotal.setText(String.format("  סך הכל:  %s%s", orderModel.getTotalWithDelivery(), context.getResources().getString(R.string.shekel)));
         binding.llChangeInOrder.setVisibility(orderModel.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
         binding.tvApproveChanges.setVisibility(orderModel.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
         binding.cvComment.setCardBackgroundColor(Color.parseColor(ifEdited ? "#12c395" : "#6f7888"));
