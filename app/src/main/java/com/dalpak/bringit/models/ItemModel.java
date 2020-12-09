@@ -30,22 +30,22 @@ public class ItemModel {
     @SerializedName("categories")
     private List<OrderCategoryModel> mCategories = new ArrayList<>();
     @SerializedName("is_deleted")
-    private int mIsDeleted;
+    private boolean mIsDeleted;
     @SerializedName("is_new")
-    private int mIsNew;
+    private boolean mIsNew;
     @SerializedName("is_canceled")
-    private int mIsCanceled;
+    private boolean mIsCanceled;
 
     public boolean isDeleted() {
-        return 1 == mIsDeleted;
+        return  mIsDeleted;
     }
 
     public boolean isNew() {
-        return 1 == mIsNew;
+        return  mIsNew;
     }
 
     public boolean isCanceled() {
-        return 1 == mIsCanceled;
+        return  mIsCanceled;
     }
 
     private transient int mCount = 1;
