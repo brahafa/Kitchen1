@@ -1,13 +1,11 @@
 package com.dalpak.bringit.utils;
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import androidx.core.app.NotificationCompat;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.OpenOrderModel;
@@ -53,6 +51,25 @@ public class Utils {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+
+    public static void openAlertDialogRetry(Context context, DialogListener listener) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(context);
+        }
+        builder.setMessage("בדוק חיבור לאינטרנט")
+                .setPositiveButton("Retry", (dialog, which) -> listener.onRetry(true))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> listener.onRetry(false))
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    public interface DialogListener {
+        void onRetry(boolean isRetry);
     }
 
     public static String getOrderTimerStr(String orderTime) {
