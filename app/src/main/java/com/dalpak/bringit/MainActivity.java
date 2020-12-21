@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-
+        binding.version.setText(Utils.getVersionApp(this));
         fragment = new MainFragment();
         stockModelList = new ArrayList<>();
         gson = new Gson();

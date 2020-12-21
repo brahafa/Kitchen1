@@ -156,6 +156,16 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:layout_margin="3dp"
+            android:textStyle="bold"
+            android:id="@+id/version"
+            android:text="12.2"/>
+
     </RelativeLayout>
 
     <FrameLayout
