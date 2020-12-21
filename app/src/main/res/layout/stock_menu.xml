@@ -97,11 +97,13 @@
         <View
             android:background="@color/blue_4d83f4"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_width="match_parent" />
 
         <TextView
+            android:visibility="gone"
             android:drawablePadding="16dp"
             android:drawableRight="@drawable/ic_special"
             android:gravity="center|right"

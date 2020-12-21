@@ -45,6 +45,7 @@ public class Network {
     private final String DALPAK = "dalpak&do=";
     private final String PIZZIRIA = "pizziria&do=";
 
+    private int netErrorCount = 0;
 
     public enum RequestName {
         SIGN_UP, GET_LOGGED_MANAGER, lOAD_SAVED_USER_DETAILS,
@@ -275,7 +276,11 @@ public class Network {
 
     private void manageErrors(VolleyError error, Context context, Utils.DialogListener listener) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-            Utils.openAlertDialogRetry(context, listener);
+            netErrorCount++;
+            if (netErrorCount > 3) {
+                netErrorCount = 0;
+                Utils.openAlertDialogRetry(context, listener);
+            } else listener.onRetry(true);
 
         } else if (error instanceof ParseError) {
             // Toast.makeText(context, ("ParseError"), Toast.LENGTH_SHORT).show();
