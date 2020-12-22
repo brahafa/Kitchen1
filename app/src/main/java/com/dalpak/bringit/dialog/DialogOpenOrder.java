@@ -136,8 +136,12 @@ public class DialogOpenOrder extends Dialog {
         }
 
         binding.tvApproveChanges.setOnClickListener(v -> Request.getInstance().approveOrderChanges(context, orderModel.getId(), isDataSuccess -> {
-            if (isDataSuccess)
+            if (isDataSuccess) {
+                binding.tvApproveChanges.setBackgroundResource(R.drawable.background_change_accepted);
+                binding.tvApproveChanges.setText("Changes approved");
+                binding.tvApproveChanges.setEnabled(false);
                 Toast.makeText(context, "Changes approved", Toast.LENGTH_SHORT).show();
+            }
         }));
     }
 

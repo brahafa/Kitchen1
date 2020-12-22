@@ -40,7 +40,8 @@ public class Network {
     private NetworkCallBack listener;
     private final String BASE_URL = "https://api.bringit.co.il/?apiCtrl=";
     private final String BASE_URL_2 = "https://api2.bringit.co.il/";
-    //    private final String BASE_URL = " http://10.0.2.2:80/bringit_backend/?apiCtrl=";
+    //    private final String BASE_URL = "http://192.168.5.8:80/bringit_backend/?apiCtrl=";
+//    private final String BASE_URL_2 = "http://192.168.5.8:80/api2/";
     private final String BUSINESS = "business&do=";
     private final String DALPAK = "dalpak&do=";
     private final String PIZZIRIA = "pizziria&do=";
@@ -277,7 +278,9 @@ public class Network {
     private void manageErrors(VolleyError error, Context context, Utils.DialogListener listener) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
             netErrorCount++;
-            if (netErrorCount > 3) {
+            Log.d("timeout error count", " " + netErrorCount);
+//            Toast.makeText(context, "timeout error count " + netErrorCount, Toast.LENGTH_SHORT).show();
+            if (netErrorCount > 10) {
                 netErrorCount = 0;
                 Utils.openAlertDialogRetry(context, listener);
             } else listener.onRetry(true);

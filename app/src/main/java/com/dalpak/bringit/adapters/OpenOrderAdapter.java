@@ -135,17 +135,6 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     break;
             }
 
-//            todo waiting for change types
-//            if (item.getChange_type() != null)
-//                switch (item.getChange_type()) {
-//                    case "DELETED":
-//                        holder2.tvCancel.setVisibility(View.VISIBLE);
-//                        break;
-//                    case "NEW":
-//                        holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-//                        holder2.name.setTextColor(Color.WHITE);
-//                        break;
-//                }
             if (item.isCanceled() || item.isDeleted()) {
                 holder2.tvCancel.setVisibility(View.VISIBLE);
             } else if (item.isNew()) {
