@@ -78,14 +78,15 @@
             android:background="@color/white_blur"
             android:gravity="center"
             android:text="CANCEL"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="30sp"
+            android:textColor="@color/amaranth_75_E93746"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />зз
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

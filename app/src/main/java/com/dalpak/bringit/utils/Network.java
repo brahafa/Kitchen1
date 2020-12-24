@@ -2,6 +2,7 @@ package com.dalpak.bringit.utils;
 
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -106,7 +107,7 @@ public class Network {
                 url += BUSINESS + "loadBusinessItems&type=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case LOAD_PRODUCTS: //api 2
-                url += "products/" + param1 + "/" + BusinessModel.getInstance().getBusiness_id();
+                url += "products/" + param1 + "/" + BusinessModel.getInstance().getBusiness_id() +"/all/0";
                 break;
 //            case GET_ORDER_CODE:
 //                url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
@@ -280,7 +281,12 @@ public class Network {
             netErrorCount++;
             Log.d("timeout error count", " " + netErrorCount);
 //            Toast.makeText(context, "timeout error count " + netErrorCount, Toast.LENGTH_SHORT).show();
-            if (netErrorCount > 10) {
+            if (netErrorCount % 10 == 0) {
+                Handler handler = new Handler();
+                handler.postDelayed(() -> listener.onRetry(true), 10 * 1000);
+                return;
+            }
+            if (netErrorCount > 100) {
                 netErrorCount = 0;
                 Utils.openAlertDialogRetry(context, listener);
             } else listener.onRetry(true);

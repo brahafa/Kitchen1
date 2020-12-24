@@ -139,7 +139,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holder2.tvCancel.setVisibility(View.VISIBLE);
             } else if (item.isNew()) {
                 holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-                holder2.name.setTextColor(Color.WHITE);
+                holder2.name.setTextColor(Color.BLACK);
             }
 
         } else {
@@ -153,7 +153,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
             if (item.isNew()) {
                 holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-                holder1.name.setTextColor(Color.WHITE);
+                holder1.name.setTextColor(Color.BLACK);
             } else {
                 holder1.parent.setCardBackgroundColor(Color.WHITE);
                 holder1.name.setTextColor(context.getResources().getColor(R.color.text_color));

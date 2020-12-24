@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.dalpak.bringit.databinding.ActivityMainBinding;
 import com.dalpak.bringit.dialog.DialogOpenOrder;
 import com.dalpak.bringit.dialog.ExitDialog;
@@ -22,11 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
 import static com.dalpak.bringit.utils.SharedPrefs.saveData;
@@ -170,14 +170,16 @@ public class MainActivity extends AppCompatActivity {
             Request.getInstance().workerLogout(this);
         }
         PasswordDialog passwordDialog = new PasswordDialog(this);
-        passwordDialog.setCancelable(false);
+        passwordDialog.setCancelable(type == TYPE_SWITCH_BUSINESS);
+        passwordDialog.setCancelButton(type == TYPE_SWITCH_BUSINESS);
         passwordDialog.show();
 
         passwordDialog.setOnDismissListener(dialog -> {
             if (type == TYPE_SWITCH_BUSINESS) {
-                if (passwordDialog.getWorker().getPermissions().getOpenCloseBusiness().equals("1"))
-                    binding.swWebsite.setChecked(!binding.swWebsite.isChecked());
-                else Utils.openPermissionAlertDialog(this);
+                if (passwordDialog.getWorker() != null)
+                    if (passwordDialog.getWorker().getPermissions().getOpenCloseBusiness().equals("1"))
+                        binding.swWebsite.setChecked(!binding.swWebsite.isChecked());
+                    else Utils.openPermissionAlertDialog(this);
             } else {
                 setName();
                 fragment.startBoardUpdates();

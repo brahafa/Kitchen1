@@ -2,9 +2,13 @@ package com.dalpak.bringit.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.dalpak.bringit.R;
+import com.dalpak.bringit.databinding.PasswordDialogBinding;
 import com.dalpak.bringit.models.WorkerModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.NumberKeyboardView;
@@ -12,28 +16,26 @@ import com.dalpak.bringit.utils.Request;
 import com.dalpak.bringit.utils.SharedPrefs;
 import com.dalpak.bringit.utils.Utils;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-
 
 public class PasswordDialog extends Dialog {
 
+    private final PasswordDialogBinding binding;
     int passwordIndex = -1;
-    TextView tv1, tv2, tv3, tv4;
     TextView[] passwordTVs;
     Context context;
     private WorkerModel mWorker;
 
     public PasswordDialog(@NonNull final Context context) {
         super(context);
-        setContentView(R.layout.password_dialog);
+        binding = PasswordDialogBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         this.context = context;
-        tv1 = findViewById(R.id.tv1);
-        tv2 = findViewById(R.id.tv2);
-        tv3 = findViewById(R.id.tv3);
-        tv4 = findViewById(R.id.tv4);
-        passwordTVs = new TextView[]{tv1, tv2, tv3, tv4};
-        (findViewById(R.id.tv_version)).setOnLongClickListener(v ->{((TextView)findViewById(R.id.tv_version)).setText(Utils.getVersionApp(getContext())); return false;});
+        passwordTVs = new TextView[]{binding.tv1, binding.tv2, binding.tv3, binding.tv4};
+
+        binding.tvVersion.setOnLongClickListener(v -> {
+            binding.tvVersion.setText(Utils.getVersionApp(getContext()));
+            return false;
+        });
 
         NumberKeyboardView numberKeyboardView = findViewById(R.id.numberKeyboardView);
         numberKeyboardView.keyListener(keyTxt -> {
@@ -69,33 +71,29 @@ public class PasswordDialog extends Dialog {
 
     }
 
+    public void setCancelButton(boolean isVisible) {
+        binding.ivClose.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+
     private String getThePassword() {
-        return tv1.getText().toString()
-                + tv2.getText().toString()
-                + tv3.getText().toString()
-                + tv4.getText().toString();
+        return binding.tv1.getText().toString()
+                + binding.tv2.getText().toString()
+                + binding.tv3.getText().toString()
+                + binding.tv4.getText().toString();
     }
 
     private void initErrorState() {
-        tv1.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext_error));
-        tv2.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext_error));
-        tv3.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext_error));
-        tv4.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext_error));
-        tv1.setTextColor(context.getResources().getColor(R.color.error));
-        tv2.setTextColor(context.getResources().getColor(R.color.error));
-        tv3.setTextColor(context.getResources().getColor(R.color.error));
-        tv4.setTextColor(context.getResources().getColor(R.color.error));
+        binding.tv1.setActivated(true);
+        binding.tv2.setActivated(true);
+        binding.tv3.setActivated(true);
+        binding.tv4.setActivated(true);
     }
 
     private void initSuccessState() {
-        tv1.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext));
-        tv2.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext));
-        tv3.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext));
-        tv4.setBackground(ContextCompat.getDrawable(context, R.drawable.background_edittext));
-        tv1.setTextColor(context.getResources().getColor(R.color.text_color));
-        tv2.setTextColor(context.getResources().getColor(R.color.text_color));
-        tv3.setTextColor(context.getResources().getColor(R.color.text_color));
-        tv4.setTextColor(context.getResources().getColor(R.color.text_color));
+        binding.tv1.setActivated(false);
+        binding.tv2.setActivated(false);
+        binding.tv3.setActivated(false);
+        binding.tv4.setActivated(false);
     }
 
     public WorkerModel getWorker() {
