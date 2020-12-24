@@ -39,11 +39,31 @@ public class CategoryModel implements Parcelable {
         mListOrder = in.readString();
         mProductsLimit = in.readString();
         mProductsFixedPrice = in.readInt();
-        mCategoryHasFixedPrice = in.readBoolean();
+        mCategoryHasFixedPrice = in.readByte() != 0;
         mFixedPrice = in.readInt();
         mIsToppingDivided = in.readString();
         mIsMandatory = in.readString();
         mProducts = in.createTypedArrayList(InnerProductsModel.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
+        dest.writeString(mProductId);
+        dest.writeString(mName);
+        dest.writeString(mListOrder);
+        dest.writeString(mProductsLimit);
+        dest.writeInt(mProductsFixedPrice);
+        dest.writeByte((byte) (mCategoryHasFixedPrice ? 1 : 0));
+        dest.writeInt(mFixedPrice);
+        dest.writeString(mIsToppingDivided);
+        dest.writeString(mIsMandatory);
+        dest.writeTypedList(mProducts);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<CategoryModel> CREATOR = new Creator<CategoryModel>() {
@@ -146,23 +166,4 @@ public class CategoryModel implements Parcelable {
         mProducts = products;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
-        dest.writeString(mProductId);
-        dest.writeString(mName);
-        dest.writeString(mListOrder);
-        dest.writeString(mProductsLimit);
-        dest.writeInt(mProductsFixedPrice);
-        dest.writeBoolean(mCategoryHasFixedPrice);
-        dest.writeInt(mFixedPrice);
-        dest.writeString(mIsToppingDivided);
-        dest.writeString(mIsMandatory);
-        dest.writeTypedList(mProducts);
-    }
 }
