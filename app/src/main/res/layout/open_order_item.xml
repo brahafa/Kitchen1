@@ -14,72 +14,78 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/amount"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:textColor="@color/blue_2060e5"
-            android:textSize="15sp"
-            android:textStyle="bold|italic"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/blue_2060e5"
+                android:textSize="15sp"
+                android:textStyle="bold|italic"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:gravity="right"
-            android:text="קולה"
-            android:textColor="@color/text_color"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toTopOf="@+id/rv_fillings"
-            app:layout_constraintEnd_toStartOf="@+id/itemImage"
-            app:layout_constraintStart_toEndOf="@+id/amount"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="0dp"
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_fillings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/name"
-            app:layout_constraintStart_toStartOf="@+id/name"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            tools:itemCount="3"
-            tools:listitem="@layout/rv_item_filling"
-            tools:visibility="visible" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:gravity="right"
+                android:text="קולה"
+                android:textColor="@color/text_color"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toTopOf="@+id/rv_fillings"
+                app:layout_constraintEnd_toStartOf="@+id/itemImage"
+                app:layout_constraintStart_toEndOf="@+id/amount"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/itemImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_fillings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/name"
+                app:layout_constraintStart_toStartOf="@+id/name"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                tools:itemCount="3"
+                tools:listitem="@layout/rv_item_filling"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/itemImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_cancel"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/white_blur"
-            android:gravity="center"
+            android:background="@drawable/background_canceled"
+            android:gravity="start|top"
+            android:padding="@dimen/padding"
             android:text="CANCEL"
             android:textColor="@color/amaranth_75_E93746"
-            android:textSize="24sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

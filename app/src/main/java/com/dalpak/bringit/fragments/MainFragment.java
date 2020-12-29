@@ -60,7 +60,7 @@ public class MainFragment extends Fragment {
 
     private Runnable mRunnable = () -> Request.getInstance().getAllOrders(getActivity(),
             jsonObject -> {
-                if (mp != null) mp.stop();
+                if (mp != null) mp.release();
                 if (hasDelay(jsonObject)) mp = playSound(Constants.ALERT_ORDER_OVERTIME);
 
                 if (!jsonObject.toString().equals(lastResponse)) {
