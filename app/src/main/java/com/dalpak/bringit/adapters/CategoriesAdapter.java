@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OrderCategoryModel;
@@ -13,15 +17,12 @@ import com.dalpak.bringit.models.OrderCategoryModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesAdapterRvHolder> {
 
     private List<OrderCategoryModel> itemList;
     private Context context;
     private final String shape;
+    private boolean isParentDeleted;
     AdapterCallback adapterCallback;
 
     class CategoriesAdapterRvHolder extends RecyclerView.ViewHolder {
@@ -38,10 +39,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
 
-    public CategoriesAdapter(Context context, List<OrderCategoryModel> itemList, String shape, AdapterCallback adapterCallback) {
+    public CategoriesAdapter(Context context, List<OrderCategoryModel> itemList, String shape,boolean isParentDeleted, AdapterCallback adapterCallback) {
         this.itemList = itemList;
         this.context = context;
         this.shape = shape;
+        this.isParentDeleted = isParentDeleted;
         this.adapterCallback = adapterCallback;
     }
 
@@ -80,7 +82,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             }
         } else groupedList = orderModels;
 
-        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, groupedList, shape, isToppingDivided, itemModel -> {
+        OpenOrderAdapter openOrderAdapter = new OpenOrderAdapter(context, groupedList, shape, isToppingDivided, isParentDeleted, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

@@ -7,15 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OrderCategoryModel;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class OpenOrderPizzaAdapter extends RecyclerView.Adapter<OpenOrderPizzaAdapter.OpenOrderPizzaRvHolder> {
 
@@ -74,12 +74,12 @@ public class OpenOrderPizzaAdapter extends RecyclerView.Adapter<OpenOrderPizzaAd
         }
 
         if (item.getCategories().size() != 0)
-            initRV(item.getCategories(), item.getShape(), holder.toppingsRv);
+            initRV(item.getCategories(), item.getShape(), (item.isCanceled() || item.isDeleted()), holder.toppingsRv);
     }
 
-    private void initRV(final List<OrderCategoryModel> categoryModels, String shape, RecyclerView recyclerView) {
+    private void initRV(final List<OrderCategoryModel> categoryModels, String shape, boolean isParentDeleted, RecyclerView recyclerView) {
         recyclerView.setVisibility(View.VISIBLE);
-        CategoriesAdapter openOrderAdapter = new CategoriesAdapter(context, categoryModels, shape, itemModel -> {
+        CategoriesAdapter openOrderAdapter = new CategoriesAdapter(context, categoryModels, shape, isParentDeleted, itemModel -> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));

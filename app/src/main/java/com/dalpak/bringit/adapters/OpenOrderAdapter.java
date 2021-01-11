@@ -34,6 +34,7 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private String shape;
     private boolean isToppingDivided = true;
+    private boolean isParentDeleted;
     AdapterCallback adapterCallback;
 
     class OpenOrderHolder extends RecyclerView.ViewHolder {
@@ -80,11 +81,12 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.adapterCallback = adapterCallback;
     }
 
-    public OpenOrderAdapter(Context context, List<ItemModel> itemList, String shape, boolean isToppingDivided, AdapterCallback adapterCallback) {
+    public OpenOrderAdapter(Context context, List<ItemModel> itemList, String shape, boolean isToppingDivided, boolean isParentDeleted, AdapterCallback adapterCallback) {
         this.itemList = itemList;
         this.context = context;
         this.shape = shape;
         this.isToppingDivided = isToppingDivided;
+        this.isParentDeleted = isParentDeleted;
         this.adapterCallback = adapterCallback;
     }
 
@@ -135,11 +137,13 @@ public class OpenOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     break;
             }
 
-            if (item.isCanceled() || item.isDeleted()) {
-                holder2.tvCancel.setVisibility(View.VISIBLE);
-            } else if (item.isNew()) {
-                holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
-                holder2.name.setTextColor(Color.BLACK);
+            if (!isParentDeleted) {
+                if (item.isCanceled() || item.isDeleted()) {
+                    holder2.tvCancel.setVisibility(View.VISIBLE);
+                } else if (item.isNew()) {
+                    holder2.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
+                    holder2.name.setTextColor(Color.BLACK);
+                }
             }
 
         } else {
