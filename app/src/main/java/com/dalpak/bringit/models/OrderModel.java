@@ -24,7 +24,7 @@ public class OrderModel {
     @SerializedName("total_paid")
     private int mTotalPaid;
     @SerializedName("is_paid")
-    private boolean mIsPaid;
+    private int mIsPaid;
     @SerializedName("position")
     private int mPosition;
     @SerializedName("has_changes")
@@ -78,11 +78,10 @@ public class OrderModel {
         mTotalPaid = totalPaid;
     }
 
-    public boolean isIsPaid() {
+    public int getIsPaid() {
         return mIsPaid;
     }
-
-    public void setIsPaid(boolean isPaid) {
+    public void setIsPaid(int isPaid) {
         mIsPaid = isPaid;
     }
 
