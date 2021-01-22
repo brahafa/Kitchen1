@@ -15,6 +15,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [appName: "מטבח"]
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            manifestPlaceholders = [appName: "Kitchen.Debug"]
+
+        }
+
+        localHost {
+            initWith debug
+            applicationIdSuffix ".debugLocalhost"
+            manifestPlaceholders = [appName: "Kitchen.LocalHost"]
         }
     }
 
