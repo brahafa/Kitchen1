@@ -12,7 +12,7 @@ import com.dalpak.bringit.databinding.PasswordDialogBinding;
 import com.dalpak.bringit.models.WorkerModel;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.NumberKeyboardView;
-import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.network.Request;
 import com.dalpak.bringit.utils.SharedPrefs;
 import com.dalpak.bringit.utils.Utils;
 

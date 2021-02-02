@@ -1,4 +1,4 @@
-package com.dalpak.bringit.utils;
+package com.dalpak.bringit.network;
 
 
 import android.content.Context;
@@ -17,6 +17,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.dalpak.bringit.BuildConfig;
 import com.dalpak.bringit.models.BusinessModel;
+import com.dalpak.bringit.utils.Constants;
+import com.dalpak.bringit.utils.SharedPrefs;
+import com.dalpak.bringit.utils.Utils;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
@@ -29,8 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
-import static com.dalpak.bringit.utils.Network.RequestName.APPROVE_ORDER_CHANGES;
-import static com.dalpak.bringit.utils.Network.RequestName.UPDATE_PRODUCT_STATUS;
+import static com.dalpak.bringit.network.Network.RequestName.APPROVE_ORDER_CHANGES;
+import static com.dalpak.bringit.network.Network.RequestName.UPDATE_PRODUCT_STATUS;
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
 
 public class Network {
@@ -74,6 +77,7 @@ public class Network {
     Network(NetworkCallBack listener) {
         switch (BuildConfig.BUILD_TYPE) {
             case "release":
+            case "debugLive":
                 BASE_URL = BASE_URL_PROD;
                 BASE_URL_2 = BASE_URL_2_PROD;
                 break;
@@ -129,7 +133,7 @@ public class Network {
                 url += BUSINESS + "loadBusinessItems&type=" + param1 + "&business_id=" + BusinessModel.getInstance().getBusiness_id();
                 break;
             case LOAD_PRODUCTS: //api 2
-                url += "products/" + param1 + "/" + BusinessModel.getInstance().getBusiness_id() +"/all/0";
+                url += "products/" + param1 + "/" + BusinessModel.getInstance().getBusiness_id() + "/all/0";
                 break;
 //            case GET_ORDER_CODE:
 //                url += BUSINESS + "getOrderCode" + "&order_id=" + param1;
@@ -299,7 +303,11 @@ public class Network {
     }
 
     private void manageErrors(VolleyError error, Context context, Utils.DialogListener listener) {
-        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+        if (error instanceof NoConnectionError) {
+            JSONObject jsonError = new JSONObject();
+            this.listener.onDataError(jsonError);
+
+        } else if (error instanceof TimeoutError) {
             netErrorCount++;
             Log.d("timeout error count", " " + netErrorCount);
 //            Toast.makeText(context, "timeout error count " + netErrorCount, Toast.LENGTH_SHORT).show();

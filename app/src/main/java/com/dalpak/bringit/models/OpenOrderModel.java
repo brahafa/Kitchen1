@@ -49,10 +49,33 @@ public class OpenOrderModel {
     private String mChangeType;
     @SerializedName("change_for_order_id")
     private String mChangeForOrderId;
+    @SerializedName("color")
+    private String mColor;
+    @SerializedName("is_change_confirmed")
+    private boolean mIsChangeConfirmed;
+    @SerializedName("startTimeStr")
+    private String mStartTimeStr;
     @SerializedName("client")
     private ClientModel mClient;
     @SerializedName("products")
     private List<ItemModel> mProducts;
+
+    public OpenOrderModel() {
+
+    }
+
+    public OpenOrderModel(OrderModel orderModel) {
+        this.mId = orderModel.getId();
+        this.mActionTime = String.valueOf(orderModel.getActionTime());
+        this.mOrderTime = orderModel.getOrderTime();
+        this.mStatus = orderModel.getStatus();
+        this.mChangeType = orderModel.getChangeType();
+        this.mDeliveryOption = orderModel.getDeliveryOption();
+        this.mColor = orderModel.getColor();
+        this.mIsChangeConfirmed = orderModel.isChangeConfirmed();
+        this.mClient = orderModel.getClient();
+        this.mStartTimeStr = orderModel.getStartTimeStr();
+    }
 
     public String getId() {
         return mId;
@@ -236,6 +259,31 @@ public class OpenOrderModel {
 
     public void setChangeForOrderId(String mChangeForOrderId) {
         this.mChangeForOrderId = mChangeForOrderId;
+    }
+
+    public String getColor() {
+        return mColor;
+    }
+
+    public void setColor(String mColor) {
+        this.mColor = mColor;
+    }
+
+
+    public boolean isChangeConfirmed() {
+        return mIsChangeConfirmed;
+    }
+
+    public void setIsChangeConfirmed(boolean mIsChangeConfirmed) {
+        this.mIsChangeConfirmed = mIsChangeConfirmed;
+    }
+
+    public String getStartTimeStr() {
+        return mStartTimeStr;
+    }
+
+    public void setStartTimeStr(String mStartTimeStr) {
+        this.mStartTimeStr = mStartTimeStr;
     }
 }
 

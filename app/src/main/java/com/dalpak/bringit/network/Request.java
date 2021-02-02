@@ -1,12 +1,17 @@
-package com.dalpak.bringit.utils;
+package com.dalpak.bringit.network;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.dalpak.bringit.models.AllOrdersResponse;
 import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
+import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.ProductItemModel;
 import com.dalpak.bringit.models.WorkerResponse;
+import com.dalpak.bringit.utils.Constants;
+import com.dalpak.bringit.utils.SharedPrefs;
+import com.dalpak.bringit.utils.Utils;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -50,7 +55,7 @@ public class Request {
                     BusinessModel businessModel = gson.fromJson(json.getJSONObject("message").toString(), BusinessModel.class);
                     BusinessModel.getInstance().initData(businessModel);
 
-                    saveData(Constants.TOKEN_PREF, json.getString("utoken"));
+                    SharedPrefs.saveData(Constants.TOKEN_PREF, json.getString("utoken"));
                     saveData(Constants.LOG_IN_JSON_PREF, json.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -119,25 +124,19 @@ public class Request {
         network.sendPostRequest(context, null, Network.RequestName.WORKER_LOGOUT);
     }
 
-    public void getAllOrders(final Context context, final RequestJsonCallBack listener) {
+    public void getAllOrders(final Context context, final RequestAllOrdersCallBack listener) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                listener.onDataDone(json);
+                Gson gson = new Gson();
+                AllOrdersResponse response = gson.fromJson(json.toString(), AllOrdersResponse.class);
+                listener.onDataDone(response);
             }
 
             @Override
             public void onDataError(JSONObject json) {
                 //{"message":"לא נמצאו הזמנות חדשות","errorCode":1,"status":false}
-                listener.onDataDone(json);
-                try {
-                    if (json.has("errorCode") && json.getInt("errorCode") == 1) {
-                        return;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // openAlertMsg(context, json);
+                listener.onDataDone(null);
             }
         });
         network.sendRequest(context, Network.RequestName.GET_ALL_ORDERS, "", true);
@@ -194,16 +193,23 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.UPDATE_ORDER_STATUS);
     }
 
-    public void getOrderDetailsByID(Context context, String orderId, RequestJsonCallBack requestJsonCallBack) {
+    public void getOrderDetailsByID(Context context, String orderId, RequestProductsCallBack listener) {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Log.d("getOrderDetailsByID", json.toString());
-                requestJsonCallBack.onDataDone(json);
+                Gson gson = new Gson();
+                OpenOrderModel response = null;
+                try {
+                    response = gson.fromJson(json.getString("order"), OpenOrderModel.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                listener.onDataDone(response);
             }
 
             @Override
             public void onDataError(JSONObject json) {
+                listener.onDataDone(null);
                 Log.d("ERROR OrderDetailsByID", json.toString());
             }
         });
@@ -512,6 +518,14 @@ public class Request {
 
     public interface RequestCallBackSuccess {
         void onDataDone(boolean isDataSuccess);
+    }
+
+    public interface RequestProductsCallBack {
+        void onDataDone(OpenOrderModel response);
+    }
+
+    public interface RequestAllOrdersCallBack {
+        void onDataDone(AllOrdersResponse response);
     }
 
     public interface RequestJsonCallBack {

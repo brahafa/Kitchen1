@@ -7,7 +7,7 @@ import android.view.inputmethod.EditorInfo;
 
 import com.dalpak.bringit.databinding.ActivityLoginBinding;
 import com.dalpak.bringit.utils.Constants;
-import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.network.Request;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;

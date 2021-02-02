@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils;
 
 import com.dalpak.bringit.databinding.ActivitySplashBinding;
 import com.dalpak.bringit.utils.Constants;
-import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.network.Request;
 import com.dalpak.bringit.utils.SharedPrefs;
 
 import androidx.appcompat.app.AppCompatActivity;

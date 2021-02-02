@@ -19,7 +19,7 @@ import com.dalpak.bringit.fragments.StockFragment;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.ProductItemModel;
 import com.dalpak.bringit.utils.Constants;
-import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.network.Request;
 import com.dalpak.bringit.utils.Utils;
 import com.google.gson.Gson;
 

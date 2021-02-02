@@ -180,4 +180,8 @@ public class OrderModel {
     public void setIsChangeConfirmed(boolean mIsChangeConfirmed) {
         this.mIsChangeConfirmed = mIsChangeConfirmed;
     }
+
+    public void setChangeType(String mChangeType) {
+        this.mChangeType = mChangeType;
+    }
 }

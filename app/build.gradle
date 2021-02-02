@@ -25,6 +25,12 @@ android {
 
         }
 
+        debugLive {
+            initWith debug
+            applicationIdSuffix ".debugLive"
+            manifestPlaceholders = [appName: "Kitchen.DebugLive"]
+        }
+
         localHost {
             initWith debug
             applicationIdSuffix ".debugLocalhost"

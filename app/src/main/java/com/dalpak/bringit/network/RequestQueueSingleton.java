@@ -1,4 +1,4 @@
-package com.dalpak.bringit.utils;
+package com.dalpak.bringit.network;
 
 import android.content.Context;
 

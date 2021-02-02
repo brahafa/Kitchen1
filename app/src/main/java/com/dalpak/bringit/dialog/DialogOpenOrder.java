@@ -19,7 +19,7 @@ import com.dalpak.bringit.adapters.OpenOrderPizzaAdapter;
 import com.dalpak.bringit.databinding.OpenOrderDialogBinding;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
-import com.dalpak.bringit.utils.Request;
+import com.dalpak.bringit.network.Request;
 import com.dalpak.bringit.utils.Utils;
 
 import org.json.JSONException;
