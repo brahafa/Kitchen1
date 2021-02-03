@@ -27,6 +27,7 @@ import com.dalpak.bringit.network.Request;
 import com.dalpak.bringit.network.RequestHelper;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Utils;
+import com.google.gson.Gson;
 import com.woxthebox.draglistview.BoardView;
 import com.woxthebox.draglistview.ColumnProperties;
 
@@ -67,8 +68,15 @@ public class MainFragment extends Fragment {
                     mp = playSound(Constants.ALERT_ORDER_OVERTIME);
 
                 if (!response.toString().equals(lastResponse)) {
-//                    checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
-                    lastResponse = response.toString();
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response));
+                        checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
+                        lastResponse = gson.toJson(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     updateAllRV(response.getOrdersByStatus());
                 }
                 setupBoardUpdates();
