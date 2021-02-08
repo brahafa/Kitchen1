@@ -21,6 +21,7 @@ import com.dalpak.bringit.models.OrderCategoryModel;
 import com.dalpak.bringit.utils.Constants;
 
 import java.util.List;
+import java.util.Locale;
 
 import static com.dalpak.bringit.utils.Constants.BUSINESS_TOPPING_TYPE_LAYER;
 import static com.dalpak.bringit.utils.Constants.ITEM_TYPE_ADDITIONAL_OFFER;
@@ -154,17 +155,17 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             setItemPrice(holder1.amount, item);
 
-            if(item.isCanceled() || item.isDeleted()){
+            if (item.isCanceled() || item.isDeleted()) {
                 holder1.tvCancel.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 holder1.tvCancel.setVisibility(View.GONE);
             }
-            if(item.isNew()){
+            if (item.isNew()) {
                 holder1.parent.setCardBackgroundColor(Color.parseColor("#12c395"));
                 holder1.name.setTextColor(Color.WHITE);
-            }else{
+            } else {
                 holder1.parent.setBackground(null);
-                holder1.name.setTextColor(context.getResources().getColor(R.color.text_color) );
+                holder1.name.setTextColor(context.getResources().getColor(R.color.text_color));
             }
 
             holder1.name.setText(item.getName());
@@ -222,7 +223,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             String multiplier = item.getCount() > 1 ? "x" + item.getCount() + " " : "";
 
-            amount.setText(String.format("%s%s %s", multiplier, context.getResources().getString(R.string.shekel), item.getPrice()));
+            amount.setText(String.format(Locale.US, "%s %s %.2f", multiplier, context.getResources().getString(R.string.shekel), Double.parseDouble(item.getPrice())));
             amount.setTextColor(context.getResources().getColor(R.color.blue_2060e5));
         }
 

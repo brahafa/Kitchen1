@@ -17,6 +17,7 @@ import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 
 import java.util.List;
+import java.util.Locale;
 
 public class DialogOrderDetails extends Dialog implements View.OnClickListener {
 
@@ -48,7 +49,7 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
             if (orderModel.getClient().getAddress() != null)
                 binding.tvAddress.setText(Html.fromHtml(String.format(
                         "<b>כתובת:</b> %s, %s &emsp; <b>כניסה</b>: %s &emsp; <b>קומה:</b> %s &emsp; <b>דירה:</b> %s",
-                        orderModel.getClient().getAddress().getCity(),
+                        orderModel.getClient().getAddress().getCity() != null ? orderModel.getClient().getAddress().getCity() : "אשדוד",
                         orderModel.getClient().getAddress().getStreet(),
                         orderModel.getClient().getAddress().getEntrance(),
                         orderModel.getClient().getAddress().getFloor(),
@@ -56,10 +57,10 @@ public class DialogOrderDetails extends Dialog implements View.OnClickListener {
         }
         binding.tvPaymentMethod.setText(orderModel.getPaymentDisplay());
         binding.tvPayment.setText(String.format("  שיטת תשלום:   %s", orderModel.getPaymentDisplay()));
-        binding.tvPaymentMethod.setText(String.format("  סך הכל:   %s%s", orderModel.getTotalWithDelivery(), context.getResources().getString(R.string.shekel)));
+        binding.tvPaymentMethod.setText(String.format(Locale.US, "  סך הכל:   " + "%.2f %s", Double.parseDouble(orderModel.getTotalWithDelivery()), context.getResources().getString(R.string.shekel)));
         if (!orderModel.getDeliveryPrice().equals("0")) {
             binding.tvDeliveryPrice.setVisibility(View.VISIBLE);
-            binding.tvDeliveryPrice.setText(String.format("  משלוח:   %s%s", orderModel.getDeliveryPrice(), context.getResources().getString(R.string.shekel)));
+            binding.tvDeliveryPrice.setText(String.format(Locale.US, "  משלוח:   " + "%.2f %s", Double.parseDouble(orderModel.getDeliveryPrice()), context.getResources().getString(R.string.shekel)));
         }
 
         initRV(orderModel.getProducts(), binding.rvDetails);

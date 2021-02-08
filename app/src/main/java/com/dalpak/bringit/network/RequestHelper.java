@@ -25,7 +25,12 @@ public class RequestHelper {
                     response.setOrdersByStatus(geAllOrdersByStatusFromDb(context));
 
                 } else {
-                    updateLocalDB(response.getOrders(), context);
+                    if (response.getOrders() != null) {
+                        updateLocalDB(response.getOrders(), context);
+                    } else {
+                        updateLocalDB(new ArrayList<>(), context);
+                        response.setOrdersByStatus(new OrdersByStatusModel());
+                    }
                 }
                 listener.onDataDone(response);
             });
@@ -92,6 +97,18 @@ public class RequestHelper {
 
     private void updateLocalDB(List<OrderModel> orders, Context context) {
         DbHandler dbHandler = new DbHandler(context);
+
+        List<OrderModel> dbOrders = dbHandler.getAllOrdersFromDb();
+        for (int i = dbOrders.size() - 1; i >= 0; i--) {
+            OrderModel dbOrder = dbOrders.get(i);
+            for (OrderModel order : orders) {
+                if (order.getId().equals(dbOrder.getId())) {
+                    dbOrders.remove(dbOrder);
+                    break;
+                }
+            }
+        }
+        for (OrderModel order : dbOrders) dbHandler.deleteOrderFromDb(order.getId());
 
         List<OpenOrderModel> orderToInsert = new ArrayList<>();
         List<OpenOrderModel> orderToUpdate = new ArrayList<>();

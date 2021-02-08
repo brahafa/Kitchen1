@@ -73,7 +73,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
                             String.format("%s %s, %s",
                                     order.getClient().getAddress().getStreet(),
                                     order.getClient().getAddress().getHouseNum(),
-                                    order.getClient().getAddress().getCity()));
+                                    order.getClient().getAddress().getCity() != null ? order.getClient().getAddress().getCity() : "אשדוד"));
                 holder.deliveryImage.setImageResource(R.drawable.ic_delivery);
                 break;
             case DELIVERY_OPTION_TAKEAWAY:

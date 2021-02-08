@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
 
@@ -64,8 +65,8 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
         ProductItemModel item = itemList.get(position);
 
         holder.name.setText(item.getName());
-        holder.shippingPrice.setText(item.getDeliveryPrice() + " שקל");
-        holder.pickupPrice.setText(item.getNotDeliveryPrice() + " שקל");
+        holder.shippingPrice.setText(String.format(Locale.US, "%.2f שקל", (double) item.getDeliveryPrice()));
+        holder.pickupPrice.setText(String.format(Locale.US, "%.2f שקל", (double) item.getNotDeliveryPrice()));
         if (item.getTypeName().equals("food") || item.getTypeName().equals("deal")) {
             holder.itemImage.setVisibility(View.GONE);
         } else {

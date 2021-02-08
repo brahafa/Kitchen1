@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dalpak.bringit.R;
 
 import java.util.List;
+import java.util.Locale;
 
 public class LayerAdapter extends RecyclerView.Adapter<LayerAdapter.ViewHolder> {
 
@@ -44,7 +45,7 @@ public class LayerAdapter extends RecyclerView.Adapter<LayerAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.layerName.setText(String.format("שכבת תוספות %d", position + 1));
-        holder.layerPrice.setText(String.format("%s %s", context.getResources().getString(R.string.shekel), itemList.get(position)));
+        holder.layerPrice.setText(String.format(Locale.US, "%s %.2f", context.getResources().getString(R.string.shekel), Double.parseDouble(itemList.get(position))));
     }
 
     @Override
