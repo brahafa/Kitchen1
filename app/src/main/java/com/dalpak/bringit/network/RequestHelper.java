@@ -26,7 +26,7 @@ public class RequestHelper {
 
                 } else {
                     if (response.getOrders() != null) {
-                        updateLocalDB(response.getOrders(), context);
+                        updateLocalDB(clearSentOrdersList(response.getOrders()), context);
                     } else {
                         updateLocalDB(new ArrayList<>(), context);
                         response.setOrdersByStatus(new OrdersByStatusModel());
@@ -147,6 +147,19 @@ public class RequestHelper {
 
                 }
         );
+    }
+
+    private List<OrderModel> clearSentOrdersList(List<OrderModel> orders) {
+        List<OrderModel> clearSentOrders = new ArrayList<>();
+        for (OrderModel order : orders) {
+            if (!order.getStatus().equals("sent") ||
+                    !(order.getStartTimeStr().contains("day") ||
+                            order.getStartTimeStr().contains("week") ||
+                            order.getStartTimeStr().contains("month"))) {
+                clearSentOrders.add(order);
+            }
+        }
+        return clearSentOrders;
     }
 
 }

@@ -223,7 +223,7 @@ public class MainFragment extends Fragment {
 
         mBoardView.clearBoard();
         mColumns = 0;
-        initRV(clearOrdersList(ordersByStatus.getSent()));
+        initRV(clearSentOrdersList(clearOrdersList(ordersByStatus.getSent())));
         initRV(clearOrdersList(ordersByStatus.getPacking()));
         initRV(clearOrdersList(ordersByStatus.getCooking()));
         initRV(clearOrdersList(ordersByStatus.getPreparing()));
@@ -259,6 +259,16 @@ public class MainFragment extends Fragment {
         for (OrderModel order : orders)
             if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED)) clearOrders.add(order);
         return clearOrders;
+    }
+
+    private List<OrderModel> clearSentOrdersList(List<OrderModel> orders) {
+        List<OrderModel> clearSentOrders = new ArrayList<>();
+        for (OrderModel order : orders)
+            if (!(order.getStartTimeStr().contains("day") ||
+                    order.getStartTimeStr().contains("week") ||
+                    order.getStartTimeStr().contains("month")))
+                clearSentOrders.add(order);
+        return clearSentOrders;
     }
 
     private void changeStatus(long order_id, String draggedToStr) {
@@ -355,7 +365,7 @@ public class MainFragment extends Fragment {
         allOrders.addAll(ordersByStatus.getPreparing());
         allOrders.addAll(ordersByStatus.getCooking());
         allOrders.addAll(ordersByStatus.getPacking());
-        allOrders.addAll(ordersByStatus.getSent());
+        allOrders.addAll(clearSentOrdersList(ordersByStatus.getSent()));
 
         for (OrderModel order : allOrders) {
             if (order.getChangeType().equals(CHANGE_TYPE_CHANGE) && !order.isChangeConfirmed())

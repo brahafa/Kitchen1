@@ -109,7 +109,7 @@ public class Network {
 //                url += BUSINESS + "getAllOrders&business_id=" + param1;
 //                break;
             case GET_ALL_ORDERS: //api 2
-                url += "orders/" + BusinessModel.getInstance().getBusiness_id();
+                url += "orders/" + BusinessModel.getInstance().getBusiness_id() + "/period/" + param1;
                 break;
             case GET_ITEMS_SHOTR_CUT_FOLEDER:
                 url += DALPAK + "getItemsInSelectedFolder&fav=1";
