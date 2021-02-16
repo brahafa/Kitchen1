@@ -1,5 +1,6 @@
 package com.dalpak.bringit.fragments;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaPlayer;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +50,8 @@ public class MainFragment extends Fragment {
     private final int REQUEST_REPEAT_INTERVAL = 10 * 1000;
     private final long DELAY_TIME_IN_SECONDS = 20;
 
+    private Context mContext;
+
     private BoardView mBoardView;
     private int mColumns;
 
@@ -58,6 +62,8 @@ public class MainFragment extends Fragment {
     private String lastResponse = "";
     private int lastNewOrdersSize = 0;
     private int lastCookingOrdersSize = 0;
+
+    private onBusinessStatusCheckListener listener;
 
     RequestHelper requestHelper = new RequestHelper();
 
@@ -80,6 +86,7 @@ public class MainFragment extends Fragment {
                     updateAllRV(response.getOrdersByStatus());
                 }
                 setupBoardUpdates();
+                listener.onBusinessStatusCheck();
             });
 
     private void checkIfOrderHasBeenUpdated(String lastResponse, JSONObject jsonObject) {
@@ -380,6 +387,21 @@ public class MainFragment extends Fragment {
             if (Utils.getOrderTimerLong(orderTime) > DELAY_TIME_IN_SECONDS) return true;
         }
         return false;
+    }
+
+    public interface onBusinessStatusCheckListener {
+        void onBusinessStatusCheck();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        try {
+            listener = (onBusinessStatusCheckListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnLoggedInManagerListener");
+        }
     }
 
 }

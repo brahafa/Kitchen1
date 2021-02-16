@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
 import static com.dalpak.bringit.utils.SharedPrefs.saveData;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFragment.onBusinessStatusCheckListener {
     private ActivityMainBinding binding;
     private MainFragment fragment;
     ArrayList<ProductItemModel> stockModelList;
@@ -230,6 +230,12 @@ public class MainActivity extends AppCompatActivity {
         }
         FragmentManager.BackStackEntry entry = getSupportFragmentManager().getBackStackEntryAt(entryIndex);
         getSupportFragmentManager().popBackStackImmediate(entry.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+
+    @Override
+    public void onBusinessStatusCheck() {
+        checkBusinessStatus();
     }
 
 }
