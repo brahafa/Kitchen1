@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
-import com.dalpak.bringit.databinding.ActivityLoginBinding;
-import com.dalpak.bringit.utils.Constants;
-import com.dalpak.bringit.network.Request;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.dalpak.bringit.databinding.ActivityLoginBinding;
+import com.dalpak.bringit.network.Request;
+import com.dalpak.bringit.utils.Constants;
+import com.dalpak.bringit.utils.MyExceptionHandler;
 
 import static com.dalpak.bringit.utils.SharedPrefs.saveData;
 
@@ -24,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
+
+        Thread.setDefaultUncaughtExceptionHandler(new MyExceptionHandler(this));
 
         /*
         if(SharePref.getInstance(this).getBooleanData(Constants.USER_ALREADY_CONNECTED_PREF)){

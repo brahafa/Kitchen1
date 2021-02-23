@@ -6,12 +6,13 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.dalpak.bringit.databinding.ActivitySplashBinding;
-import com.dalpak.bringit.utils.Constants;
-import com.dalpak.bringit.network.Request;
-import com.dalpak.bringit.utils.SharedPrefs;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.dalpak.bringit.databinding.ActivitySplashBinding;
+import com.dalpak.bringit.network.Request;
+import com.dalpak.bringit.utils.Constants;
+import com.dalpak.bringit.utils.MyExceptionHandler;
+import com.dalpak.bringit.utils.SharedPrefs;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -22,6 +23,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Thread.setDefaultUncaughtExceptionHandler(new MyExceptionHandler(this));
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale_out);
 

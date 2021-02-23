@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +82,7 @@ public class MainFragment extends Fragment {
                         lastResponse = gson.toJson(response);
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Log.w("update error", e.toString());
                     }
 
                     updateAllRV(response.getOrdersByStatus());
@@ -98,7 +100,7 @@ public class MainFragment extends Fragment {
                 for (int j = 0; j < currentJsonArray.length(); j++) {
                     lastJsonObj = lastJsonArray.getJSONObject(i);
                     currentJsonObj = currentJsonArray.getJSONObject(j);
-                    if (lastJsonObj.getString("id").equals(currentJsonObj.get("change_for_order_id")) && !lastJsonObj.getString("change_type").equals(currentJsonObj.getString("change_type"))) {
+                    if (!lastJsonObj.getString("change_type").equals(currentJsonObj.getString("change_type")) && lastJsonObj.getString("id").equals(currentJsonObj.get("change_for_order_id"))) {
                         String msg;
                         if (lastJsonArray.getJSONObject(i) == null || !lastJsonArray.getJSONObject(i).has("client")) {
                             msg = "יש עדכון בהזמנות";
@@ -279,14 +281,15 @@ public class MainFragment extends Fragment {
     }
 
     private void changeStatus(long order_id, String draggedToStr) {
+        removeBoardUpdates();
         Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> {
         });
     }
 
     private void changePosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {
-        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr, jsonObject -> {
-            startBoardUpdates();
-        });
+        removeBoardUpdates();
+        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr,
+                jsonObject -> startBoardUpdates());
     }
 
     private void initRV(final List<OrderModel> orderModels) {

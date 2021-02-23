@@ -18,8 +18,9 @@ import com.dalpak.bringit.fragments.MainFragment;
 import com.dalpak.bringit.fragments.StockFragment;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.ProductItemModel;
-import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.network.Request;
+import com.dalpak.bringit.utils.Constants;
+import com.dalpak.bringit.utils.MyExceptionHandler;
 import com.dalpak.bringit.utils.Utils;
 import com.google.gson.Gson;
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.onBu
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        Thread.setDefaultUncaughtExceptionHandler(new MyExceptionHandler(this));
 
         setContentView(binding.getRoot());
         initUI();
