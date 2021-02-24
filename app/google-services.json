@@ -1,0 +1,127 @@
+{
+  "project_info": {
+    "project_number": "1057044820292",
+    "firebase_url": "https://bringit-214120.firebaseio.com",
+    "project_id": "bringit-214120",
+    "storage_bucket": "bringit-214120.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057044820292:android:89ad301df828d8720d2711",
+        "android_client_info": {
+          "package_name": "com.dalpak.bringit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8crWuhwCNv1lzXUk56NPEB5K21w5KLZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057044820292:android:35dd8eadc48fed050d2711",
+        "android_client_info": {
+          "package_name": "com.dalpak.bringit.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8crWuhwCNv1lzXUk56NPEB5K21w5KLZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057044820292:android:33addaf39201a47e0d2711",
+        "android_client_info": {
+          "package_name": "com.dalpak.bringit.debugLive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8crWuhwCNv1lzXUk56NPEB5K21w5KLZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057044820292:android:3adfcb014bcea0780d2711",
+        "android_client_info": {
+          "package_name": "com.dalpak.bringit.debugLocalhost"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8crWuhwCNv1lzXUk56NPEB5K21w5KLZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057044820292-nu4mk41ra01bvvamhuvsviiuh24i8pv2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
