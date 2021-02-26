@@ -43,8 +43,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.dalpak.bringit.utils.Utils.CHANGE_TYPE_CANCELED;
-import static com.dalpak.bringit.utils.Utils.CHANGE_TYPE_CHANGE;
+import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CANCELED;
+import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CHANGE;
 
 public class MainFragment extends Fragment {
 
@@ -386,8 +386,10 @@ public class MainFragment extends Fragment {
 
     private boolean hasDelay(List<OrderModel> receivedOrders) {
         for (OrderModel order : receivedOrders) {
-            String orderTime = order.getOrderTime();
-            if (Utils.getOrderTimerLong(orderTime) > DELAY_TIME_IN_SECONDS) return true;
+            if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED)) {
+                String orderTime = order.getOrderTime();
+                if (Utils.getOrderTimerLong(orderTime) > DELAY_TIME_IN_SECONDS) return true;
+            }
         }
         return false;
     }

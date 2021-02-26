@@ -31,7 +31,7 @@ public class Constants {
     public static final String ITEM_TYPE_SPECIAL = "special";
     public static final String ITEM_TYPE_DEAL = "deal";
 
-    //    pizza topping locations
+    //      pizza topping locations
     public static final String PIZZA_TYPE_FULL = "full";
     public static final String PIZZA_TYPE_RH = "rightHalfPizza";
     public static final String PIZZA_TYPE_LH = "leftHalfPizza";
@@ -40,15 +40,19 @@ public class Constants {
     public static final String PIZZA_TYPE_BL = "bl";
     public static final String PIZZA_TYPE_BR = "br";
 
-    //     pizza topping methods
+    //      pizza topping methods
     public static final String BUSINESS_TOPPING_TYPE_QUARTER = "quarter";
     public static final String BUSINESS_TOPPING_TYPE_LAYER = "layer";
     public static final String BUSINESS_TOPPING_TYPE_FIXED = "fixed";
 
-    //    pizza shape
+    //      pizza shape
     public static final String PIZZA_TYPE_CIRCLE = "circle";
     public static final String PIZZA_TYPE_RECTANGLE = "rectangle";
     public static final String PIZZA_TYPE_ONE_SLICE = "slice";
+
+    //      change types
+    public static String CHANGE_TYPE_CHANGE = "CHANGED";
+    public static String CHANGE_TYPE_CANCELED = "CANCELED";
 
     public static final String PATTERN_DATE_FROM_SERVER = "yyyy-MM-dd HH:mm:ss";
 

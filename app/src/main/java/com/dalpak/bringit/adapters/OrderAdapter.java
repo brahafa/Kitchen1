@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.models.OrderModel;
-import com.dalpak.bringit.utils.Utils;
 import com.woxthebox.draglistview.DragItemAdapter;
 
 import java.util.List;
 
+import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CHANGE;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_DELIVERY;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TABLE;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TAKEAWAY;
@@ -93,7 +93,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
             holder.vOrderColor.setBackgroundColor(Color.parseColor(order.getColor()));
         }
 
-        if (order.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE)) {
+        if (order.getChangeType().equals(CHANGE_TYPE_CHANGE)) {
             if (!order.isChangeConfirmed()) {
                 holder.warningImg.setVisibility(View.VISIBLE);
                 holder.vHolder.setBackgroundResource(R.drawable.background_changed);

@@ -27,8 +27,6 @@ import static com.dalpak.bringit.utils.Constants.PIZZA_TYPE_TR;
 
 public class Utils {
 
-    public static String CHANGE_TYPE_CHANGE = "CHANGED";
-    public static String CHANGE_TYPE_CANCELED = "CANCELED";
 
     public static void openPermissionAlertDialog(Context context) {
         openAlertDialog(context, "You don't have permission for this action", "Permission denied");

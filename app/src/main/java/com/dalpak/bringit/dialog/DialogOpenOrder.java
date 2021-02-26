@@ -20,7 +20,6 @@ import com.dalpak.bringit.databinding.OpenOrderDialogBinding;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.network.Request;
-import com.dalpak.bringit.utils.Utils;
 
 import org.json.JSONException;
 
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CHANGE;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_DELIVERY;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TABLE;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_TAKEAWAY;
@@ -120,8 +120,8 @@ public class DialogOpenOrder extends Dialog {
         binding.tvPayment.setText("שיטת תשלום: " + orderModel.getPaymentDisplay());
         binding.tvOrderSrc.setText("הזמנה דרך: " + orderModel.getAddedBySystem());
         binding.tvTotal.setText(String.format(Locale.US, "  סך הכל:  " + "%.2f %s", Double.parseDouble(orderModel.getTotalWithDelivery()), context.getResources().getString(R.string.shekel)));
-        binding.llChangeInOrder.setVisibility(orderModel.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
-        binding.tvApproveChanges.setVisibility(orderModel.getChangeType().equals(Utils.CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
+        binding.llChangeInOrder.setVisibility(orderModel.getChangeType().equals(CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
+        binding.tvApproveChanges.setVisibility(orderModel.getChangeType().equals(CHANGE_TYPE_CHANGE) ? View.VISIBLE : View.GONE);
         binding.cvComment.setCardBackgroundColor(Color.parseColor(ifEdited ? "#12c395" : "#6f7888"));
 
         initOrderMethod();
