@@ -89,7 +89,7 @@ public class OrderAdapter extends DragItemAdapter<OrderModel, OrderAdapter.Order
 
         holder.orderTime.setText(order.getStartTimeStr());
 
-        if (order.getColor() != null) {
+        if (order.getColor() != null && !order.getColor().isEmpty()) {
             holder.vOrderColor.setBackgroundColor(Color.parseColor(order.getColor()));
         }
 
