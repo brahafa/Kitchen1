@@ -57,6 +57,7 @@ public class MainFragment extends Fragment {
     private int mColumns;
 
     private final Handler mHandler = new Handler();
+//    private Timer timer = new Timer();
 
     private MediaPlayer mp;
 
@@ -68,6 +69,9 @@ public class MainFragment extends Fragment {
 
     RequestHelper requestHelper = new RequestHelper();
 
+    //    private TimerTask timerTask = new TimerTask() {
+//        @Override
+//        public void run() {
     private Runnable mRunnable = () -> requestHelper.getAllOrdersFromDb(getActivity(),
             response -> {
                 if (mp != null) mp.release();
@@ -253,6 +257,7 @@ public class MainFragment extends Fragment {
 
     public void startBoardUpdates() {
         mRunnable.run();
+//        timer.schedule(timerTask, 0, REQUEST_REPEAT_INTERVAL);
     }
 
     private void setupBoardUpdates() {
@@ -261,6 +266,7 @@ public class MainFragment extends Fragment {
 
     private void removeBoardUpdates() {
         mHandler.removeCallbacks(mRunnable);
+//        timer.cancel();
     }
 
     private List<OrderModel> clearOrdersList(List<OrderModel> orders) {

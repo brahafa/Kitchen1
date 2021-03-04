@@ -175,13 +175,25 @@ public class Network {
                             Log.d("Request url  11  ", url);
                             Log.d(TAG, "onResponse  :   " + response.toString());
                             listener.onDataDone(response);
+
                         }, error -> {
-                    manageErrors(error, context, isRetry -> {
-                        if (isRetry) sendRequestObject(requestName, url, context, listener);
-                    });
                     try {
+                        if (error.networkResponse != null) {
+//                            check if no orders
+                            if (new JSONObject(new String(error.networkResponse.data))
+                                    .getString("message").equals("לא נמצאו הזמנות חדשות")) {
+                                listener.onDataDone(null);
+                                return;
+                            }
+                        }
+
+                        manageErrors(error, context, isRetry -> {
+                            if (isRetry) sendRequestObject(requestName, url, context, listener);
+                        });
+
                         if (error.networkResponse != null)
                             listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

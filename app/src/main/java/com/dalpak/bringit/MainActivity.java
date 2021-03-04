@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.onBu
         stockModelList = new ArrayList<>();
         gson = new Gson();
         openFragment(fragment, "Main");
-        checkBusinessStatus();
+//        checkBusinessStatus();
     }
 
     private void initListeners() {

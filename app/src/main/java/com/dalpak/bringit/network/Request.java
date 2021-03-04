@@ -128,9 +128,13 @@ public class Request {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Gson gson = new Gson();
-                AllOrdersResponse response = gson.fromJson(json.toString(), AllOrdersResponse.class);
-                listener.onDataDone(response);
+                if (json == null) {
+                    listener.onDataDone(new AllOrdersResponse());
+                } else {
+                    Gson gson = new Gson();
+                    AllOrdersResponse response = gson.fromJson(json.toString(), AllOrdersResponse.class);
+                    listener.onDataDone(response);
+                }
             }
 
             @Override
