@@ -184,10 +184,7 @@ public class MainFragment extends Fragment {
             public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
 //                setupBoardUpdates();
                 if (fromColumn != toColumn) {
-                    changeStatus(
-                            mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
-                            statuses[toColumn]);
-                    changePosition(
+                    changeStatusAndPosition(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
                             fromRow + 1,
                             toRow + 1,
@@ -286,10 +283,10 @@ public class MainFragment extends Fragment {
         return clearSentOrders;
     }
 
-    private void changeStatus(long order_id, String draggedToStr) {
+    private void changeStatusAndPosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {
         removeBoardUpdates();
-        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, jsonObject -> {
-        });
+        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr,
+                jsonObject -> changePosition(order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr));
     }
 
     private void changePosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {

@@ -186,7 +186,8 @@ public class Request {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Log.d("UPDATE_ORDER_STATUS", jsonObject.toString());
+                listener.onDataDone(json);
+                Log.d("updateOrderStatus", json.toString());
             }
 
             @Override
@@ -267,6 +268,7 @@ public class Request {
             jsonObject.put("statusChanged", statusChanged);
             jsonObject.put("prevStatus", draggedFromStatus);
             jsonObject.put("status", draggedToStatus);
+
             Log.d("send data: ", jsonObject.toString());
 
         } catch (JSONException e) {
@@ -275,8 +277,8 @@ public class Request {
         Network network = new Network(new Network.NetworkCallBack() {
             @Override
             public void onDataDone(JSONObject json) {
-                Log.d("orderChangePos", jsonObject.toString());
-                listener.onDataDone(jsonObject);
+                Log.d("orderChangePos", json.toString());
+                listener.onDataDone(json);
             }
 
             @Override
