@@ -74,6 +74,7 @@ public class MainFragment extends Fragment {
 //        public void run() {
     private Runnable mRunnable = () -> requestHelper.getAllOrdersFromDb(getActivity(),
             response -> {
+                listener.onBusinessStatusCheck();
                 if (mp != null) mp.release();
                 if (hasDelay(response.getOrdersByStatus().getReceived()))
                     mp = playSound(Constants.ALERT_ORDER_OVERTIME);
@@ -92,7 +93,6 @@ public class MainFragment extends Fragment {
                     updateAllRV(response.getOrdersByStatus());
                 }
                 setupBoardUpdates();
-                listener.onBusinessStatusCheck();
             });
 
     private void checkIfOrderHasBeenUpdated(String lastResponse, JSONObject jsonObject) {
