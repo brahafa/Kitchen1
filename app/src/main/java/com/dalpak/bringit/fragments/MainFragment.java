@@ -104,21 +104,23 @@ public class MainFragment extends Fragment {
                 for (int j = 0; j < currentJsonArray.length(); j++) {
                     lastJsonObj = lastJsonArray.getJSONObject(i);
                     currentJsonObj = currentJsonArray.getJSONObject(j);
-                    if (!lastJsonObj.getString("change_type").equals(currentJsonObj.getString("change_type")) && lastJsonObj.getString("id").equals(currentJsonObj.get("change_for_order_id"))) {
-                        String msg;
-                        if (lastJsonArray.getJSONObject(i) == null || !lastJsonArray.getJSONObject(i).has("client")) {
-                            msg = "יש עדכון בהזמנות";
-                        } else {
-                            msg = " הזמנה של " + lastJsonArray.getJSONObject(i).getJSONObject("client").getString("f_name") + " עודכנה";
-                        }
-                        playSound(Constants.ALERT_EDIT_ORDER);
-                        if (((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder != null &&
-                                ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.isShowing() &&
-                                (((MainActivity) getActivity()).dialogOpenOrder).orderModel.getId().equals(lastJsonObj.getString("id"))) {
-                            updateOrderDetailsDialog(currentJsonObj.getString("id"));
-                        }
+                    if (currentJsonObj.has("change_for_order_id"))
+                        if (!lastJsonObj.getString("change_type").equals(currentJsonObj.getString("change_type")) &&
+                                lastJsonObj.getString("id").equals(currentJsonObj.get("change_for_order_id"))) {
+                            String msg;
+                            if (lastJsonArray.getJSONObject(i) == null || !lastJsonArray.getJSONObject(i).has("client")) {
+                                msg = "יש עדכון בהזמנות";
+                            } else {
+                                msg = " הזמנה של " + lastJsonArray.getJSONObject(i).getJSONObject("client").getString("f_name") + " עודכנה";
+                            }
+                            playSound(Constants.ALERT_EDIT_ORDER);
+                            if (((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder != null &&
+                                    ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.isShowing() &&
+                                    (((MainActivity) getActivity()).dialogOpenOrder).orderModel.getId().equals(lastJsonObj.getString("id"))) {
+                                updateOrderDetailsDialog(currentJsonObj.getString("id"));
+                            }
 
-                    }
+                        }
                 }
             }
 
