@@ -65,8 +65,8 @@ public class StockRV extends RecyclerView.Adapter<StockRV.StockRVHolder> {
         ProductItemModel item = itemList.get(position);
 
         holder.name.setText(item.getName());
-        holder.shippingPrice.setText(String.format(Locale.US, "%.2f שקל", (double) item.getDeliveryPrice()));
-        holder.pickupPrice.setText(String.format(Locale.US, "%.2f שקל", (double) item.getNotDeliveryPrice()));
+        holder.shippingPrice.setText(String.format(Locale.US, "%.2f שקל", item.getDeliveryPrice()));
+        holder.pickupPrice.setText(String.format(Locale.US, "%.2f שקל", item.getNotDeliveryPrice()));
         if (item.getTypeName().equals("food") || item.getTypeName().equals("deal")) {
             holder.itemImage.setVisibility(View.GONE);
         } else {

@@ -23,7 +23,18 @@ android {
             applicationIdSuffix ".debug"
             debuggable true
             manifestPlaceholders = [appName: "Kitchen.Debug"]
+        }
 
+        debugTest {
+            initWith debug
+            applicationIdSuffix ".test"
+            manifestPlaceholders = [appName: "Kitchen.Test"]
+        }
+
+        debugStage {
+            initWith debug
+            applicationIdSuffix ".stage"
+            manifestPlaceholders = [appName: "Kitchen.Stage"]
         }
 
         debugLive {
@@ -34,7 +45,7 @@ android {
 
         localHost {
             initWith debug
-            applicationIdSuffix ".debugLocalhost"
+            applicationIdSuffix ".localhost"
             manifestPlaceholders = [appName: "Kitchen.LocalHost"]
         }
     }
@@ -45,7 +56,6 @@ android {
 
     compileOptions {
 
-        //Like these
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -64,7 +74,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
 
-    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.volley:volley:1.2.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'

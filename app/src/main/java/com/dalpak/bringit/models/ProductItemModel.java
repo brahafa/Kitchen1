@@ -18,9 +18,9 @@ public class ProductItemModel implements Parcelable {
     @SerializedName("description")
     private String mDescription;
     @SerializedName("delivery_price")
-    private int mDeliveryPrice;
+    private double mDeliveryPrice;
     @SerializedName("not_delivery_price")
-    private int mNotDeliveryPrice;
+    private double mNotDeliveryPrice;
     @SerializedName("picture")
     private String mPicture;
     @SerializedName("imageUrl")
@@ -44,8 +44,8 @@ public class ProductItemModel implements Parcelable {
         mTypeId = in.readString();
         mName = in.readString();
         mDescription = in.readString();
-        mDeliveryPrice = in.readInt();
-        mNotDeliveryPrice = in.readInt();
+        mDeliveryPrice = in.readDouble();
+        mNotDeliveryPrice = in.readDouble();
         mPicture = in.readString();
         mImageUrl = in.readString();
         mBusinessId = in.readString();
@@ -95,11 +95,11 @@ public class ProductItemModel implements Parcelable {
         mInInventory = inInventory;
     }
 
-    public int getDeliveryPrice() {
+    public double getDeliveryPrice() {
         return mDeliveryPrice;
     }
 
-    public void setDeliveryPrice(int deliveryPrice) {
+    public void setDeliveryPrice(double deliveryPrice) {
         mDeliveryPrice = deliveryPrice;
     }
 
@@ -143,11 +143,11 @@ public class ProductItemModel implements Parcelable {
         this.mTypeId = mTypeId;
     }
 
-    public int getNotDeliveryPrice() {
+    public double getNotDeliveryPrice() {
         return mNotDeliveryPrice;
     }
 
-    public void setNotDeliveryPrice(int mNotDeliveryPrice) {
+    public void setNotDeliveryPrice(double mNotDeliveryPrice) {
         this.mNotDeliveryPrice = mNotDeliveryPrice;
     }
 
@@ -186,8 +186,8 @@ public class ProductItemModel implements Parcelable {
         dest.writeString(mTypeId);
         dest.writeString(mName);
         dest.writeString(mDescription);
-        dest.writeInt(mDeliveryPrice);
-        dest.writeInt(mNotDeliveryPrice);
+        dest.writeDouble(mDeliveryPrice);
+        dest.writeDouble(mNotDeliveryPrice);
         dest.writeString(mPicture);
         dest.writeString(mImageUrl);
         dest.writeString(mBusinessId);

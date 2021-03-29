@@ -42,7 +42,35 @@ public class LoginActivity extends AppCompatActivity {
         }
 
          */
+
+        setDummyData();
         initListener();
+    }
+
+    private void setDummyData() {
+        String login = "";
+        String pass = "";
+        switch (BuildConfig.BUILD_TYPE) {
+            case "debug":
+            case "localHost":
+                login = "dev@gmail.com";
+                pass = "pedro123";
+                break;
+            case "debugTest":
+                login = "test@gmail.com";
+                pass = "pedro123";
+                break;
+            case "debugStage":
+                login = "stage@gmail.com";
+                pass = "stage123";
+                break;
+            case "debugLive":
+                login = "pashtet1@gmail.com";
+                pass = "pedro123";
+                break;
+        }
+        binding.edtUsername.setText(login);
+        binding.edtPassword.setText(pass);
     }
 
     private void initListener() {
@@ -57,8 +85,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         binding.tvGo.setOnClickListener(v ->
                 Request.getInstance().logIn(this,
-                        "pedro123", //     binding.edtPassword.getText().toString(), //todo for business id 4
-                        "pashtet1@gmail.com", //       binding.edtUsername.getText().toString(), //todo for business id 4
+                        binding.edtPassword.getText().toString(),
+                        binding.edtUsername.getText().toString().trim(),
                         isDataSuccess -> {
                             if (isDataSuccess) {
                                 saveData(Constants.USER_ALREADY_CONNECTED_PREF, true);
