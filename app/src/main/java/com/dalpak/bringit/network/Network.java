@@ -2,7 +2,6 @@ package com.dalpak.bringit.network;
 
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -237,7 +236,7 @@ public class Network {
                     }
                 };
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 4,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
@@ -334,7 +333,7 @@ public class Network {
             }
         };
         req.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 4,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueueSingleton.getInstance(context).addToRequestQueue(req);
@@ -349,11 +348,11 @@ public class Network {
             netErrorCount++;
             Log.d("timeout error count", " " + netErrorCount);
 //            Toast.makeText(context, "timeout error count " + netErrorCount, Toast.LENGTH_SHORT).show();
-            if (netErrorCount % 10 == 0) {
-                Handler handler = new Handler();
-                handler.postDelayed(() -> listener.onRetry(true), 10 * 1000);
-                return;
-            }
+//            if (netErrorCount % 10 == 0) {
+//                Handler handler = new Handler();
+//                handler.postDelayed(() -> listener.onRetry(true), 10 * 1000);
+//                return;
+//            }
             if (netErrorCount > 100) {
                 netErrorCount = 0;
                 Utils.openAlertDialogRetry(context, listener);
