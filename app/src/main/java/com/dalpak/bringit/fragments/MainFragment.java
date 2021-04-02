@@ -65,6 +65,8 @@ public class MainFragment extends Fragment {
     private int lastNewOrdersSize = 0;
     private int lastCookingOrdersSize = 0;
 
+    private boolean itemIsMoved = false;
+
     private onBusinessStatusCheckListener listener;
 
     RequestHelper requestHelper = new RequestHelper();
@@ -74,23 +76,25 @@ public class MainFragment extends Fragment {
 //        public void run() {
     private Runnable mRunnable = () -> requestHelper.getAllOrdersFromDb(getActivity(),
             response -> {
-                listener.onBusinessStatusCheck();
-                if (mp != null) mp.release();
-                if (hasDelay(response.getOrdersByStatus().getReceived()))
-                    mp = playSound(Constants.ALERT_ORDER_OVERTIME);
+                if (!itemIsMoved) {
+                    listener.onBusinessStatusCheck();
+                    if (mp != null) mp.release();
+                    if (hasDelay(response.getOrdersByStatus().getReceived()))
+                        mp = playSound(Constants.ALERT_ORDER_OVERTIME);
 
-                if (!response.toString().equals(lastResponse)) {
-                    try {
-                        Gson gson = new Gson();
-                        JSONObject jsonObject = new JSONObject(gson.toJson(response));
-                        checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
-                        lastResponse = gson.toJson(response);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.w("update error", e.toString());
+                    if (!response.toString().equals(lastResponse)) {
+                        try {
+                            Gson gson = new Gson();
+                            JSONObject jsonObject = new JSONObject(gson.toJson(response));
+                            checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
+                            lastResponse = gson.toJson(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.w("update error", e.toString());
+                        }
+
+                        updateAllRV(response.getOrdersByStatus());
                     }
-
-                    updateAllRV(response.getOrdersByStatus());
                 }
                 setupBoardUpdates();
             });
@@ -185,6 +189,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
 //                setupBoardUpdates();
+                itemIsMoved = true;
+                Log.d("itemMoved", "true");
                 if (fromColumn != toColumn) {
                     changeStatusAndPosition(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
@@ -207,6 +213,8 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onItemDragStarted(int column, int row) {
+                itemIsMoved = true;
+                Log.d("itemMoved", "true");
                 removeBoardUpdates();
             }
 
@@ -294,7 +302,11 @@ public class MainFragment extends Fragment {
     private void changePosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {
         removeBoardUpdates();
         Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr,
-                jsonObject -> startBoardUpdates());
+                jsonObject -> {
+                    itemIsMoved = false;
+                    Log.d("itemMoved", "false");
+                    startBoardUpdates();
+                });
     }
 
     private void initRV(final List<OrderModel> orderModels) {

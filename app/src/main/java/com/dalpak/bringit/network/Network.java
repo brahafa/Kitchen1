@@ -236,7 +236,7 @@ public class Network {
                     }
                 };
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 4,
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
@@ -333,9 +333,10 @@ public class Network {
             }
         };
         req.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 4,
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        RequestQueueSingleton.getInstance(context).getRequestQueue().getCache().clear();
         RequestQueueSingleton.getInstance(context).addToRequestQueue(req);
     }
 
