@@ -14,9 +14,9 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.dalpak.bringit.BuildConfig;
 import com.dalpak.bringit.models.BusinessModel;
+import com.dalpak.bringit.models.CustomPriorityRequest;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.SharedPrefs;
 import com.dalpak.bringit.utils.Utils;
@@ -189,8 +189,8 @@ public class Network {
     }
 
     private void sendRequestObject(final RequestName requestName, final String url, final Context context, final NetworkCallBack listener) {
-        JsonObjectRequest jsonArrayRequest =
-                new JsonObjectRequest(Request.Method.GET, url, null,
+        CustomPriorityRequest jsonArrayRequest =
+                new CustomPriorityRequest(Request.Method.GET, url, null,
                         response -> {
                             Log.d("Request url  11  ", url);
                             Log.d(TAG, "onResponse  :   " + response.toString());
@@ -238,6 +238,11 @@ public class Network {
                         return params;
                     }
                 };
+        jsonArrayRequest.setTag(requestName);
+        jsonArrayRequest.setPriority(Request.Priority.LOW);
+        jsonArrayRequest.setShouldCache(false);
+        jsonArrayRequest.setShouldRetryConnectionErrors(false);
+        jsonArrayRequest.setShouldRetryServerErrors(false);
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
                 0,
@@ -289,7 +294,7 @@ public class Network {
 
         }
         Log.d("POST url  ", url);
-        JsonObjectRequest req = new JsonObjectRequest(
+        CustomPriorityRequest req = new CustomPriorityRequest(
                 requestName.equals(UPDATE_PRODUCT_STATUS) ||
                         requestName.equals(UPDATE_ORDER_STATUS) ||
                         requestName.equals(APPROVE_ORDER_CHANGES)
@@ -333,11 +338,15 @@ public class Network {
                 return params;
             }
         };
+        req.setPriority(Request.Priority.IMMEDIATE);
+        req.setShouldCache(false);
+        req.setShouldRetryConnectionErrors(false);
+        req.setShouldRetryServerErrors(false);
         req.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//        RequestQueueSingleton.getInstance(context).getRequestQueue().getCache().clear();
+        RequestQueueSingleton.getInstance(context).getRequestQueue().cancelAll(RequestName.GET_ALL_ORDERS);
         RequestQueueSingleton.getInstance(context).addToRequestQueue(req);
     }
 
