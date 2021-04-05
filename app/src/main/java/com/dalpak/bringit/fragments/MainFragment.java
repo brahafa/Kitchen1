@@ -188,25 +188,18 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
-//                setupBoardUpdates();
                 itemIsMoved = true;
                 Log.d("itemMoved", "true");
                 if (fromColumn != toColumn) {
-                    changeStatusAndPosition(
+                    changeStatus(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
-                            fromRow + 1,
                             toRow + 1,
-                            true,
-                            statuses[fromColumn],
                             statuses[toColumn]);
                     if (fromColumn == 2 && toColumn == 1) lastCookingOrdersSize--;
                 } else if (fromRow != toRow) {
-                    changePosition(
+                    changeStatus(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
-                            fromRow + 1,
                             toRow + 1,
-                            true,
-                            statuses[fromColumn],
                             statuses[toColumn]);
                 }
             }
@@ -293,15 +286,9 @@ public class MainFragment extends Fragment {
         return clearSentOrders;
     }
 
-    private void changeStatusAndPosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {
+    private void changeStatus(long order_id, int newPos, String draggedToStr) {
         removeBoardUpdates();
-        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr,
-                jsonObject -> changePosition(order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr));
-    }
-
-    private void changePosition(long order_id, int oldPos, int newPos, boolean statusChanged, String draggedFromStr, String draggedToStr) {
-        removeBoardUpdates();
-        Request.getInstance().orderChangePos(getActivity(), order_id, oldPos, newPos, statusChanged, draggedFromStr, draggedToStr,
+        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, newPos,
                 jsonObject -> {
                     itemIsMoved = false;
                     Log.d("itemMoved", "false");

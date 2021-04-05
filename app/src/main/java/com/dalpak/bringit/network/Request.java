@@ -171,12 +171,13 @@ public class Request {
         network.sendPostRequest(context, jsonObject, Network.RequestName.UPDATE_PRODUCT_STATUS, true);
     }
 
-    public void updateOrderStatus(Context context, long order_id, String status, final RequestJsonCallBack listener) {
+    public void updateOrderStatus(Context context, long order_id, String status, int position, final RequestJsonCallBack listener) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("order_id", order_id);
-            jsonObject.put("oStatus", status);
             jsonObject.put("business_id", BusinessModel.getInstance().getBusiness_id());
+            jsonObject.put("order_id", order_id);
+            jsonObject.put("position", position);
+            jsonObject.put("status", status);
 
             Log.d("send data: ", jsonObject.toString());
 
@@ -195,7 +196,7 @@ public class Request {
                 openAlertMsg(context, json);
             }
         });
-        network.sendPostRequest(context, jsonObject, Network.RequestName.UPDATE_ORDER_STATUS);
+        network.sendPostRequest(context, jsonObject, Network.RequestName.UPDATE_ORDER_STATUS, true);
     }
 
     public void getOrderDetailsByID(Context context, String orderId, RequestProductsCallBack listener) {
@@ -257,36 +258,6 @@ public class Request {
             }
         });
         network.sendRequest(context, Network.RequestName.GET_ORDER_CODE, orderId, true);
-    }
-
-    public void orderChangePos(Context context, long order_id, int oldPosition, int newPosition, boolean statusChanged, String draggedFromStatus, String draggedToStatus, final RequestJsonCallBack listener) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("id", order_id);
-            jsonObject.put("oldPosition", oldPosition);
-            jsonObject.put("position", newPosition);
-            jsonObject.put("statusChanged", statusChanged);
-            jsonObject.put("prevStatus", draggedFromStatus);
-            jsonObject.put("status", draggedToStatus);
-
-            Log.d("send data: ", jsonObject.toString());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Network network = new Network(new Network.NetworkCallBack() {
-            @Override
-            public void onDataDone(JSONObject json) {
-                Log.d("orderChangePos", json.toString());
-                listener.onDataDone(json);
-            }
-
-            @Override
-            public void onDataError(JSONObject json) {
-                openAlertMsg(context, json);
-            }
-        });
-        network.sendPostRequest(context, jsonObject, Network.RequestName.ORDER_CHANGE_POS);
     }
 
     public void checkBusinessStatus(Context context, RequestCallBackSuccess requestCallBackSuccess) {

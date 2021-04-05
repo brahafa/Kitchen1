@@ -33,6 +33,7 @@ import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
 import static com.dalpak.bringit.network.Network.RequestName.APPROVE_ORDER_CHANGES;
+import static com.dalpak.bringit.network.Network.RequestName.UPDATE_ORDER_STATUS;
 import static com.dalpak.bringit.network.Network.RequestName.UPDATE_PRODUCT_STATUS;
 import static com.dalpak.bringit.utils.SharedPrefs.getData;
 
@@ -72,14 +73,16 @@ public class Network {
         SIGN_UP, GET_LOGGED_MANAGER, lOAD_SAVED_USER_DETAILS,
         GET_ITEMS_IN_SELECTED_FOLEDER, WORKER_LOGIN, LOG_IN_MANAGER,
         GET_ITEMS_SHOTR_CUT_FOLEDER, ADD_TO_CART, GET_ITEMS_BY_TYPE,
-        GET_CART, CLEAR_CART, ORDER_CHANGE_POS, UPDATE_ORDER_STATUS, LOAD_BUSINES_ITEMS, UPDATE_ITEM_PRICE,
+        GET_CART, CLEAR_CART, LOAD_BUSINES_ITEMS, UPDATE_ITEM_PRICE,
         WORKER_LOGOUT, CHANGE_BUSINESS_STATUS, CHECK_BUSINESS_STATUS,
         //        API 2
         LOAD_PRODUCTS,
         GET_ITEMS_IN_SELECTED_FOLDER,
         GET_ALL_ORDERS, GET_ORDER_DETAILS_BY_ID,
         GET_ORDER_CODE,
+        //        PUT
         UPDATE_PRODUCT_STATUS,
+        UPDATE_ORDER_STATUS,
         APPROVE_ORDER_CHANGES
     }
 
@@ -266,20 +269,17 @@ public class Network {
             case ADD_TO_CART:
                 url += PIZZIRIA + "addToCart";
                 break;
-            case ORDER_CHANGE_POS:
-                url += BUSINESS + "orderChangePos";
-                break;
-            case UPDATE_ORDER_STATUS:
-                url += BUSINESS + "updateOrderStatus";
-                break;
             case UPDATE_ITEM_PRICE:
                 url += BUSINESS + "updateItemPrice";
                 break;
             case UPDATE_PRODUCT_STATUS: //api 2
                 url += "products/status";
                 break;
+            case UPDATE_ORDER_STATUS: //api 2
+                url += "orders/status";
+                break;
             case APPROVE_ORDER_CHANGES: //api 2
-                url += "/orders/confirmChanges";
+                url += "orders/confirmChanges";
                 break;
             case WORKER_LOGOUT:
                 url += DALPAK + "workerLogout";
@@ -291,6 +291,7 @@ public class Network {
         Log.d("POST url  ", url);
         JsonObjectRequest req = new JsonObjectRequest(
                 requestName.equals(UPDATE_PRODUCT_STATUS) ||
+                        requestName.equals(UPDATE_ORDER_STATUS) ||
                         requestName.equals(APPROVE_ORDER_CHANGES)
                         ? Request.Method.PUT : Request.Method.POST,
                 url, params, response -> {
