@@ -11,9 +11,12 @@ import com.dalpak.bringit.utils.MyApp;
 import com.dalpak.bringit.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RequestHelper {
+
+    private HashMap<Long, String> movedItems = new HashMap<>();
 
     public void getAllOrdersFromDb(final Context context, final Request.RequestAllOrdersCallBack listener) {
 
@@ -26,7 +29,14 @@ public class RequestHelper {
 
                 } else {
                     if (response.getOrders() != null) {
+
+                        for (OrderModel order : response.getOrders())
+                            if (movedItems.containsKey(Long.parseLong(order.getId())))
+                                order.setStatus(movedItems.get(Long.parseLong(order.getId())));
+
                         updateLocalDB(clearSentOrdersList(response.getOrders()), context);
+
+                        response.setOrdersByStatus(sortOrdersByStatus(response.getOrders()));
                     } else {
                         updateLocalDB(new ArrayList<>(), context);
                         response.setOrdersByStatus(new OrdersByStatusModel());
@@ -45,9 +55,12 @@ public class RequestHelper {
     private OrdersByStatusModel geAllOrdersByStatusFromDb(final Context context) {
         DbHandler dbHandler = new DbHandler(context);
 
-        OrdersByStatusModel ordersByStatus = new OrdersByStatusModel();
+        return sortOrdersByStatus(dbHandler.getAllOrdersFromDb());
+    }
 
-        for (OrderModel order : dbHandler.getAllOrdersFromDb()) {
+    private OrdersByStatusModel sortOrdersByStatus(List<OrderModel> orders) {
+        OrdersByStatusModel ordersByStatus = new OrdersByStatusModel();
+        for (OrderModel order : orders) {
             switch (order.getStatus()) {
                 case "sent":
                     ordersByStatus.getSent().add(order);
@@ -162,6 +175,9 @@ public class RequestHelper {
         return clearSentOrders;
     }
 
+    public void setMovedItems(HashMap<Long, String> movedItems) {
+        this.movedItems = movedItems;
+    }
 }
 
 

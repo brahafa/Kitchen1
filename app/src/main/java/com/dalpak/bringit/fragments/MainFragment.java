@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,6 +67,7 @@ public class MainFragment extends Fragment {
     private int lastCookingOrdersSize = 0;
 
     private boolean itemIsMoved = false;
+    private HashMap<Long, String> movedItems = new HashMap<>();
 
     private onBusinessStatusCheckListener listener;
 
@@ -195,6 +197,10 @@ public class MainFragment extends Fragment {
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
                             toRow + 1,
                             statuses[toColumn]);
+
+                    movedItems.put(mBoardView.getAdapter(toColumn).getUniqueItemId(toRow), statuses[toColumn]);
+                    requestHelper.setMovedItems(movedItems);
+
                     if (fromColumn == 2 && toColumn == 1) lastCookingOrdersSize--;
                 } else if (fromRow != toRow) {
                     changeStatus(

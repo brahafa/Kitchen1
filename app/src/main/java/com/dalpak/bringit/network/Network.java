@@ -238,13 +238,12 @@ public class Network {
                         return params;
                     }
                 };
-        jsonArrayRequest.setTag(requestName);
+//        jsonArrayRequest.setTag(requestName);
         jsonArrayRequest.setPriority(Request.Priority.LOW);
         jsonArrayRequest.setShouldCache(false);
         jsonArrayRequest.setShouldRetryConnectionErrors(false);
         jsonArrayRequest.setShouldRetryServerErrors(false);
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(0,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueueSingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
@@ -338,7 +337,7 @@ public class Network {
                 return params;
             }
         };
-        req.setPriority(Request.Priority.IMMEDIATE);
+        req.setPriority(Request.Priority.HIGH);
         req.setShouldCache(false);
         req.setShouldRetryConnectionErrors(false);
         req.setShouldRetryServerErrors(false);
@@ -346,7 +345,7 @@ public class Network {
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueueSingleton.getInstance(context).getRequestQueue().cancelAll(RequestName.GET_ALL_ORDERS);
+//        RequestQueueSingleton.getInstance(context).getRequestQueue().cancelAll(RequestName.GET_ALL_ORDERS);
         RequestQueueSingleton.getInstance(context).addToRequestQueue(req);
     }
 
