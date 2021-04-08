@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.onBu
                 openStockMenu();
             }
         });
+        binding.stockTvClick.setOnLongClickListener(v -> {
+            throw new RuntimeException("Test crash");
+        });
 
         binding.swLayout.setOnClickListener(v -> openPasswordDialog(false, TYPE_SWITCH_BUSINESS));
 

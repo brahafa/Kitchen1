@@ -21,12 +21,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.dalpak.bringit.MainActivity;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OrderAdapter;
+import com.dalpak.bringit.listeners.CallbackListener;
+import com.dalpak.bringit.models.BusinessModel;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
 import com.dalpak.bringit.models.OrderCategoryModel;
+import com.dalpak.bringit.models.OrderChangeStatusModel;
 import com.dalpak.bringit.models.OrderModel;
 import com.dalpak.bringit.models.OrdersByStatusModel;
-import com.dalpak.bringit.network.Request;
+import com.dalpak.bringit.network.ApiManager;
 import com.dalpak.bringit.network.RequestHelper;
 import com.dalpak.bringit.utils.Constants;
 import com.dalpak.bringit.utils.Utils;
@@ -43,6 +46,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import okhttp3.ResponseBody;
 
 import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CANCELED;
 import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CHANGE;
@@ -78,24 +83,26 @@ public class MainFragment extends Fragment {
 //        public void run() {
     private Runnable mRunnable = () -> requestHelper.getAllOrdersFromDb(getActivity(),
             response -> {
-                if (!itemIsMoved) {
-                    listener.onBusinessStatusCheck();
-                    if (mp != null) mp.release();
-                    if (hasDelay(response.getOrdersByStatus().getReceived()))
-                        mp = playSound(Constants.ALERT_ORDER_OVERTIME);
+                if (response != null) {
+                    if (!itemIsMoved) {
+                        listener.onBusinessStatusCheck();
+                        if (mp != null) mp.release();
+                        if (hasDelay(response.getOrdersByStatus().getReceived()))
+                            mp = playSound(Constants.ALERT_ORDER_OVERTIME);
 
-                    if (!response.toString().equals(lastResponse)) {
-                        try {
-                            Gson gson = new Gson();
-                            JSONObject jsonObject = new JSONObject(gson.toJson(response));
-                            checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
-                            lastResponse = gson.toJson(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.w("update error", e.toString());
+                        if (!response.toString().equals(lastResponse)) {
+                            try {
+                                Gson gson = new Gson();
+                                JSONObject jsonObject = new JSONObject(gson.toJson(response));
+                                checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
+                                lastResponse = gson.toJson(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.w("update error", e.toString());
+                            }
+
+                            updateAllRV(response.getOrdersByStatus());
                         }
-
-                        updateAllRV(response.getOrdersByStatus());
                     }
                 }
                 setupBoardUpdates();
@@ -294,11 +301,32 @@ public class MainFragment extends Fragment {
 
     private void changeStatus(long order_id, int newPos, String draggedToStr) {
         removeBoardUpdates();
-        Request.getInstance().updateOrderStatus(getActivity(), order_id, draggedToStr, newPos,
-                jsonObject -> {
-                    itemIsMoved = false;
-                    Log.d("itemMoved", "false");
-                    startBoardUpdates();
+        ApiManager.getInstance().updateOrderStatus(
+                new OrderChangeStatusModel(
+                        BusinessModel.getInstance().getBusiness_id(),
+                        order_id,
+                        draggedToStr,
+                        newPos), new CallbackListener<ResponseBody>() {
+                    @Override
+                    public void success(ResponseBody response) {
+                        itemIsMoved = false;
+                        Log.d("itemMoved", "false");
+                        startBoardUpdates();
+                    }
+
+                    @Override
+                    public void failure(int code, String message) {
+                        itemIsMoved = false;
+                        Log.d("itemMoved", "false");
+                        startBoardUpdates();
+                    }
+
+                    @Override
+                    public void failure(Throwable error) {
+                        itemIsMoved = false;
+                        Log.d("itemMoved", "false");
+                        startBoardUpdates();
+                    }
                 });
     }
 

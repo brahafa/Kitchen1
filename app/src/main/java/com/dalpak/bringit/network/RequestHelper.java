@@ -2,6 +2,7 @@ package com.dalpak.bringit.network;
 
 import android.content.Context;
 
+import com.dalpak.bringit.listeners.CallbackListener;
 import com.dalpak.bringit.local_db.DbHandler;
 import com.dalpak.bringit.models.AllOrdersResponse;
 import com.dalpak.bringit.models.OpenOrderModel;
@@ -21,28 +22,41 @@ public class RequestHelper {
     public void getAllOrdersFromDb(final Context context, final Request.RequestAllOrdersCallBack listener) {
 
         if (MyApp.get().isNetworkAvailable()) {
-            Request.getInstance().getAllOrders(context, response -> {
-                if (response == null) {
-                    response = new AllOrdersResponse();
+            ApiManager.getInstance().getAllOrders(new CallbackListener<AllOrdersResponse>() {
+                @Override
+                public void success(AllOrdersResponse response) {
+                    if (response == null) {
+                        response = new AllOrdersResponse();
 
-                    response.setOrdersByStatus(geAllOrdersByStatusFromDb(context));
+                        response.setOrdersByStatus(geAllOrdersByStatusFromDb(context));
 
-                } else {
-                    if (response.getOrders() != null) {
-
-                        for (OrderModel order : response.getOrders())
-                            if (movedItems.containsKey(Long.parseLong(order.getId())))
-                                order.setStatus(movedItems.get(Long.parseLong(order.getId())));
-
-                        updateLocalDB(clearSentOrdersList(response.getOrders()), context);
-
-                        response.setOrdersByStatus(sortOrdersByStatus(response.getOrders()));
                     } else {
-                        updateLocalDB(new ArrayList<>(), context);
-                        response.setOrdersByStatus(new OrdersByStatusModel());
+                        if (response.getOrders() != null) {
+
+                            for (OrderModel order : response.getOrders())
+                                if (movedItems.containsKey(Long.parseLong(order.getId())))
+                                    order.setStatus(movedItems.get(Long.parseLong(order.getId())));
+
+                            updateLocalDB(clearSentOrdersList(response.getOrders()), context);
+
+                            response.setOrdersByStatus(sortOrdersByStatus(response.getOrders()));
+                        } else {
+                            updateLocalDB(new ArrayList<>(), context);
+                            response.setOrdersByStatus(new OrdersByStatusModel());
+                        }
                     }
+                    listener.onDataDone(response);
                 }
-                listener.onDataDone(response);
+
+                @Override
+                public void failure(int code, String message) {
+                    listener.onDataDone(null);
+                }
+
+                @Override
+                public void failure(Throwable error) {
+                    listener.onDataDone(null);
+                }
             });
         } else {
 //            Utils.openAlertDialog(context, "You are now offline", "Connection is lost");
