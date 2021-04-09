@@ -205,7 +205,7 @@ public class MainFragment extends Fragment {
                             toRow + 1,
                             statuses[toColumn]);
 
-                    movedItems.put(mBoardView.getAdapter(toColumn).getUniqueItemId(toRow), statuses[toColumn]);
+//                    movedItems.put(mBoardView.getAdapter(toColumn).getUniqueItemId(toRow), statuses[toColumn]);
                     requestHelper.setMovedItems(movedItems);
 
                     if (fromColumn == 2 && toColumn == 1) lastCookingOrdersSize--;

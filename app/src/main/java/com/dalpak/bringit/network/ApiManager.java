@@ -117,7 +117,7 @@ public class ApiManager {
                 else {
                     try {
                         ErrorResponse errorResponse = converter.convert(response.errorBody());
-//                        callback.failure(response.code(), errorResponse.getError());
+                        callback.failure(response.code(), errorResponse.getMessage());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -126,7 +126,7 @@ public class ApiManager {
 
             @Override
             public void onFailure(Call<ResponseBody> responseCall, Throwable throwable) {
-//                callback.failure(throwable);
+                callback.failure(throwable);
             }
         });
     }
