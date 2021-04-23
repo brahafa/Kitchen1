@@ -55,7 +55,7 @@ android {
     productFlavors {
         kitchen {
             dimension 'default'
-            versionName "1.14.7"
+            versionName "1.14.9"
         }
     }
 

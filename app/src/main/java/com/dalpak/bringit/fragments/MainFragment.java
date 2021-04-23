@@ -1,5 +1,7 @@
 package com.dalpak.bringit.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +57,8 @@ public class MainFragment extends Fragment {
 
     private Context mContext;
 
+    private TextView tvUid;
+
     private BoardView mBoardView;
     private int mColumns;
 
@@ -78,6 +83,9 @@ public class MainFragment extends Fragment {
 //        public void run() {
     private Runnable mRunnable = () -> requestHelper.getAllOrdersFromDb(getActivity(),
             response -> {
+
+                tvUid.setText(String.format("UID: %s", response.getUid()));
+
                 if (!itemIsMoved) {
                     listener.onBusinessStatusCheck();
                     if (mp != null) mp.release();
@@ -179,6 +187,14 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         String[] statuses = getResources().getStringArray(R.array.statuses);
+
+        tvUid = view.findViewById(R.id.tv_uid);
+        tvUid.setOnClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("UID", tvUid.getText().toString());
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(mContext, "UID is copied to clipboard", Toast.LENGTH_SHORT).show();
+        });
 
         mBoardView = view.findViewById(R.id.board_view);
         mBoardView.setSnapToColumnsWhenScrolling(true);

@@ -22,7 +22,6 @@ import com.dalpak.bringit.utils.SharedPrefs;
 import com.dalpak.bringit.utils.Utils;
 
 import org.apache.http.HttpStatus;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +29,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.android.volley.VolleyLog.TAG;
 import static com.dalpak.bringit.network.Network.RequestName.APPROVE_ORDER_CHANGES;
@@ -206,17 +206,27 @@ public class Network {
                                 return;
                             }
                         }
-
-                        manageErrors(error, context, isRetry -> {
-                            if (isRetry) sendRequestObject(requestName, url, context, listener);
-                        });
-
-                        if (error.networkResponse != null)
-                            listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    manageErrors(error, context, isRetry -> {
+                        if (isRetry) sendRequestObject(requestName, url, context, listener);
+                    });
+
+                    if (error.networkResponse != null) {
+                        try {
+                            listener.onDataError(new JSONObject(new String(error.networkResponse.data)));
+                        } catch (JSONException e) {
+                            try {
+                                listener.onDataError(new JSONObject("{\"message\":\"invalid Json\"}"));
+                            } catch (JSONException ex) {
+                                ex.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                    }
+
                     Log.e(TAG, "Connection Error 22" + error.toString());
                 }) {
 
@@ -369,6 +379,11 @@ public class Network {
             } else listener.onRetry(true);
 
         } else if (error instanceof ParseError) {
+            try {
+                this.listener.onDataError(new JSONObject(Objects.requireNonNull(error.getMessage())));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             // Toast.makeText(context, ("ParseError"), Toast.LENGTH_SHORT).show();
             error.printStackTrace();
         } else {
@@ -380,7 +395,6 @@ public class Network {
         NetworkResponse networkResponse = error.networkResponse;
         if (networkResponse != null && networkResponse.data != null) {
             try {
-                JSONArray jsonArray = null;
                 JSONObject jsonError = new JSONObject(new String(networkResponse.data));
                 if (networkResponse.statusCode == HttpStatus.SC_FORBIDDEN) {
                     // HTTP Status Code: 403 Unauthorized

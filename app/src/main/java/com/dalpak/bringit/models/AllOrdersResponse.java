@@ -6,6 +6,7 @@ public class AllOrdersResponse {
 
     private OrdersByStatusModel ordersByStatus;
     private List<OrderModel> orders;
+    private String uid;
 
     public OrdersByStatusModel getOrdersByStatus() {
         return ordersByStatus;
@@ -24,4 +25,11 @@ public class AllOrdersResponse {
     }
 
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 }
