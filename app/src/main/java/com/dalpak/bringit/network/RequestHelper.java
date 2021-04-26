@@ -31,8 +31,10 @@ public class RequestHelper {
                     if (response.getOrders() != null) {
 
                         for (OrderModel order : response.getOrders())
-                            if (movedItems.containsKey(Long.parseLong(order.getId())))
+                            if (movedItems.containsKey(Long.parseLong(order.getId()))) {
                                 order.setStatus(movedItems.get(Long.parseLong(order.getId())));
+                                movedItems.remove(Long.parseLong(order.getId()));
+                            }
 
                         updateLocalDB(clearSentOrdersList(response.getOrders()), context);
 

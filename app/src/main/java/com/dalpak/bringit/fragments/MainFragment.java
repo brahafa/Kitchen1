@@ -206,8 +206,6 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onItemDragEnded(int fromColumn, int fromRow, int toColumn, int toRow) {
-                itemIsMoved = true;
-                Log.d("itemMoved", "true");
                 if (fromColumn != toColumn) {
                     changeStatus(
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
@@ -223,7 +221,12 @@ public class MainFragment extends Fragment {
                             mBoardView.getAdapter(toColumn).getUniqueItemId(toRow),
                             toRow + 1,
                             statuses[toColumn]);
+                } else {
+                    itemIsMoved = false;
+                    startBoardUpdates();
+                    Log.d("itemMoved", "false");
                 }
+
             }
 
             @Override
