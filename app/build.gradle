@@ -10,7 +10,7 @@ android {
         applicationId "com.dalpak.bringit"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 14
+        versionCode 27
         versionName "1.14"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
