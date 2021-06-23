@@ -16,11 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.dalpak.bringit.MainActivity;
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OrderAdapter;
@@ -45,7 +40,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CANCELED;
 import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CHANGE;
@@ -128,9 +127,9 @@ public class MainFragment extends Fragment {
                                 msg = " הזמנה של " + lastJsonArray.getJSONObject(i).getJSONObject("client").getString("f_name") + " עודכנה";
                             }
                             playSound(Constants.ALERT_EDIT_ORDER);
-                            if (((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder != null &&
-                                    ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.isShowing() &&
-                                    (((MainActivity) getActivity()).dialogOpenOrder).orderModel.getId().equals(lastJsonObj.getString("id"))) {
+                            if (((MainActivity) requireActivity()).dialogOpenOrder != null &&
+                                    ((MainActivity) requireActivity()).dialogOpenOrder.isShowing() &&
+                                    (((MainActivity) requireActivity()).dialogOpenOrder).orderModel.getId().equals(lastJsonObj.getString("id"))) {
                                 updateOrderDetailsDialog(currentJsonObj.getString("id"));
                             }
 
@@ -147,7 +146,7 @@ public class MainFragment extends Fragment {
         requestHelper.getOrderDetailsByIDFromDb(getActivity(), id, response -> {
             prepareOrder(response);
             response.setTotal(Utils.getTotalOrder(response) + "");
-            ((MainActivity) Objects.requireNonNull(getActivity())).dialogOpenOrder.editDialog(response);
+            ((MainActivity) requireActivity()).dialogOpenOrder.editDialog(response);
         });
     }
 

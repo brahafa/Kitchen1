@@ -2,6 +2,7 @@ package com.dalpak.bringit.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,13 @@ public class FillingAdapter extends RecyclerView.Adapter<FillingAdapter.ViewHold
         if (item.getCount() > 1) name = name.concat(" x" + item.getCount());
 
         holder.fillingName.setText(name);
-        holder.fillingName.setTextColor(isEdited ? Color.WHITE : Color.BLACK);
+//        holder.fillingName.setTextColor(isEdited ? Color.WHITE : Color.BLACK);
+
+        if (item.isDeleted() || item.isCanceled())
+            holder.fillingName.setPaintFlags(holder.fillingName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        else if (item.isNew())
+            holder.fillingName.setTextColor(Color.GREEN);
+
     }
 
     @Override
