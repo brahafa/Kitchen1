@@ -8,17 +8,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import com.dalpak.bringit.R;
 import com.dalpak.bringit.adapters.OpenOrderAdapter;
 import com.dalpak.bringit.adapters.OpenOrderPizzaAdapter;
 import com.dalpak.bringit.databinding.OpenOrderDialogBinding;
 import com.dalpak.bringit.models.ItemModel;
 import com.dalpak.bringit.models.OpenOrderModel;
+import com.dalpak.bringit.models.OrderCategoryModel;
 import com.dalpak.bringit.network.Request;
 
 import org.json.JSONException;
@@ -26,6 +22,11 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CHANGE;
 import static com.dalpak.bringit.utils.Constants.DELIVERY_OPTION_DELIVERY;
@@ -72,7 +73,11 @@ public class DialogOpenOrder extends Dialog {
         List<ItemModel> drinks = new ArrayList<>();
         List<ItemModel> additionals = new ArrayList<>();
         List<ItemModel> pizza = new ArrayList<>();
+
+        clearDeletedItems();
+
         for (ItemModel orderItem : orderModel.getProducts()) {
+
             switch (orderItem.getTypeName()) {
                 case ITEM_TYPE_DRINK:
                     drinks.add(orderItem);
@@ -104,6 +109,32 @@ public class DialogOpenOrder extends Dialog {
         initRV(drinks, binding.rvDrink);
         initRV(additionals, binding.rvAdditional);
         initPizzaRV(pizza, binding.rvPizza);
+    }
+
+    private void clearDeletedItems() {
+        for (int i = orderModel.getProducts().size() - 1; i >= 0; i--) {
+            ItemModel item = orderModel.getProducts().get(i);
+            if (item.isDeleted()) orderModel.getProducts().remove(i);
+            else {
+                if (item.getTypeName().equals(ITEM_TYPE_DEAL)) {
+                    List<ItemModel> products = item.getProducts();
+                    for (int j = products.size() - 1; j >= 0; j--) {
+                        ItemModel dealItem = products.get(j);
+                        if (dealItem.isDeleted()) item.getProducts().remove(i);
+                        else clearCategories(dealItem.getCategories());
+                    }
+                } else clearCategories(item.getCategories());
+            }
+        }
+    }
+
+    private void clearCategories(List<OrderCategoryModel> categories) {
+        for (OrderCategoryModel category : categories) {
+            for (int i = category.getProducts().size() - 1; i >= 0; i--) {
+                ItemModel innerItem = category.getProducts().get(i);
+                if (innerItem.isDeleted()) category.getProducts().remove(i);
+            }
+        }
     }
 
     private void initData() {
