@@ -10,7 +10,7 @@ android {
         applicationId "com.dalpak.bringit"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 27
+        versionCode 28
         versionName "1.14"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,7 +57,7 @@ android {
     productFlavors {
         kitchen {
             dimension 'default'
-            versionName "1.14.12"
+            versionName "28.1.14.12"
         }
     }
 
