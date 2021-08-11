@@ -296,7 +296,7 @@ public class MainFragment extends Fragment {
     private List<OrderModel> clearOrdersList(List<OrderModel> orders) {
         List<OrderModel> clearOrders = new ArrayList<>();
         for (OrderModel order : orders)
-            if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED)) clearOrders.add(order);
+            if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED) && !order.isScheduled()) clearOrders.add(order);
         return clearOrders;
     }
 
