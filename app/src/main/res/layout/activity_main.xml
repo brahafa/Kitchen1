@@ -86,9 +86,9 @@
             android:gravity="center"
             android:id="@+id/back_to_main"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/backRL"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@+id/backRL"
             android:layout_width="wrap_content"
             android:orientation="vertical">
 
@@ -135,10 +135,10 @@
                 android:drawableRight="@drawable/ic_user"
                 android:id="@+id/nameTV"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_x2"
                 android:layout_width="wrap_content"
                 android:padding="5dp"
                 android:text="שלום אנדראו"
-                android:layout_marginRight="@dimen/padding_x2"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
@@ -157,14 +157,15 @@
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:textColor="@color/white"
-            android:layout_margin="3dp"
-            android:textStyle="bold"
             android:id="@+id/version"
-            android:text="12.2"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_width="wrap_content"
+            android:text="12.2"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
