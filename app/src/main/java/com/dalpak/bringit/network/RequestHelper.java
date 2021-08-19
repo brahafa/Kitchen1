@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.dalpak.bringit.utils.Constants.CHANGE_TYPE_CANCELED;
+
 public class RequestHelper {
 
     private HashMap<Long, String> movedItems = new HashMap<>();
@@ -30,15 +32,17 @@ public class RequestHelper {
                 } else {
                     if (response.getOrders() != null) {
 
-                        for (OrderModel order : response.getOrders())
+                        List<OrderModel> cleanOrders = clearSentOrdersList(clearOrdersList(response.getOrders()));
+
+                        for (OrderModel order : cleanOrders)
                             if (movedItems.containsKey(Long.parseLong(order.getId()))) {
                                 order.setStatus(movedItems.get(Long.parseLong(order.getId())));
                                 movedItems.remove(Long.parseLong(order.getId()));
                             }
 
-                        updateLocalDB(clearSentOrdersList(response.getOrders()), context);
+                        updateLocalDB(cleanOrders, context);
 
-                        response.setOrdersByStatus(sortOrdersByStatus(response.getOrders()));
+                        response.setOrdersByStatus(sortOrdersByStatus(cleanOrders));
                     } else {
                         updateLocalDB(new ArrayList<>(), context);
                         response.setOrdersByStatus(new OrdersByStatusModel());
@@ -162,6 +166,13 @@ public class RequestHelper {
 
                 }
         );
+    }
+
+    private List<OrderModel> clearOrdersList(List<OrderModel> orders) {
+        List<OrderModel> clearOrders = new ArrayList<>();
+        for (OrderModel order : orders)
+            if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED) && !order.isScheduled()) clearOrders.add(order);
+        return clearOrders;
     }
 
     private List<OrderModel> clearSentOrdersList(List<OrderModel> orders) {
