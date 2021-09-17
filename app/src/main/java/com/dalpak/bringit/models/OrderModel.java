@@ -41,6 +41,10 @@ public class OrderModel {
     private String mColor;
     @SerializedName("client")
     private ClientModel mClient;
+    @SerializedName("is_scheduled")
+    private String mIsScheduled;
+    @SerializedName("scheduled_time")
+    private String mScheduledTime;
 
     public String getChangeType() {
         return mChangeType;
@@ -81,6 +85,7 @@ public class OrderModel {
     public int getIsPaid() {
         return mIsPaid;
     }
+
     public void setIsPaid(int isPaid) {
         mIsPaid = isPaid;
     }
@@ -183,5 +188,21 @@ public class OrderModel {
 
     public void setChangeType(String mChangeType) {
         this.mChangeType = mChangeType;
+    }
+
+    public boolean isScheduled() {
+        return mIsScheduled != null && mIsScheduled.equals("1");
+    }
+
+    public void setIsScheduled(String mIsScheduled) {
+        this.mIsScheduled = mIsScheduled;
+    }
+
+    public String getScheduledTime() {
+        return mScheduledTime;
+    }
+
+    public void setScheduledTime(String mScheduledTime) {
+        this.mScheduledTime = mScheduledTime;
     }
 }

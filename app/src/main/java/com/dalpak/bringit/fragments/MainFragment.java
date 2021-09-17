@@ -88,14 +88,14 @@ public class MainFragment extends Fragment {
                 if (!itemIsMoved) {
                     listener.onBusinessStatusCheck();
                     if (mp != null) mp.release();
-                    if (hasDelay(response.getOrdersByStatus().getReceived()))
+                    if (hasDelay(clearOrdersList(response.getOrdersByStatus().getReceived())))
                         mp = playSound(Constants.ALERT_ORDER_OVERTIME);
 
                     if (!response.toString().equals(lastResponse)) {
                         try {
                             Gson gson = new Gson();
                             JSONObject jsonObject = new JSONObject(gson.toJson(response));
-                            checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
+                            if (!lastResponse.isEmpty()) checkIfOrderHasBeenUpdated(lastResponse, jsonObject);
                             lastResponse = gson.toJson(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -296,7 +296,7 @@ public class MainFragment extends Fragment {
     private List<OrderModel> clearOrdersList(List<OrderModel> orders) {
         List<OrderModel> clearOrders = new ArrayList<>();
         for (OrderModel order : orders)
-            if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED)) clearOrders.add(order);
+            if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED) && !order.isScheduled()) clearOrders.add(order);
         return clearOrders;
     }
 
@@ -399,11 +399,11 @@ public class MainFragment extends Fragment {
 
         List<OrderModel> allOrders = new ArrayList<>();
 
-        allOrders.addAll(ordersByStatus.getReceived());
-        allOrders.addAll(ordersByStatus.getPreparing());
-        allOrders.addAll(ordersByStatus.getCooking());
-        allOrders.addAll(ordersByStatus.getPacking());
-        allOrders.addAll(clearSentOrdersList(ordersByStatus.getSent()));
+        allOrders.addAll(clearOrdersList(ordersByStatus.getReceived()));
+        allOrders.addAll(clearOrdersList(ordersByStatus.getPreparing()));
+        allOrders.addAll(clearOrdersList(ordersByStatus.getCooking()));
+        allOrders.addAll(clearOrdersList(ordersByStatus.getPacking()));
+        allOrders.addAll(clearSentOrdersList(clearOrdersList(ordersByStatus.getSent())));
 
         for (OrderModel order : allOrders) {
             if (order.getChangeType().equals(CHANGE_TYPE_CHANGE) && !order.isChangeConfirmed())
@@ -414,10 +414,8 @@ public class MainFragment extends Fragment {
 
     private boolean hasDelay(List<OrderModel> receivedOrders) {
         for (OrderModel order : receivedOrders) {
-            if (!order.getChangeType().equals(CHANGE_TYPE_CANCELED)) {
-                String orderTime = order.getOrderTime();
-                if (Utils.getOrderTimerLong(orderTime) > DELAY_TIME_IN_SECONDS) return true;
-            }
+            String orderTime = order.getOrderTime();
+            if (Utils.getOrderTimerLong(orderTime) > DELAY_TIME_IN_SECONDS) return true;
         }
         return false;
     }
